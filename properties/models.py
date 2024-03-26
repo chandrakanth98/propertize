@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+import uuid
 
 # Create your models here.
 
@@ -17,3 +20,16 @@ class Property(models.Model):
 
     def __str__(self):
             return self.name
+    
+
+class InvitationCode(models.Model):
+    code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    property = models.OneToOneField(Property, on_delete=models.CASCADE, related_name='invitation_code')
+
+    def __str__(self):
+        return str(self.code)
+
+@receiver(post_save, sender=Property)
+def create_invitation_code(sender, instance, created, **kwargs):
+    if created:
+        InvitationCode.objects.create(property=instance)
