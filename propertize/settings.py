@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'users',
     'dashboards',
+    'properties',
 ]
 
 

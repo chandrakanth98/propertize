@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for property in user.properties.all %}
+<h2>Property: {{ property.name }}</h2>
+<p>Address: {{ property.address }}</p>
+{% endfor %}
+{% endblock %}

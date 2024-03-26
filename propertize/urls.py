@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from properties import views as p_views
 
 urlpatterns = [
+    path("properties/", p_views.properties, name="properties"),
     path("", include("dashboards.urls")),
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
