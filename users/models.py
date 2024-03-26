@@ -8,7 +8,8 @@ class CustomUser(AbstractUser):
     role = models.IntegerField(choices=ROLE, default=0)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    
+    assigned_property = models.ForeignKey('properties.Property', on_delete=models.SET_NULL,
+                                           null=True, blank=True, related_name='tenants')
 
     def __str__(self):
             return self.username

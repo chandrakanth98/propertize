@@ -14,7 +14,7 @@ class TestPropertiesViews(TestCase):
             email="landlord@test.com",
             first_name='Landlord',
             last_name='User',
-            role=1
+            role=1,
         )
 
         self.property1 = Property(landlord=self.user_landlord, address="Testington 1",
@@ -25,12 +25,16 @@ class TestPropertiesViews(TestCase):
         self.property1.save()
         self.property2.save()
 
+        self.user_landlord.assigned_property = self.property1
+        self.user_landlord.save()
+
     def test_render_landlords_properties(self):
-        """ Test that properties renders the logged in users properties """
+        """ Test that properties renders the logged in users properties and tenants """
         self.client.login(
             username="landlordUser", password="landlordPassword")
         response = self.client.get(reverse('properties'))
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Velo apt test", response.content)
         self.assertIn(b"Schweppes", response.content)
+        self.assertIn(b"Tenant: Landlord", response.content)
         self.assertIn(b"Testington 1", response.content)

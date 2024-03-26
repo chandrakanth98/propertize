@@ -12,6 +12,8 @@ class Property(models.Model):
     zip_code = models.IntegerField()
     city = models.CharField(max_length=150)
     name = models.CharField(max_length=150)
+    
+
 
     def __str__(self):
             return self.name

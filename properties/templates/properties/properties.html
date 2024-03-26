@@ -4,5 +4,10 @@
 {% for property in user.properties.all %}
 <h2>Property: {{ property.name }}</h2>
 <p>Address: {{ property.address }}</p>
+<ul>
+    {% for tenant in property.tenants.all %}
+        <li>Tenant: {{ tenant.first_name }}</li>
+    {% endfor %}
+</ul>
 {% endfor %}
 {% endblock %}
