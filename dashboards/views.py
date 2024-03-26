@@ -24,6 +24,11 @@ def home(request):
                 request,
                 'dashboards/tenant.html'
             )
+        elif request.user.role  == 0:
+            return render(
+                request,
+                'dashboards/none.html'
+            )
     else:
         return render(
             request,
