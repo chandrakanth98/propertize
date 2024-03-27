@@ -11,7 +11,13 @@
     {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
     <ul>
       {% for tenant in property.tenants.all %}
-      <li>Tenant: {{ tenant.first_name }}</li>
+        <li>
+          Tenant: {{ tenant.first_name }} {{ tenant.last_name }}<br>
+          {% for resident in tenant.resident.all %}
+           Outstanding Rent: {{ resident.outstanding_rent }}
+          {% endfor %}
+          </li>
+        <hr>
       {% endfor %}
     </ul>
   </div>

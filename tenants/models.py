@@ -7,11 +7,13 @@ User = get_user_model()
 
 class Tenant(models.Model):
     tenant_id = models.AutoField(unique=True, primary_key=True)
-    renter = models.ForeignKey(User, on_delete=models.PROTECT, related_name="tenant")
+    resident = models.ForeignKey(User, on_delete=models.PROTECT, related_name="resident")
     lease_end = models.DateField()
     rent_amount = models.FloatField()
+    outstanding_rent = models.FloatField(default=0)
     next_rent_due = models.DateField()
+    apartment = models.CharField(default=0)
 
     def __str__(self):
-            return self.renter.username
+            return(f"{self.resident.last_name}, {self.resident.first_name}, {self.resident.assigned_property.name}")
 
