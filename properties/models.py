@@ -3,6 +3,7 @@ from tenants.models import Tenant
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import datetime
 import uuid
 
 # Create your models here.
@@ -24,16 +25,27 @@ class Property(models.Model):
     
 
 class InvitationCode(models.Model):
-    code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    property = models.OneToOneField(Property, on_delete=models.CASCADE, related_name='invitation_code')
+    id = models.AutoField(primary_key=True, unique=True)
+    code = models.CharField(max_length=5, unique=True, blank=True)
+    property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='invitation_codes')
+    rent_amount = models.FloatField(default=0)
+    lease_end = models.DateField(default=datetime.date.today)
+    next_rent_due = models.DateField(default=datetime.date.today)
+    apartment = models.CharField(max_length=10, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.code)
+        return self.code
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.code = self.generate_unique_code()
+        super().save(*args, **kwargs)
 
-@receiver(post_save, sender=Property)
-def create_invitation_code(sender, instance, created, **kwargs):
-    if created:
-        InvitationCode.objects.create(property=instance)
+    def generate_unique_code(self):
+        return str(uuid.uuid4().hex)[:5]
+    
 
 
 class ProxyTenant(Tenant):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import views
 from properties.models import InvitationCode
+from tenants.models import Tenant
 # Create your views here.
 
 @login_required
@@ -38,11 +39,21 @@ def invitation(request):
     if request.method == 'POST':
         invitation_code = request.POST.get('invitation_code')
         try:
-            invitation = InvitationCode.objects.get(code=invitation_code)
+            invitation = InvitationCode.objects.get(code=invitation_code, used=False)
             user = request.user
             user.role = 3
-            user.assigned_property = invitation.property  # Assign property associated with the invitation code
+            user.assigned_property = invitation.property
+            tenant = Tenant.objects.create(
+                resident=user,
+                rent_amount=invitation.rent_amount,
+                lease_end=invitation.lease_end,
+                next_rent_due=invitation.next_rent_due,
+                apartment=invitation.apartment,
+            )
+            tenant.save()
             user.save()
+            invitation.used = True
+            invitation.save()
             return redirect('home')
         except InvitationCode.DoesNotExist:
             # Handle invalid invitation code

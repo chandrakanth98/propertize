@@ -14,7 +14,11 @@
         <li>
           Tenant: {{ tenant.first_name }} {{ tenant.last_name }}<br>
           {% for resident in tenant.resident.all %}
-           Outstanding Rent: {{ resident.outstanding_rent }}
+           Rent amount: {{ resident.rent_amount }}<br>
+           Outstanding Rent: {{ resident.outstanding_rent }}<br>
+           Next rent due: {{ resident.next_rent_due }}<br>
+           Lease end: {{ resident.lease_end }}<br>
+           Apartment: {{ resident.apartment }}
           {% endfor %}
           </li>
         <hr>
