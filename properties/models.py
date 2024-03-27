@@ -1,4 +1,5 @@
 from django.db import models
+from tenants.models import Tenant
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -33,3 +34,14 @@ class InvitationCode(models.Model):
 def create_invitation_code(sender, instance, created, **kwargs):
     if created:
         InvitationCode.objects.create(property=instance)
+
+
+class ProxyTenant(Tenant):
+     """ 
+     This acts as a proxy for the tenants app model Tenant, 
+     This is done to group tenants with properties in admin dashboard
+     """
+     class Meta:
+          proxy = True
+          verbose_name = Tenant._meta.verbose_name
+          verbose_name_plural = Tenant._meta.verbose_name_plural
