@@ -1,34 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="row">
 
-<form class="user" id="signup_form" method="post" action="{% url 'account_signup' %}">
-                              {% csrf_token %}
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" name="first_name" maxlength="30" required="" id="id_first_name" placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" name="last_name" maxlength="30" required="" id="id_last_name" placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="email" class="form-control form-control-user" name="email" placeholder="Email address"
-                                     autocomplete="email" maxlength="320" id="id_email">
-                                     </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" name="username" placeholder="Username" autocomplete="username" minlength="1" maxlength="150" required="" id="id_username">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user" name="password2" placeholder="Password (again)" autocomplete="new-password" required="" id="id_password2">
+                        <!-- Earnings (Monthly) Card Example -->
+                
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <a href="{% url 'generate_code' %}">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-l font-weight-bold text-primary text-uppercase mb-1">
+                                                    Generate Invitation Code
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-user btn-block">Sign Up &raquo;</button>
-                            </form>
+                            </a>
+                        </div>
+</div>
+<div class="row">
+    {% for property in user.properties.all %}
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
+        </div>
+        <div class="card-body">
+            <ul>
+            {% for tenant in property.tenants.all %}
+                <li>
+                Tenant: {{ tenant.first_name }} {{ tenant.last_name }}<br>
+                {% for resident in tenant.resident.all %}
+                Rent amount: {{ resident.rent_amount }}<br>
+                Outstanding Rent: {{ resident.outstanding_rent }}<br>
+                Next rent due: {{ resident.next_rent_due }}<br>
+                Lease end: {{ resident.lease_end }}<br>
+                Apartment: {{ resident.apartment }}
+                {% endfor %}
+                </li>
+                <hr>
+            {% endfor %}
+            </ul>
+        </div>
+        </div>
+    </div>
+    {% endfor %} 
+</div>
+
 
 {% endblock content %}

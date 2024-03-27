@@ -1,7 +1,27 @@
 {% extends 'base.html' %} 
-{% block content %} 
-{% for property in user.properties.all %}
+{% block content %}
+ <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Earnings (Monthly)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+ </div>
 <div class="row">
+  {% for property in user.properties.all %}
 <div class="col-lg-4">
 <div class="card shadow mb-4">
   <div class="card-header py-3">
@@ -9,26 +29,11 @@
   </div>
   <div class="card-body">
     {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
-    <ul>
-      {% for tenant in property.tenants.all %}
-        <li>
-          Tenant: {{ tenant.first_name }} {{ tenant.last_name }}<br>
-          {% for resident in tenant.resident.all %}
-           Rent amount: {{ resident.rent_amount }}<br>
-           Outstanding Rent: {{ resident.outstanding_rent }}<br>
-           Next rent due: {{ resident.next_rent_due }}<br>
-           Lease end: {{ resident.lease_end }}<br>
-           Apartment: {{ resident.apartment }}
-          {% endfor %}
-          </li>
-        <hr>
-      {% endfor %}
-    </ul>
   </div>
 </div>
 </div>
+
+{% endfor %}
 </div>
-
-
-{% endfor %} 
+ 
 {% endblock content %}

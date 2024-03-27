@@ -25,6 +25,9 @@ class Property(models.Model):
     
 
 class InvitationCode(models.Model):
+    """
+    Instead of creating a proxy im just keeping the model here
+    """
     id = models.AutoField(primary_key=True, unique=True)
     code = models.CharField(max_length=5, unique=True, blank=True)
     property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='invitation_codes')
