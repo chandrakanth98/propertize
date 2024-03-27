@@ -14,7 +14,7 @@ def tenants(request):
 def create_invitation_code(request):
     user=request.user
     if request.method == 'POST':
-        form = InvitationCodeForm(request.POST, user=user)
+        form = InvitationCodeForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('tenants')

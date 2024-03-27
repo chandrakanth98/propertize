@@ -29,6 +29,7 @@ class InvitationCode(models.Model):
     Instead of creating a proxy im just keeping the model here
     """
     id = models.AutoField(primary_key=True, unique=True)
+    tenant_name = models.CharField(max_length=70, default="Jane Doe")
     code = models.CharField(max_length=5, unique=True, blank=True)
     property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='invitation_codes')
     rent_amount = models.FloatField(default=0)
@@ -39,7 +40,7 @@ class InvitationCode(models.Model):
     used = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.code
+        return self.tenant_name
     
     def save(self, *args, **kwargs):
         if not self.pk:
