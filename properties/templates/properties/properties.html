@@ -1,13 +1,24 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} 
+{% block content %} 
 {% for property in user.properties.all %}
-<h2>Property: {{ property.name }}</h2>
-<p>Address: {{ property.address }}</p>
-<ul>
-    {% for tenant in property.tenants.all %}
-        <li>Tenant: {{ tenant.first_name }}</li>
-    {% endfor %}
-</ul>
-{% endfor %}
-{% endblock %}
+<div class="row">
+<div class="col-lg-4">
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
+  </div>
+  <div class="card-body">
+    {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
+    <ul>
+      {% for tenant in property.tenants.all %}
+      <li>Tenant: {{ tenant.first_name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+
+
+{% endfor %} 
+{% endblock content %}
