@@ -30,6 +30,9 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <!-- Block if extra styles are needed on a page -->
+    {% block extrastyle %}
+    {% endblock extrastyle %}
 
 </head>
 
@@ -339,6 +342,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/sb-admin-2.js' %}"></script>
+    <!-- Block if extra js is needed on a page-->
+    {% block extrajs %}
+    {% endblock extrajs %}
 
 </body>
 

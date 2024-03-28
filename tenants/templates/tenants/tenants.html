@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load render_table from django_tables2 %}
 {% block content %}
 <div class="row">
 
@@ -23,7 +24,7 @@
                             </a>
                         </div>
 </div>
-<div class="row">
+<!-- <div class="row">
     {% for property in user.properties.all %}
     <div class="col-lg-4">
         <div class="card shadow mb-4">
@@ -50,7 +51,23 @@
         </div>
     </div>
     {% endfor %} 
-</div>
+</div> -->
 
+{% for property, table in property_tables.items %}
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
+                        </div>
+                        <div class="card-body">
+                            {% if table.data %}
+                                <div class="table-responsive">
+                                    {% render_table table %}
+                                </div>
+                            {% else %}
+                                <p>No tenants for this property</p>
+                            {% endif %}
+                        </div>
+                    </div>
+{% endfor %}
 
 {% endblock content %}
