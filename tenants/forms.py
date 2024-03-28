@@ -12,6 +12,4 @@ class InvitationCodeForm(forms.ModelForm):
         if user:
             self.fields['property'].queryset = user.properties.all()
         for field_name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'form-control'})  
-
-  
+            field.widget.attrs.update({'class': 'form-control'})

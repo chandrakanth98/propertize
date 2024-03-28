@@ -6,7 +6,11 @@ class TenantTable(tables.Table):
 
     class Meta:
         model = Tenant
-        attrs = {"class": "table table-bordered",}
+        orderable=False
+        attrs = {
+            "class": "table table-hover",
+            "thead": {"class": "thead-light"},  
+            }
         sequence = ("full_name", "outstanding_rent", "rent_amount", "next_rent_due", "apartment", "lease_end")
         exclude = ("tenant_id", "resident")
 

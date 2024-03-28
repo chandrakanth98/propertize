@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'properties',
     'tenants',
     "django_tables2",
+    "maintenance",
 ]
 
 
@@ -90,7 +91,7 @@ TEMPLATES = [
     },
 ]
 
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4-responsive.html"
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 
 WSGI_APPLICATION = 'propertize.wsgi.application'
 

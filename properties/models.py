@@ -26,10 +26,10 @@ class Property(models.Model):
 
 class InvitationCode(models.Model):
     """
-    Instead of creating a proxy im just keeping the model here
+    Instead of creating a proxy im just keeping the model here for now
     """
     id = models.AutoField(primary_key=True, unique=True)
-    tenant_name = models.CharField(max_length=70, default="Jane Doe")
+    tenant_name = models.CharField(max_length=70, default="Jane Doe", verbose_name="Tenant namesss:")
     code = models.CharField(max_length=5, unique=True, blank=True)
     property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='invitation_codes')
     rent_amount = models.FloatField(default=0)
