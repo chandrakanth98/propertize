@@ -6,6 +6,7 @@ User = get_user_model()
 # Create your models here.
 
 URGENT = ((0, 'No'), (1, 'Yes'))
+STATUS = ((0, 'Submitted'), (1, 'In-progress'), (2, 'Completed'), (3, 'Cancelled'))
 
 class MaintenanceRequest(models.Model):
     request_id = models.AutoField(unique=True, primary_key=True)
@@ -19,6 +20,7 @@ class MaintenanceRequest(models.Model):
     contractor_note = models.TextField(max_length=280)
     scheduled_date = models.CharField(null=True, blank=True)
     request_date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=STATUS, default=0)
 
     def __str__(self):
                 return f"Request from: {self.submitted_by.first_name} {self.submitted_by.last_name} at {self.property.name}"

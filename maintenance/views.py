@@ -3,6 +3,9 @@ from .forms import MaintenanceForm
 
 # Create your views here.
 
+def maintenance(request):
+    return render(request, 'maintenance/maintenance.html')
+
 def maintenance_form(request):
     user=request.user
     if request.method == 'POST':

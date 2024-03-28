@@ -19,7 +19,7 @@ from django.urls import path, include
 from properties import views as p_views
 
 urlpatterns = [
-    path("request", include("maintenance.urls"), name="requests"),
+    path("maintenance/", include("maintenance.urls"), name="requests"),
     path("tenants/", include("tenants.urls"), name="tenants"),
     path("properties/", p_views.properties, name="properties"),
     path("", include("dashboards.urls")),
