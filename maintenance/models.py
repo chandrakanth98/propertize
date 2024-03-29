@@ -21,6 +21,7 @@ class MaintenanceRequest(models.Model):
     scheduled_date = models.CharField(null=True, blank=True)
     request_date = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    location = models.CharField(max_length=120, default="Unknown")
 
     def __str__(self):
                 return f"Request from: {self.submitted_by.first_name} {self.submitted_by.last_name} at {self.property.name}"

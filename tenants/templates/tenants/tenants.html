@@ -1,60 +1,8 @@
 {% extends 'base.html' %}
 {% block extrastyle %}
-<script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
 {% endblock extrastyle %}
 {% load render_table from django_tables2 %}
 {% block content %}
-<div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <a href="{% url 'generate_code' %}">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-l font-weight-bold text-primary text-uppercase mb-1">
-                                                    Generate Invitation Code
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-</div>
-<!-- <div class="row">
-    {% for property in user.properties.all %}
-    <div class="col-lg-4">
-        <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
-        </div>
-        <div class="card-body">
-            <ul>
-            {% for tenant in property.tenants.all %}
-                <li>
-                Tenant: {{ tenant.first_name }} {{ tenant.last_name }}<br>
-                {% for resident in tenant.resident.all %}
-                Rent amount: {{ resident.rent_amount }}<br>
-                Outstanding Rent: {{ resident.outstanding_rent }}<br>
-                Next rent due: {{ resident.next_rent_due }}<br>
-                Lease end: {{ resident.lease_end }}<br>
-                Apartment: {{ resident.apartment }}
-                {% endfor %}
-                </li>
-                <hr>
-            {% endfor %}
-            </ul>
-        </div>
-        </div>
-    </div>
-    {% endfor %} 
-</div> -->
 
 {% for property, table in property_tables.items %}
 <div class="card shadow mb-4">

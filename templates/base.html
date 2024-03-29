@@ -50,7 +50,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
-                <div class="sidebar-brand-icon rotate-n-15">
+                <div class="sidebar-brand-icon">
                     <i class="fas fa-building"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">propertize</div>
@@ -59,14 +59,16 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
+            <!-- LANDLORD SIDEBAR -->
+
+            {% if user.role == 1 %}
+
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
-            {% if user.role == 1 %}
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -83,33 +85,19 @@
                     <span>Properties</span></a>
             </li>
             </li>
-            <!-- Nav Item - Maintenance -->
+            <!-- Nav Item - Tenants -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tenants' %}">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Tenants</span></a>
             </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Finances
-            </div>
-            <!-- Nav Item - Invoices -->
+            <!-- Nav Item - Codes -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-file-invoice"></i>
-                    <span>Invoices</span></a>
-            </li>
-            <!-- Nav Item - Rent -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
-                    <span>Rent</span></a>
+                <a class="nav-link" href="{% url 'generate_code' %}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Invitation codes</span></a>
             </li>
 
-            {% endif %}
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -123,15 +111,97 @@
                     <i class="fas fa-fw fa-toolbox"></i>
                     <span>Maintenance</span></a>
             </li>
-                        <!-- Nav Item - Maintenance -->
+            <!-- Nav Item - Maintenance request -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'request' %}">
                     <i class="fas fa-fw fa-toolbox"></i>
                     <span>Submit request</span></a>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Finances
+            </div>
+            <!-- Nav Item - Invoices -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-file-invoice"></i>
+                    <span>Overview</span></a>
+            </li>
+            <!-- Nav Item - Rent -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <span>Expenses</span></a>
+            </li>
+
+
+            {% endif %}
+
+            <!-- TENANT SIDEBAR -->
+
+            {% if user.role == 3 %}
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider">
+            </li>
+
+            <!-- Nav Item - Profile -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span></a>
+            </li>
+            <!-- Nav Item - Property -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Property</span></a>
+            </li>
+
+            <!-- Nav Item - Maintenance -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'maintenance' %}">
+                    <i class="fas fa-fw fa-toolbox"></i>
+                    <span>Maintenance</span></a>
+            </li>
+
+            {% endif %}
+            <!-- CONTRACTOR SIDEBAR -->
+
+            {% if user.role == 2 %}
+
+            <!-- Nav Item - Maintenance -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'maintenance' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Maintenance</span></a>
+            </li>
+
+            <!-- Nav Item - Properties-->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'properties' %}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Properties</span></a>
+            </li>
+
+            <!-- Nav Item - Invoices -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-toolbox"></i>
+                    <span>Invoices</span></a>
+            </li>
+            
+            {% endif %}
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

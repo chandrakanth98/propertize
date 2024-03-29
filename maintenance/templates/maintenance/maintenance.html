@@ -9,7 +9,8 @@
             <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
         </div>
         <div class="card-body">
-                Tenant: {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+                Tenant: {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}<br>
+                {{ request.request_date }}
         </div>
         </div>
     </div>

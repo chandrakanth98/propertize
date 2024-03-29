@@ -6,7 +6,7 @@ class MaintenanceForm(forms.ModelForm):
     
     class Meta:
         model = MaintenanceRequest
-        fields = ['description', 'property', 'urgent']
+        fields = ['description', 'property', 'location', 'urgent']
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
