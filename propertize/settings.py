@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'tenants',
     "django_tables2",
     "maintenance",
+    'finance',
 ]
 
 
