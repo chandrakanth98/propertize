@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     "django_tables2",
     "maintenance",
     'finance',
+    'django_filters',
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
 
 
@@ -93,6 +96,10 @@ TEMPLATES = [
 ]
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = 'propertize.wsgi.application'
 

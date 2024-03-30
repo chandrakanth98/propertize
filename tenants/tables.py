@@ -6,15 +6,13 @@ class TenantTable(tables.Table):
 
     class Meta:
         model = Tenant
-        orderable=False
+        orderable=True
         attrs = {
             "class": "table table-hover",
-            "thead": {"class": "thead-light"},  
+            'thead': {"class": ""}
             }
         sequence = ("full_name", "outstanding_rent", "rent_amount", "next_rent_due", "apartment", "lease_end")
         exclude = ("tenant_id", "resident")
 
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"
-
-        

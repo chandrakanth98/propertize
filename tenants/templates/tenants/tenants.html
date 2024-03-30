@@ -1,24 +1,120 @@
-{% extends 'base.html' %}
-{% block extrastyle %}
-{% endblock extrastyle %}
-{% load render_table from django_tables2 %}
-{% block content %}
+{% extends "base.html" %} {% load render_table from django_tables2 %} {% load
+i18n %} {% load crispy_forms_tags %} {% block content %}
+<div class="row">
+  <!-- Rent card -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+              Total tenants
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ total_tenants }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Overdue card -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+              Tenants with overdue rent
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">idk</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Expenses -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+              Total properties
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ total_properties }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Invoices card -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+              Invoices
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">idk</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-{% for property, table in property_tables.items %}
 <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
-                        </div>
-                        <div class="card-body">
-                            {% if table.data %}
-                                <div class="table-responsive">
-                                    {% render_table table %}
-                                </div>
-                            {% else %}
-                                <p>No tenants for this property</p>
-                            {% endif %}
-                        </div>
-                    </div>
-{% endfor %}
+  <div class="card-header">
+    <h6 class="m-0 font-weight-bold text-primary">Tenants</h6>
+  </div>
+  <div class="card-body">
 
-{% endblock content %}
+    <form
+      class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+      <div class="input-group">
+        <input
+          type="text"
+          name="query"
+          id="id_query"
+          class="form-control bg-light border-0 small"
+          placeholder="Search"
+          aria-label="Search"
+          aria-describedby="basic-addon2" />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+      <br>
+
+    </form>
+
+    {% if table.data %}
+    <div class="table-responsive">{% render_table table %}</div>
+    {% else %}
+    <p>No tenants for this property</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
