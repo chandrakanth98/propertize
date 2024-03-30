@@ -3,6 +3,7 @@ from .models import Tenant
 
 class TenantTable(tables.Table):
     full_name = tables.Column(verbose_name='Full Name', accessor='resident', order_by=('resident__first_name', 'resident__last_name'))
+    change = tables.TemplateColumn("<a class='text-dark profile-btn' href='{% url 'user_profile' tenant_id=record.tenant_id %}'><i class='fa fa-cog'></i></a>", verbose_name='')
 
     class Meta:
         model = Tenant
@@ -11,7 +12,7 @@ class TenantTable(tables.Table):
             "class": "table table-hover",
             'thead': {"class": ""}
             }
-        sequence = ("full_name", "outstanding_rent", "rent_amount", "next_rent_due", "apartment", "lease_end")
+        sequence = ("change", "full_name", "outstanding_rent", "rent_amount", "next_rent_due", "apartment", "lease_end")
         exclude = ("tenant_id", "resident")
 
     def render_full_name(self, record):

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+Name: {{ tenant.resident.first_name }} {{ tenant.resident.last_name }}<br>
+Property: {{ tenant.resident.assigned_property }}<br><br>
+Address:<br> 
+{{ tenant.resident.assigned_property.address }}<br>
+Apartment: {{ tenant.apartment }}<br>
+{{ tenant.resident.assigned_property.zip_code }} 
+{{ tenant.resident.assigned_property.city }}<br><br>
+Rent: {{ tenant.rent_amount }}<br>
+Next rent due: {{ tenant.next_rent_due }}<br><br>
+Maintenance requests:<br>
+{% for request in tenant.resident.submitted_by.all %}
+    Urgent: {{ request.get_urgent_display }} <br>
+    Status: {{ request.get_status_display }}<br>
+    Description: {{ request.description }}
+    location: {{ request.location }}
+    <br><br>
+{% endfor %}
+{% endblock content %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import InvitationCodeForm
 from .tables import TenantTable
@@ -74,6 +74,16 @@ class TenantTableView(SingleTableMixin, FilterView):
             tenants_of_property = property.tenants.all()
             tenant_objects |= Tenant.objects.filter(resident__in=tenants_of_property)
 
-        return tenant_objects.order_by('resident')
+        ordered_tenants = tenant_objects.order_by('resident__first_name')
+
+        return ordered_tenants
 
     template_name = "tenants/tenants.html"
+
+
+def profile(request, tenant_id):
+    tenant = get_object_or_404(Tenant, pk=tenant_id)
+    context = {'tenant': tenant}
+    return render(request,
+                   'tenants/profile.html',
+                     context)
