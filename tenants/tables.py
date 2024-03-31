@@ -12,8 +12,8 @@ class TenantTable(tables.Table):
             "class": "table table-hover",
             'thead': {"class": ""}
             }
-        sequence = ("change", "full_name", "outstanding_rent", "rent_amount", "next_rent_due", "apartment", "lease_end")
-        exclude = ("tenant_id", "resident")
+        sequence = ("change", "full_name", "apartment", "rent_amount", "outstanding_rent", "lease_end")
+        exclude = ("tenant_id", "resident", "is_active", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due",)
 
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"
