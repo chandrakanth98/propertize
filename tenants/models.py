@@ -11,8 +11,12 @@ class Tenant(models.Model):
     lease_end = models.DateField()
     rent_amount = models.FloatField()
     outstanding_rent = models.FloatField(default=0)
+    overdue_fee = models.FloatField(default=0)
     next_rent_due = models.DateField()
-    apartment = models.CharField(default=0)
+    apartment = models.CharField(default=0, max_length=50)
+    is_active = models.BooleanField(default=True)
+    current_rent_period_start = models.DateField(null=True, blank=True)
+    current_rent_period_end = models.DateField(null=True, blank=True)
 
     def __str__(self):
             return(f"{self.resident.last_name}, {self.resident.first_name}, {self.resident.assigned_property.name}")

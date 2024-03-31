@@ -18,7 +18,7 @@ class MaintenanceRequest(models.Model):
     description = models.TextField(max_length=280)
     urgent = models.IntegerField(choices=URGENT, default=0)
     contractor_note = models.TextField(max_length=280)
-    scheduled_date = models.CharField(null=True, blank=True)
+    scheduled_date = models.DateTimeField(null=True, blank=True)
     request_date = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     location = models.CharField(max_length=120, default="Unknown")

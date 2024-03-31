@@ -16,9 +16,11 @@ class Transaction(models.Model):
     amount = models.FloatField()
     note = models.CharField(max_length=180)
     created_on = models.DateField(auto_now_add=True)
-    property = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
+    property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name="transactions")
     status = models.IntegerField(choices=STATUS, default=0)
     overdue_fee = models.FloatField(default=0)
+    transaction_month = models.DateField(null=True, blank=True, default=None)
+    due_date = models.DateField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"Transaction ID: {self.transaction_id}"
+        return f"Invoice ID: {self.transaction_id} Status: {self.status} Name: {self.user.first_name} {self.user.last_name}"

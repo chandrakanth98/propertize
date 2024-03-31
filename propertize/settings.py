@@ -29,7 +29,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False')
 
 ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1' ]
 
@@ -57,7 +57,18 @@ INSTALLED_APPS = [
     'django_filters',
     "crispy_forms",
     "crispy_bootstrap4",
+    'django_celery_beat',
+    'django_celery_results',
 ]
+
+
+CELERY_RESULT_BACKEND = "django-db"
+
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_REDIS_URL', 'redis://localhost:6379')
+
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 
 
 SITE_ID = 1

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='maintenancerequest',
             name='scheduled_date',
-            field=models.CharField(blank=True, null=True),
+            field=models.CharField(max_length=100, blank=True, null=True),
         ),
         migrations.AlterField(
             model_name='maintenancerequest',
