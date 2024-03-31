@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 CELERY_RESULT_BACKEND = "django-db"
 
 
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_REDIS_URL', 'redis://localhost:6379')
+CELERY_BROKER_URL = os.environ.get('REDIS_TLS_URL', 'redis://localhost:6379')
 
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
