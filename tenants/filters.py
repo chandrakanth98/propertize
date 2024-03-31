@@ -2,6 +2,7 @@ from decimal import Decimal
 from django.db.models import Q
 import django_filters
 from tenants.models import Tenant
+from properties.models import InvitationCode
 
 
 class TenantFilter(django_filters.FilterSet):
@@ -23,4 +24,20 @@ class TenantFilter(django_filters.FilterSet):
         return Tenant.objects.filter(
             Q(resident__first_name__icontains=value) |
               Q(resident__last_name__icontains=value) | Q(apartment__icontains=value)
+        )
+    
+class InvitationCodeFilter(django_filters.FilterSet):
+    query = django_filters.CharFilter(
+        method='universal_search', label='Search',)
+
+    class Meta:
+        model = InvitationCode
+        fields = ['query']
+
+    def universal_search(self, queryset, name, value):
+
+        return InvitationCode.objects.filter(
+            Q(code__icontains=value) |
+              Q(property__name__icontains=value) | Q(apartment__icontains=value) |
+                Q(tenant_name__icontains=value) | Q(used__icontains=value)
         )

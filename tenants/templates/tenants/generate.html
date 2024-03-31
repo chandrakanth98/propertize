@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% load i18n %} {% load crispy_forms_tags %}
 {% block content %}
 <div class="row justify-content-center">
             <div class="col-lg-6">
-                <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card o-hidden border-0  my-5">
                     <div class="card-body p-0">
                         <div class="p-5">
                             <div class="text-center">
@@ -13,6 +15,41 @@
                                 {{ form.as_p }}
                                 <button class="btn btn-primary btn-user btn-block" type="submit">Generate</button>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card o-hidden border-0  my-5">
+                    <div class="card-body p-0">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Invitation codes</h1>
+                            </div>
+                            <form
+                                class="d-sm-inline-block form-inline mr-auto my-2">
+                                <div class="input-group">
+                                    <input
+                                    type="text"
+                                    name="query"
+                                    id="id_query"
+                                    class="form-control bg-light border-0 small"
+                                    placeholder="Search"
+                                    aria-label="Search"
+                                    aria-describedby="basic-addon2" />
+                                    <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                    </div>
+                                </div>
+                                </form>
+                            {% if table.data %}
+                                <div class="table-responsive">{% render_table table %}</div>
+                            {% else %}
+                                <p>No codes generated</p>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>

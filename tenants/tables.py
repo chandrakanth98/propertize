@@ -1,5 +1,6 @@
 import django_tables2 as tables
 from .models import Tenant
+from properties.models import InvitationCode
 
 class TenantTable(tables.Table):
     full_name = tables.Column(verbose_name='Full Name', accessor='resident', order_by=('resident__first_name', 'resident__last_name'))
@@ -7,7 +8,7 @@ class TenantTable(tables.Table):
 
     class Meta:
         model = Tenant
-        orderable=True
+        orderable = True
         attrs = {
             "class": "table table-hover",
             'thead': {"class": ""}
@@ -17,3 +18,12 @@ class TenantTable(tables.Table):
 
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"
+    
+class InvitationCodeTable(tables.Table):
+    property_name = tables.Column(verbose_name='Property', accessor='property.name')
+
+    class Meta:
+        model = InvitationCode
+        orderable = True
+        attrs = {"class": "table table-hover"}
+        fields = ("used", "code", "property_name", "tenant_name", "apartment")

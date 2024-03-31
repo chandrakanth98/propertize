@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import InvitationCodeForm
-from .tables import TenantTable
-from properties.models import Tenant, Property
+from .tables import TenantTable, InvitationCodeTable
+from properties.models import Tenant, Property, InvitationCode
 from django_tables2 import SingleTableMixin
-from .filters import TenantFilter
+from .filters import TenantFilter, InvitationCodeFilter
 from django_filters.views import FilterView
 
 
@@ -48,16 +48,16 @@ from django_filters.views import FilterView
 #     )
 
 
-def create_invitation_code(request):
-    user=request.user
-    if request.method == 'POST':
-        form = InvitationCodeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('tenants')
-    else:
-        form = InvitationCodeForm(user=user)
-    return render(request, 'tenants/generate.html', {'form': form})
+# def create_invitation_code(request):
+#     user=request.user
+#     if request.method == 'POST':
+#         form = InvitationCodeForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('tenants')
+#     else:
+#         form = InvitationCodeForm(user=user)
+#     return render(request, 'tenants/generate.html', {'form': form})
 
 
 class TenantTableView(SingleTableMixin, FilterView):
@@ -87,3 +87,36 @@ def profile(request, tenant_id):
     return render(request,
                    'tenants/profile.html',
                      context)
+
+class CodeTableView(SingleTableMixin, FilterView):
+    table_class = InvitationCodeTable
+    filterset_class = InvitationCodeFilter
+    paginate_by = 15
+    template_name = "tenants/generate.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        properties = Property.objects.filter(landlord=user)
+        code_objects = InvitationCode.objects.none()
+
+        for property in properties:
+            code_objects |= InvitationCode.objects.filter(property__in=properties)
+
+        ordered_codes = code_objects.order_by('-created_at')
+
+        return ordered_codes
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = InvitationCodeForm(user=self.request.user)
+        return context
+    
+    def post(self, request):
+        form = InvitationCodeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('generate_code')
+        else:
+            context = self.get_context_data()
+            context['form'] = form
+        return render(request, self.template_name, context)
