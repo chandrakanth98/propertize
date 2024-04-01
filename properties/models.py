@@ -61,3 +61,15 @@ class ProxyTenant(Tenant):
           proxy = True
           verbose_name = Tenant._meta.verbose_name
           verbose_name_plural = Tenant._meta.verbose_name_plural
+
+
+class PropertyNotice(models.Model):
+     notice_id = models.AutoField(primary_key=True, unique=True)
+     posted_at = models.DateTimeField()
+     title = models.CharField(max_length=100)
+     body = models.TextField()
+     property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='property_notice')
+     posted_by = models.CharField(max_length=100)
+
+     def __str__(self):
+        return self.title

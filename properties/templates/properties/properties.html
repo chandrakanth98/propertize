@@ -23,7 +23,8 @@
 <div class="row">
   {% for property in user.properties.all %}
 <div class="col-lg-4">
-<div class="card shadow mb-4">
+<a href="{% url 'property' property_id=property.property_id %}" class="card-link">
+<div class="card shadow-sm mb-4">
   <div class="card-header py-3">
     <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
   </div>
@@ -31,6 +32,7 @@
     {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
   </div>
 </div>
+</a>
 </div>
 
 {% endfor %}
