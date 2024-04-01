@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MaintenanceForm
+from .models import MaintenanceRequest
 
 # Create your views here.
 
@@ -18,3 +19,9 @@ def maintenance_form(request):
     else:
         form = MaintenanceForm(user=user)
     return render(request, 'maintenance/request.html', {'form': form})
+
+def maintenance_request(request, request_id):
+
+    req = get_object_or_404(MaintenanceRequest, pk=request_id)
+    context = {'req': req}
+    return render(request, 'maintenance/maintenance_request.html', context)

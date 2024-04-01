@@ -1,5 +1,6 @@
 {% extends 'base.html' %} 
 {% block content %}
+{% load static %}
  <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -26,7 +27,14 @@
 <a href="{% url 'property' property_id=property.property_id %}" class="card-link">
 <div class="card shadow-sm mb-4">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
+    {% if "placeholder" in property.featured_image.url %}
+                                <img class="card-img-top" src="{% static 'img/property.jpg' %}"
+                                    alt="placeholder image">
+                                {% else %}
+                                <img class="card-img-top" src=" {{ property.featured_image.url }}"
+                                    alt="{{ property.name }}">
+                                {% endif %}
+    <h6 class="m-0 font-weight-bold text-primary">{{ property.name }} id: {{ property.property_id }}</h6>
   </div>
   <div class="card-body">
     {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}

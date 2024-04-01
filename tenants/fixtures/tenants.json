@@ -1,0 +1,62 @@
+[
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 7,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1306.57,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-01",
+            "apartment": "6",
+            "is_active": true,
+            "current_rent_period_start": "2024-04-01",
+            "current_rent_period_end": "2024-05-01"
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 8,
+            "lease_end": "2025-04-01",
+            "rent_amount": 829.61,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-01",
+            "apartment": "15",
+            "is_active": true,
+            "current_rent_period_start": "2024-04-01",
+            "current_rent_period_end": "2024-05-01"
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 9,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1172.37,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-01",
+            "apartment": "3",
+            "is_active": true,
+            "current_rent_period_start": "2024-04-01",
+            "current_rent_period_end": "2024-05-01"
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 10,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1442.17,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-01",
+            "apartment": "19",
+            "is_active": true,
+            "current_rent_period_start": "2024-04-01",
+            "current_rent_period_end": "2024-05-01"
+        }
+    }
+]

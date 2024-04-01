@@ -1,20 +1,106 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="row"></div>
-{% for property in user.properties.all %}
-    {% for request in property.maintenance_property.all %}
-    <div class="col-lg-4">
-        <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">{{ property.name }}</h6>
-        </div>
-        <div class="card-body">
-                Tenant: {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}<br>
-                {{ request.request_date }}
-        </div>
-        </div>
-    </div>
-    {% endfor %}
-{% endfor %}
+{% extends 'base.html' %} {% block content %} 
 
+<div class="row justify-content-center">
+    <!-- Submitted -->
+<div class="col-lg-4 border-right border-dark">
+    <h1 class="h3 mb-1 text-gray-800">Submitted</h1>
+    <br>
+{% for property in user.properties.all %} 
+    {% for request in property.maintenance_property.all %}
+        {% if request.status == 0 %}
+<!-- Card -->
+
+<div class=" mb-1">
+    <a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
+  <div class="card border-left-info shadow-s h-100 py-2">
+    <div class="card-body">
+      <div class="row no-gutters align-items-center">
+        <div class="col mr-2">
+          <div
+            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
+            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+          </div>
+          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  </a>
+</div>
+
+        {% endif %}
+    {% endfor %}
+{% endfor %} 
+</div>
+<!-- In-progress -->
+<div class="col-lg-4 border-right border-dark">
+    <h1 class="h3 mb-1 text-gray-800">In-progress</h1>
+    <br>
+{% for property in user.properties.all %} 
+    {% for request in property.maintenance_property.all %}
+        {% if request.status == 1 %}
+<!-- Card -->
+<div class=" mb-1">
+<a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
+  <div class="card border-left-success shadow-s h-100 py-2">
+    <div class="card-body">
+      <div class="row no-gutters align-items-center">
+        <div class="col mr-2">
+          <div
+            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
+            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+          </div>
+          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-wrench fa-2x text-gray-300"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+</div>
+        {% endif %}
+    {% endfor %}
+{% endfor %} 
+</div>
+<!-- Urgent -->
+<div class="col-lg-4 border-right">
+    <h1 class="h3 mb-1 text-gray-800">Urgent</h1>
+    <br>
+{% for property in user.properties.all %} 
+    {% for request in property.maintenance_property.all %}
+        {% if request.status == 0 or 1 %}
+            {% if request.urgent == 1 %}
+<!-- Card -->
+<div class=" mb-1">
+<a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
+  <div class="card border-left-danger shadow-s h-100 py-2">
+    <div class="card-body">
+      <div class="row no-gutters align-items-center">
+        <div class="col mr-2">
+          <div
+            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
+            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+          </div>
+          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-exclamation-triangle fa-2x text-gray-600"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+</div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endfor %} 
+</div>
+</div>
 {% endblock content %}

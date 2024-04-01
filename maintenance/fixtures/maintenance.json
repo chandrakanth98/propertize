@@ -1,0 +1,44 @@
+[
+    {
+        "model": "maintenance.maintenancerequest",
+        "fields": {
+            "property": 1,
+            "submitted_by": 4,
+            "contractor": null,
+            "description": "Leaking faucet in the kitchen",
+            "urgent": 1,
+            "scheduled_date": null,
+            "request_date": "2024-03-30T10:15:00.000Z",
+            "status": 0,
+            "location": "Apartment: 6"
+        }
+    },
+    {
+        "model": "maintenance.maintenancerequest",
+        "fields": {
+            "property": 1,
+            "submitted_by": 4,
+            "contractor": null,
+            "description": "Broken light fixture in the living room",
+            "urgent": 0,
+            "scheduled_date": null,
+            "request_date": "2024-03-31T14:30:00.000Z",
+            "status": 0,
+            "location": "Apartment: 6"
+        }
+    },
+    {
+        "model": "maintenance.maintenancerequest",
+        "fields": {
+            "property": 1,
+            "submitted_by": 4,
+            "contractor": null,
+            "description": "Clogged drain in the bathroom sink",
+            "urgent": 1,
+            "scheduled_date": null,
+            "request_date": "2024-04-01T09:45:00.000Z",
+            "status": 0,
+            "location": "Apartment: 6"
+        }
+    }
+]

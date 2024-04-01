@@ -3,6 +3,7 @@ from tenants.models import Tenant
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from cloudinary.models import CloudinaryField
 import datetime
 import uuid
 
@@ -17,6 +18,7 @@ class Property(models.Model):
     zip_code = models.IntegerField()
     city = models.CharField(max_length=150)
     name = models.CharField(max_length=150)
+    featured_image = CloudinaryField('image', default='placeholder')
     
 
 
@@ -51,18 +53,6 @@ class InvitationCode(models.Model):
         return str(uuid.uuid4().hex)[:5]
     
 
-
-class ProxyTenant(Tenant):
-     """ 
-     This acts as a proxy for the tenants app model Tenant, 
-     This is done to group tenants with properties in admin dashboard
-     """
-     class Meta:
-          proxy = True
-          verbose_name = Tenant._meta.verbose_name
-          verbose_name_plural = Tenant._meta.verbose_name_plural
-
-
 class PropertyNotice(models.Model):
      notice_id = models.AutoField(primary_key=True, unique=True)
      posted_at = models.DateTimeField(auto_now_add=True)
@@ -74,3 +64,13 @@ class PropertyNotice(models.Model):
 
      def __str__(self):
         return self.title
+
+class ProxyTenant(Tenant):
+     """ 
+     This acts as a proxy for the tenants app model Tenant, 
+     This is done to group tenants with properties in admin dashboard
+     """
+     class Meta:
+          proxy = True
+          verbose_name = Tenant._meta.verbose_name
+          verbose_name_plural = Tenant._meta.verbose_name_plural
