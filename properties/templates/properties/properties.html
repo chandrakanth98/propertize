@@ -1,41 +1,20 @@
 {% extends 'base.html' %} 
 {% block content %}
 {% load static %}
- <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
- </div>
-<div class="row">
+<!-- <div class="row">
   {% for property in user.properties.all %}
-<div class="col-lg-4">
+  <div class="col md-4">
 <a href="{% url 'property' property_id=property.property_id %}" class="card-link">
-<div class="card shadow-sm mb-4">
-  <div class="card-header py-3">
+<div class="card mb-4">
     {% if "placeholder" in property.featured_image.url %}
                                 <img class="card-img-top" src="{% static 'img/property.jpg' %}"
                                     alt="placeholder image">
                                 {% else %}
                                 <img class="card-img-top" src=" {{ property.featured_image.url }}"
-                                    alt="{{ property.name }}">
+                                    alt="{{ property.name }}" crop="fill" size="fit-content">
                                 {% endif %}
-    <h6 class="m-0 font-weight-bold text-primary">{{ property.name }} id: {{ property.property_id }}</h6>
-  </div>
+                                <h6 class="m-0 font-weight-bold text-primary">{{ property.name }} id: {{ property.property_id }}</h6>
   <div class="card-body">
     {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
   </div>
@@ -44,6 +23,41 @@
 </div>
 
 {% endfor %}
-</div>
+</div> -->
+
+<div class="col-12 mt-3 left">
+            <div class="row mb-2">
+                {% for property in user.properties.all %}
+                <div class="col-md-4">
+                    <div class="card h-100 mb-4">
+                        <div class="card-body">
+                            <div class="image-container card-header">
+                                {% if "placeholder" in property.featured_image.url %}
+                                <img class="card-img-top property-img-size" src="{% static 'img/property.jpg' %}"
+                                    alt="placeholder image">
+                                {% else %}
+                                <img class="card-img-top property-img-size" src=" {{ property.featured_image.url }}"
+                                    alt="{{ post.title }}">
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'property' property_id=property.property_id %}" class="card-link">
+                                <h2 class="card-title">{{ property.name }}</h2>
+                                <p class="card-text">{{ property.address }}<br />{{ property.zip_code }} {{ property.city }}</p>
+                            </a>
+
+                            <hr />
+                            <p class="card-text text-muted h6">{{ post.created_on}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+            </div>
+            <div class="row mb-2">
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
  
 {% endblock content %}
