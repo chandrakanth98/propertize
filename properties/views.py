@@ -9,6 +9,7 @@ from tenants.filters import TenantFilter
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 
+
 # Create your views here.
 
 
@@ -41,18 +42,26 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
 
         return ordered_tenants
     
+ 
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = PropertyNoticeForm(user=self.request.user)
+
         property_id = self.kwargs.get('property_id')
-        context['property'] = Property.objects.get(pk=property_id)
+        property = Property.objects.get(pk=property_id)
+        context['property'] = property
+
+        latest_notices = property.property_notice.all().order_by('-posted_at')[:3]
+        context['latest_notices'] = latest_notices
+        context['property_id'] = property_id
         return context
     
-    def post(self, request):
+    def post(self, request, property_id):
         form = PropertyNoticeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('property')
+            return redirect('property', property_id=property_id)
         else:
             context = self.get_context_data()
             context['form'] = form

@@ -65,11 +65,12 @@ class ProxyTenant(Tenant):
 
 class PropertyNotice(models.Model):
      notice_id = models.AutoField(primary_key=True, unique=True)
-     posted_at = models.DateTimeField()
+     posted_at = models.DateTimeField(auto_now_add=True)
      title = models.CharField(max_length=100)
      body = models.TextField()
      property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='property_notice')
      posted_by = models.CharField(max_length=100)
+     important = models.BooleanField(default=False)
 
      def __str__(self):
         return self.title
