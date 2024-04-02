@@ -15,7 +15,7 @@ def generate_rent_invoices():
 
     for tenant in Tenant.objects.filter(is_active=True):
 
-        if tenant.next_rent_due > current_month_end:
+        if tenant.next_rent_due.month > current_month_end.month:
             continue
 
         if not tenant.current_rent_period_start or not tenant.current_rent_period_end:
