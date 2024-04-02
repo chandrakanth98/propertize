@@ -26,10 +26,10 @@
 </div> -->
 
 <div class="col-12 mt-3 left">
-            <div class="row mb-2">
+            <div class="row mb-3">
                 {% for property in user.properties.all %}
                 <div class="col-md-4">
-                    <div class="card h-100 mb-4">
+                    <div class="card h-100 mb-1">
                         <div class="card-body">
                             <div class="image-container card-header">
                                 {% if "placeholder" in property.featured_image.url %}
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                {% if forloop.counter|divisibleby:4 %}
+                {% if forloop.counter|divisibleby:3 %}
             </div>
             <div class="row mb-2">
                 {% endif %}

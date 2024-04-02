@@ -4,7 +4,7 @@ from properties.models import InvitationCode
 
 class TenantTable(tables.Table):
     full_name = tables.Column(verbose_name='Full Name', accessor='resident', order_by=('resident__first_name', 'resident__last_name'))
-    change = tables.TemplateColumn("<a class='text-dark profile-btn' href='{% url 'user_profile' tenant_id=record.tenant_id %}'><i class='fa fa-cog'></i></a>", verbose_name='')
+    change = tables.TemplateColumn("<a class='text-dark profile-btn' href='{% url 'user_profile' user_id=record.resident.user_id %}'><i class='fa fa-cog'></i></a>", verbose_name='')
 
     class Meta:
         model = Tenant

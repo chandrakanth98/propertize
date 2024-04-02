@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import InvitationCodeForm
+from django.contrib.auth import get_user_model
 from .tables import TenantTable, InvitationCodeTable
 from properties.models import Tenant, Property, InvitationCode
 from django_tables2 import SingleTableMixin
 from .filters import TenantFilter, InvitationCodeFilter
 from django_filters.views import FilterView
 
+User = get_user_model()
 
 # Create your views here.
 
@@ -81,9 +83,11 @@ class TenantTableView(SingleTableMixin, FilterView):
     template_name = "tenants/tenants.html"
 
 
-def profile(request, tenant_id):
-    tenant = get_object_or_404(Tenant, pk=tenant_id)
-    context = {'tenant': tenant}
+def profile(request, user_id):
+    profile = get_object_or_404(User, pk=user_id)
+    tenant = Tenant.objects.filter(resident=profile.user_id)
+    context = {'profile': profile,
+               'tenant': tenant}
     return render(request,
                    'tenants/profile.html',
                      context)

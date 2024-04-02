@@ -1,21 +1,80 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Name: {{ tenant.resident.first_name }} {{ tenant.resident.last_name }}<br>
-Property: {{ tenant.resident.assigned_property }}<br><br>
+<div class="row justify-content-center">
+    <div class="col-lg-4">
+                        <div class="col">
+                            <div class="card shadow-sm mb-2">
+                                <div class="card-header">
+                                    {{ profile.first_name }} {{ profile.last_name }}
+                                </div>
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow-sm mb-2">
+                                <div class="card-body">
+                                       {% if profile.role == 3 %} 
+                                        <p>
+                                        {{ profile.assigned_property.address }}<br>
+                                        {{ tenant.apartment  }}<br>
+                                        {{ profile.assigned_property.zip_code }} 
+                                        {{ profile.assigned_property.city }}<br><br>
+                                    Rent: {{ tenant.rent_amount }}<br>
+                                    {{ tenant.resident.first_name }}<br>
+                                    Next rent due: {{ tenant.next_rent_due }}<br><br>
+                                        </p>
+                                        {% elif profile.role == 2 %}
+                                        Contractor
+                                        {% elif profile.role == 1 %}
+                                        Landlord
+                                        {% else %}
+                                        anon
+                                        {% endif %}
+                                
+                                </div>
+                            </div>
+                        </div>
+
+    </div>
+        <div class="col-lg-8">
+                        <div class="col">
+                            <div class="card shadow-sm mb-3 py-2">
+                                <div class="card-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow-sm mb-3 py-2">
+                                <div class="card-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Name: {{ user.first_name }} {{ user.last_name }}<br>
+
+Property: {{ user.assigned_property }}<br><br>
 Address:<br> 
-{{ tenant.resident.assigned_property.address }}<br>
-Apartment: {{ tenant.apartment }}<br>
-{{ tenant.resident.assigned_property.zip_code }} 
-{{ tenant.resident.assigned_property.city }}<br><br>
-Rent: {{ tenant.rent_amount }}<br>
-Next rent due: {{ tenant.next_rent_due }}<br><br>
+{{ user.assigned_property.address }}<br>
+Apartment: {{ user.tenant.apartment }}<br>
+{{ user.assigned_property.zip_code }} 
+{{ user.assigned_property.city }}<br><br>
+Rent: {{ user.resident.rent_amount }}<br>
+Next rent due: {{ user.resident.next_rent_due }}<br><br>
+
+
 Maintenance requests:<br>
-{% for request in tenant.resident.submitted_by.all %}
+{% for request in user.submitted_by.all %}
     Urgent: {{ request.get_urgent_display }} <br>
     Status: {{ request.get_status_display }}<br>
     Description: {{ request.description }}
     location: {{ request.location }}
     <br><br>
-{% endfor %}
-{% endblock content %}
+{% endfor %} -->
