@@ -12,7 +12,7 @@ i18n %} {% load crispy_forms_tags %} {% block content %}
               Total tenants
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ total_tenants }}
+              {{ tenants.count }}
             </div>
           </div>
           <div class="col-auto">
@@ -32,7 +32,13 @@ i18n %} {% load crispy_forms_tags %} {% block content %}
               class="text-xs font-weight-bold text-danger text-uppercase mb-1">
               Tenants with overdue rent
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">idk</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {% if tenants.outstanding_rent != 0 in tenants.outstanding_rent %}
+                {{ tenants.outstanding_rent.count }}
+              {% else %}
+                0
+              {% endif %}
+            </div>
           </div>
           <div class="col-auto">
             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -52,7 +58,7 @@ i18n %} {% load crispy_forms_tags %} {% block content %}
               Total properties
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ total_properties }}
+              {{ properties.count }}
             </div>
           </div>
           <div class="col-auto">
@@ -72,7 +78,7 @@ i18n %} {% load crispy_forms_tags %} {% block content %}
               class="text-xs font-weight-bold text-warning text-uppercase mb-1">
               Invoices
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">idk</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ expense.count }}</div>
           </div>
           <div class="col-auto">
             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>

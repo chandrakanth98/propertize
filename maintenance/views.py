@@ -10,6 +10,10 @@ User = get_user_model()
 def maintenance(request):
     return render(request, 'maintenance/maintenance.html')
 
+def maintenance_request(request, request_id):
+    maintenance_request = get_object_or_404(MaintenanceRequest, request_id=request_id)
+    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request})
+
 def maintenance_form(request):
     user=request.user
     if request.method == 'POST':
@@ -44,4 +48,4 @@ def tenant_maintenance_request(request, user_id):
     context = {'maintenance': maintenance_requests,
                   'profile': profile,
                   'form': form}
-    return render(request, 'maintenance/maintenance_request.html', context)
+    return render(request, 'maintenance/maintenance_user_request.html', context)

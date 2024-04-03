@@ -29,6 +29,22 @@ class TenantTableView(SingleTableMixin, FilterView):
         ordered_tenants = tenant_objects.order_by('resident__first_name')
 
         return ordered_tenants
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        properties = Property.objects.filter(landlord=user)
+        tenants = Tenant.objects.none()
+        expense = Property.objects.none()
+
+        for property in properties:
+            tenants |= property.tenants.all()
+            expense |= property.transactions.filter(type=2)
+
+        context['expense'] = expense
+        context['tenants'] = tenants
+        context['properties'] = properties
+        return context
 
     template_name = "tenants/tenants.html"
 

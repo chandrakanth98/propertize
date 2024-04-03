@@ -15,9 +15,9 @@ class MaintenanceRequest(models.Model):
     submitted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="submitted_by")
     contractor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="contractor",
                                     limit_choices_to= {'role': 2}, default=None)
-    description = models.TextField(max_length=280)
+    description = models.TextField()
     urgent = models.IntegerField(choices=URGENT, default=0)
-    contractor_note = models.TextField(max_length=280)
+    contractor_note = models.TextField(null=True, blank=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)
     request_date = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)

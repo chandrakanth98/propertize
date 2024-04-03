@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Tenant(models.Model):
     tenant_id = models.AutoField(unique=True, primary_key=True)
-    resident = models.ForeignKey(User, on_delete=models.PROTECT, related_name="resident")
+    resident = models.ForeignKey(User, on_delete=models.CASCADE, related_name="resident")
     lease_end = models.DateField()
     rent_amount = models.FloatField()
     outstanding_rent = models.FloatField(default=0)

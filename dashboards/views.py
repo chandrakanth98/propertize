@@ -3,8 +3,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import views
 from tenants.views import profile
-from properties.models import InvitationCode
+from properties.models import InvitationCode, Property
 from tenants.models import Tenant
+from finance.models import Transaction
+from django.db.models import Sum
+from django.db.models import Sum
 # Create your views here.
 
 @login_required
@@ -16,9 +19,40 @@ def home(request):
 
     if user.is_authenticated:
         if user.role == 1:
+
+            properties = Property.objects.filter(landlord=user)
+            tenants = Tenant.objects.none()
+            expense_trans = Transaction.objects.filter(property__in=properties, type=2, status__in=[0, 1])
+            income_trans = Transaction.objects.filter(property__in=properties, type=1, status__in=[0, 1])
+            income_total = income_trans.aggregate(amount_sum=Sum('amount'))['amount_sum']
+            expense_total = expense_trans.aggregate(amount_sum=Sum('amount'))['amount_sum']
+
+            income = round(income_total) if income_total else 0
+            expense = round(expense_total) if expense_total else 0
+
+            for property in properties:
+                tenants |= property.tenants.all()
+
+            overdue_total = 0
+            for tenant in tenants:
+                for resident in tenant.resident.all():
+                    overdue_total += resident.outstanding_rent if resident.outstanding_rent else 0
+
+            overdue = round(overdue_total) if overdue_total else 0
+
+            context = {
+                'invoice': expense_trans,
+                'overdue': overdue,
+                'income': income,
+                'expense': expense,
+                'tenants': tenants,
+                'properties': properties,
+            }
+
             return render(
                 request,
-                'dashboards/landlord.html'
+                'dashboards/landlord.html',
+                context
             )
         elif user.role == 2:
             return render(
