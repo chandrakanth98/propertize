@@ -150,22 +150,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Profile</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
             </li>
 
-            <!-- Nav Item - Profile -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'user_profile' user_id=request.user.user_id %}">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Profile</span></a>
-            </li>
+            
             <!-- Nav Item - Property -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'property' property_id=request.user.assigned_property.property_id %} ">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Property</span></a>
             </li>

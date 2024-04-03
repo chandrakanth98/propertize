@@ -2,3 +2,9 @@
     text-decoration: none;
     color: inherit;
 }
+
+.property-img-size {  
+    max-height: 100%;
+    object-fit: cover;
+}
+

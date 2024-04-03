@@ -72,6 +72,6 @@ class TestHomeViews(TestCase):
         """ Test that it renders none dashboard if you are a none """
         self.client.login(
             username="noneUser", password="nonePassword")
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse('home'), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"none_confirm", response.content)
+        self.assertIn(b"invitation_code", response.content)

@@ -2,62 +2,31 @@
 {% block content %}
 {% load static %}
 
-<!-- <div class="row">
-  {% for property in user.properties.all %}
-  <div class="col md-4">
-<a href="{% url 'property' property_id=property.property_id %}" class="card-link">
-<div class="card mb-4">
-    {% if "placeholder" in property.featured_image.url %}
-                                <img class="card-img-top" src="{% static 'img/property.jpg' %}"
-                                    alt="placeholder image">
-                                {% else %}
-                                <img class="card-img-top" src=" {{ property.featured_image.url }}"
-                                    alt="{{ property.name }}" crop="fill" size="fit-content">
-                                {% endif %}
-                                <h6 class="m-0 font-weight-bold text-primary">{{ property.name }} id: {{ property.property_id }}</h6>
-  <div class="card-body">
-    {{ property.address }}<br />{{ property.zip_code }} {{ property.city }}
-  </div>
-</div>
-</a>
-</div>
-
-{% endfor %}
-</div> -->
-
-<div class="col-12 mt-3 left">
-            <div class="row mb-3">
-                {% for property in user.properties.all %}
-                <div class="col-md-4">
-                    <div class="card h-100 mb-1">
-                        <div class="card-body">
-                            <div class="image-container card-header">
-                                {% if "placeholder" in property.featured_image.url %}
-                                <img class="card-img-top property-img-size" src="{% static 'img/property.jpg' %}"
-                                    alt="placeholder image">
-                                {% else %}
-                                <img class="card-img-top property-img-size" src=" {{ property.featured_image.url }}"
-                                    alt="{{ post.title }}">
-                                {% endif %}
-                            </div>
-                            <a href="{% url 'property' property_id=property.property_id %}" class="card-link">
-                                <h2 class="card-title">{{ property.name }}</h2>
-                                <p class="card-text">{{ property.address }}<br />{{ property.zip_code }} {{ property.city }}</p>
-                            </a>
-
-                            <hr />
-                            <p class="card-text text-muted h6">{{ post.created_on}}
-                            </p>
-                        </div>
+<div class="container mt-3">
+    <div class="row">
+        {% for property in user.properties.all %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'property' property_id=property.property_id %}">
+                    <div class="image-container">
+                        {% if "placeholder" in property.featured_image.url %}
+                        <img class="card-img-top" src="{% static 'img/property.jpg' %}"
+                            alt="placeholder image" style="height: 300px; object-fit: cover;">
+                        {% else %}
+                        <img class="card-img-top" src=" {{ property.featured_image.url }}"
+                            alt="{{ post.title }}" style="height: 300px; object-fit: cover;">
+                        {% endif %}
                     </div>
-                </div>
-                {% if forloop.counter|divisibleby:3 %}
-            </div>
-            <div class="row mb-2">
-                {% endif %}
-                {% endfor %}
-
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">{{ property.name }}</h5>
+                        <p class="card-text text-truncate">{{ property.address }}<br />{{ property.zip_code }} {{ property.city }}</p>
+                    </div>
+                </a>
             </div>
         </div>
+        {% endfor %}
+    </div>
+</div>
  
 {% endblock content %}
+

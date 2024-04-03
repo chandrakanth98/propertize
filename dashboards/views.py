@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import views
+from tenants.views import profile
 from properties.models import InvitationCode
 from tenants.models import Tenant
 # Create your views here.
@@ -10,6 +11,7 @@ from tenants.models import Tenant
 def home(request):
 
     user = request.user
+    user_id = request.user.user_id
 
 
     if user.is_authenticated:
@@ -24,10 +26,8 @@ def home(request):
                 'dashboards/contractor.html'
             )
         elif user.role == 3:
-            return render(
-                request,
-                'dashboards/tenant.html'
-            )
+            return redirect('user_profile', user_id=user_id)
+        
         elif user.role  == 0:
             return redirect('invite')
     else:

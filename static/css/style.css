@@ -3,8 +3,8 @@
     color: inherit;
 }
 
-.property-img-size {
-    max-height: 500px;
+.property-img-size {  
+    max-height: 100%;
     object-fit: cover;
-    overflow: auto;
 }
+

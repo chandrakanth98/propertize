@@ -7,60 +7,10 @@ from properties.models import Tenant, Property, InvitationCode
 from django_tables2 import SingleTableMixin
 from .filters import TenantFilter, InvitationCodeFilter
 from django_filters.views import FilterView
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseNotFound
 
 User = get_user_model()
-
-# Create your views here.
-
-
-# @login_required
-# def tenants(request):
-#     """
-#     I DONT KNOW HOW THE FUCK I GOT HERE AFTER HOURS OF TRYING
-#     TO GET THE TABLES TO RENDER THE CORRECT DATA BUT IT WORKS ?????
-#     -----
-#     This renders the properties and its tenants associated
-#     with the logged in landlord / This logic was originally written to display 
-#     all tenants grouped by property, hence the property key.
-#     """
-#     user = request.user
-#     properties = Property.objects.filter(landlord=user)
-#     property_tables = {}
-#     total_tenants = 0
-#     total_properties = properties.count()
-    
-    
-#     for property in properties:
-#         tenants_of_property = property.tenants.all()
-#         tenant_objects = Tenant.objects.filter(resident__in=tenants_of_property)
-#         total_tenants += tenant_objects.count()
-#         table = TenantTable(tenant_objects)
-#         property_tables[property] = table
-    
-
-
-#     context = {'property_tables': property_tables,
-#                'total_tenants': total_tenants,
-#                'total_properties': total_properties,
-#                }
-#     return render(
-#         request,
-#         'tenants/tenants.html',
-#         context,
-#     )
-
-
-# def create_invitation_code(request):
-#     user=request.user
-#     if request.method == 'POST':
-#         form = InvitationCodeForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('tenants')
-#     else:
-#         form = InvitationCodeForm(user=user)
-#     return render(request, 'tenants/generate.html', {'form': form})
-
 
 class TenantTableView(SingleTableMixin, FilterView):
     table_class = TenantTable
@@ -85,12 +35,32 @@ class TenantTableView(SingleTableMixin, FilterView):
 
 def profile(request, user_id):
     profile = get_object_or_404(User, pk=user_id)
-    tenant = Tenant.objects.filter(resident=profile.user_id)
+    if request.user != profile and request.user.role != 1:
+        return HttpResponseNotFound('test')
+
+    try:
+        tenant = Tenant.objects.get(resident=profile.user_id)
+    except ObjectDoesNotExist:
+        tenant = None
+
+    try:
+        transactions = profile.transaction.all().order_by('-due_date')[:3]
+    except ObjectDoesNotExist:
+        transactions = None
+    
+    try:
+        maintenance_requests = profile.submitted_by.all().order_by('-request_date')[:3]
+    except ObjectDoesNotExist:
+        maintenance_requests = None
+
     context = {'profile': profile,
-               'tenant': tenant}
+               'tenant': tenant,
+               'transactions': transactions,
+               'maintenance': maintenance_requests}
+    
     return render(request,
-                   'tenants/profile.html',
-                     context)
+                  'tenants/profile.html',
+                  context)
 
 class CodeTableView(SingleTableMixin, FilterView):
     table_class = InvitationCodeTable

@@ -1,80 +1,178 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-4">
+            <!-- PROFILE PIC CARD-->
                         <div class="col">
-                            <div class="card shadow-sm mb-2">
-                                <div class="card-header">
+                            <div class="card shadow-sm mb-3">
+                                <div class="card-header d-flex align-items-center">
+                                    {% if "placeholder" in profile.profile_image.url %}
+                                        <img src="{% static 'img/undraw_profile_1.svg' %}" alt="Default profile photo" class="img-thumbnail mr-3" style="width: 60px; height: 60px;">
+                                    {% else %}
+                                        <img src="{{ profile.profile_image.url }}" alt="{{ profile.first_name }}'s profile photo" class="img-thumbnail mr-3" style="width: 60px; height: 60px;">
+                                    {% endif %}
                                     {{ profile.first_name }} {{ profile.last_name }}
                                 </div>
                                 <div class="card-body">
+                                    <p class="card-text">
+                                        <strong>Email:</strong> {{ profile.email }}<br>
+                                        <strong>Phone:</strong> {{ profile.phone_number }}<br>
+                                        <strong>Role:</strong> 
+                                        {% if profile.role == 3 %} 
+                                            Tenant
+                                        {% elif profile.role == 2 %}
+                                            Contractor
+                                        {% elif profile.role == 1 %}
+                                            Landlord
+                                        {% else %}
+                                            anon
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        <!-- PROFILE INFO CARD-->
                         <div class="col">
-                            <div class="card shadow-sm mb-2">
+                            <div class="card shadow-sm mb-3">
+                                <div class="card-header d-flex align-items-center">
+                                    {% if "placeholder" in profile.assigned_property.featured_image.url %}
+                                                <img class="card-img-top mr-3" src="{% static 'img/property.jpg' %}" alt="placeholder image" style="height: 100px; width: 100px; object-fit: cover;">
+                                            {% else %}
+                                                <img class="card-img-top mr-3" src=" {{ profile.assigned_property.featured_image.url }}" alt="{{ post.title }}" style="height: 100px;  width: 100px; object-fit: cover;">
+                                            {% endif %}
+                                    <strong>{{ profile.assigned_property.name }}</strong>
+                                </div>
                                 <div class="card-body">
-                                       {% if profile.role == 3 %} 
-                                        <p>
-                                        {{ profile.assigned_property.address }}<br>
-                                        {{ tenant.apartment  }}<br>
-                                        {{ profile.assigned_property.zip_code }} 
-                                        {{ profile.assigned_property.city }}<br><br>
-                                    Rent: {{ tenant.rent_amount }}<br>
-                                    {{ tenant.resident.first_name }}<br>
-                                    Next rent due: {{ tenant.next_rent_due }}<br><br>
-                                        </p>
-                                        {% elif profile.role == 2 %}
-                                        Contractor
-                                        {% elif profile.role == 1 %}
-                                        Landlord
-                                        {% else %}
-                                        anon
-                                        {% endif %}
-                                
+                                    <p class="card-text">
+                                        
+                                            <strong>Apartment:</strong> {{ tenant.apartment  }}<br>
+                                            <strong>Address:</strong> {{ profile.assigned_property.address }}<br>
+                                            <strong>Zip Code:</strong> {{ profile.assigned_property.zip_code }}<br>
+                                            <strong>City:</strong> {{ profile.assigned_property.city }}<br><br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <div class="col-lg-8">
+            <!-- LEASE INFO CARD-->
+                        <div class="col">
+                            <div class="card shadow-sm mb-3 py-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h5 class="card-title">Lease Information</h5>
+                                            <p class="card-text">
+                                                <hr>
+                                                <strong>Rent:</strong> {{ tenant.rent_amount }}<br>
+                                                <strong>Outstanding:</strong> {{ tenant.outstanding_rent }}<br>
+                                                <strong>Payment Due:</strong> {{ profile.transaction.last.due_date }}<br><br>
+                                                <strong>Lease End:</strong> {{ tenant.lease_end }}<br>
+                                            </p>
+                                        </div>
+                                        <!-- Latest Transactions -->
+                                        <div class="col-md-8">
+                                            <h5 class="card-title">Recent Payment History</h5>
+                                            <hr>
+                                            {% for transaction in transactions %}
+                                                <!-- Collapsable Card -->
+                                                <div class="card mb-1 py-3 {% if transaction.status == 0 %}border-left-warning{% elif transaction.status == 1 %}border-left-success{% elif transaction.status == 2 %}border-left-secondary{% endif %}">
+                                                    <!-- Card Header - Accordion -->
+                                                    <a href="#collapseCardTra</div>nsaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
+                                                        data-toggle="collapse"
+                                                        role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardTransaction{{ forloop.counter }}">
+                                                        <h6 class="m-0 font-weight-bold col-11 pr-3">{{ transaction.transaction_month|date:"F" }}</h6>
+                                                        <i class="fas fa-angle-down col-1 pl-3"></i>
+                                                    </a>
+                                                    <!-- Card Content - Collapse -->
+                                                    <div class="collapse" id="collapseCardTransaction{{ forloop.counter }}">
+                                                        <div class="card-body px-3 py-2">
+                                                            <hr>
+                                                            <p class="mb-0">
+                                                                <strong>Status:</strong> {{ transaction.get_status_display }}<br>
+                                                                <strong>Due date:</strong> {{ transaction.due_date }}<br>
+                                                                <strong>Amount:</strong> {{ transaction.amount }}<br>
+                                                                {% if transaction.overdue_fee %}
+                                                                    <strong class="text-danger">Overdue Fee:</strong> {{ transaction.overdue_fee }}<br>
+                                                                {% endif %}<br>
+                                                                <strong>Note:</strong> {{ transaction.note }}<br>
+                                                                
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% empty %}
+                                                <p>No transactions found.</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- MAINTENANCE REQUESTS CARD-->
+                            <div class="card shadow-sm mb-3 py-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h5 class="card-title">Contact Information</h5>
+                                            <p class="card-text">
+                                                <hr>
+                                                <strong>Landlord:</strong> {{ profile.assigned_property.landlord.first_name }} {{ profile.assigned_property.landlord.last_name }}<br>
+                                                <strong>Phone:</strong> {{ profile.assigned_property.landlord.phone_number }}<br>
+                                                <strong>Email:</strong> {{ profile.assigned_property.landlord.email }}<br><br>
+                                            </p>
+                                        </div>
+                                        <!-- Latest Requests -->
+                                        <div class="col-md-8">
+                                            <h5 class="card-title">Latest Maintenace Requests</h5>
+                                            <hr>
+                                            {% for r in maintenance %}
+                                                <!-- Collapsable Card -->
+                                                <div class="card mb-1 py-3 {% if r.status == 0 %}border-left-info{% elif r.status == 1 %}border-left-warning{% elif r.status == 2 %}border-left-success{% elif r.status == 3 %}border-left-danger{% endif %}">
+                                                    <!-- Card Header - Accordion -->
+                                                    <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
+                                                        data-toggle="collapse"
+                                                        role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardTransaction{{ forloop.counter }}">
+                                                        <h6 class="m-0 font-weight-bold col-11 pr-3">{{ r.request_date }}</h6>
+                                                        <i class="fas fa-angle-down col-1 pl-3"></i>
+                                                    </a>
+                                                    <!-- Card Content - Collapse -->
+                                                    <div class="collapse" id="collapseCardTransaction{{ forloop.counter }}">
+                                                        <div class="card-body px-3 py-2">
+                                                            <hr>
+                                                            <p class="mb-0">
+                                                                {% if r.urgent == 1 %}
+                                                                    <strong class="text-danger">URGENT</strong><br>
+                                                                {% endif %}
+                                                                <strong>Status:</strong> {{ r.get_status_display }}<br>
+                                                                <strong>Location:</strong> {{ r.location }}<br>
+                                                                {% if r.scheduled_date %}
+                                                                    <strong>Scheduled:</strong> {{ r.scheduled_date }}
+                                                                {% endif %}
+                                                                <hr>
+                                                                <strong>Description:<br></strong>{{ r.description }}<br>
+                                                                {% if r.contractor_note %}
+                                                                    <hr>
+                                                                    <strong class="text-info">Contractor Note:</strong><br>
+                                                                    {{ r.contractor_note }}<br><br>
+                                                                    <div class="h6 mb-0 text-muted text-xs">/{{ r.contractor }}</div><hr>
+                                                                {% endif %}
+                                                                
+                                                                
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% empty %}
+                                                <p>No maintenance requests found.</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-    </div>
-        <div class="col-lg-8">
-                        <div class="col">
-                            <div class="card shadow-sm mb-3 py-2">
-                                <div class="card-body">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card shadow-sm mb-3 py-2">
-                                <div class="card-body">
-                                    
-                                </div>
-                            </div>
-                        </div>
 
     </div>
 </div>
 {% endblock content %}
-
-<!-- Name: {{ user.first_name }} {{ user.last_name }}<br>
-
-Property: {{ user.assigned_property }}<br><br>
-Address:<br> 
-{{ user.assigned_property.address }}<br>
-Apartment: {{ user.tenant.apartment }}<br>
-{{ user.assigned_property.zip_code }} 
-{{ user.assigned_property.city }}<br><br>
-Rent: {{ user.resident.rent_amount }}<br>
-Next rent due: {{ user.resident.next_rent_due }}<br><br>
-
-
-Maintenance requests:<br>
-{% for request in user.submitted_by.all %}
-    Urgent: {{ request.get_urgent_display }} <br>
-    Status: {{ request.get_status_display }}<br>
-    Description: {{ request.description }}
-    location: {{ request.location }}
-    <br><br>
-{% endfor %} -->
