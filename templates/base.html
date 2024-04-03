@@ -167,7 +167,7 @@
 
             <!-- Nav Item - Maintenance -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'maintenance' %}">
+                <a class="nav-link" href="{% url 'tenant_maintenance_request' user_id=request.user.user_id %}">
                     <i class="fas fa-fw fa-toolbox"></i>
                     <span>Maintenance</span></a>
             </li>
@@ -179,7 +179,7 @@
 
             <!-- Nav Item - Maintenance -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'maintenance' %}">
+                <a class="nav-link" href="{% url 'maintenance'%}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Maintenance</span></a>
             </li>

@@ -19,6 +19,7 @@ class Property(models.Model):
     city = models.CharField(max_length=150)
     name = models.CharField(max_length=150)
     featured_image = CloudinaryField('image', default='placeholder')
+    details = models.TextField(blank=True)
     
 
 

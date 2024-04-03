@@ -52,7 +52,7 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         property = Property.objects.get(pk=property_id)
         context['property'] = property
 
-        latest_notices = property.property_notice.all().order_by('-posted_at')[:3]
+        latest_notices = property.property_notice.all().order_by('-posted_at')[:10]
         context['latest_notices'] = latest_notices
         context['property_id'] = property_id
         return context

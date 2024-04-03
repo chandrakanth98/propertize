@@ -79,7 +79,7 @@
                                                 <!-- Collapsable Card -->
                                                 <div class="card mb-1 py-3 {% if transaction.status == 0 %}border-left-warning{% elif transaction.status == 1 %}border-left-success{% elif transaction.status == 2 %}border-left-secondary{% endif %}">
                                                     <!-- Card Header - Accordion -->
-                                                    <a href="#collapseCardTra</div>nsaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
+                                                    <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
                                                         data-toggle="collapse"
                                                         role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardTransaction{{ forloop.counter }}">
                                                         <h6 class="m-0 font-weight-bold col-11 pr-3">{{ transaction.transaction_month|date:"F" }}</h6>
@@ -130,14 +130,14 @@
                                                 <!-- Collapsable Card -->
                                                 <div class="card mb-1 py-3 {% if r.status == 0 %}border-left-info{% elif r.status == 1 %}border-left-warning{% elif r.status == 2 %}border-left-success{% elif r.status == 3 %}border-left-danger{% endif %}">
                                                     <!-- Card Header - Accordion -->
-                                                    <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
+                                                    <a href="#collapseCardRequest{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
                                                         data-toggle="collapse"
-                                                        role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardTransaction{{ forloop.counter }}">
+                                                        role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardRequest{{ forloop.counter }}">
                                                         <h6 class="m-0 font-weight-bold col-11 pr-3">{{ r.request_date }}</h6>
                                                         <i class="fas fa-angle-down col-1 pl-3"></i>
                                                     </a>
                                                     <!-- Card Content - Collapse -->
-                                                    <div class="collapse" id="collapseCardTransaction{{ forloop.counter }}">
+                                                    <div class="collapse" id="collapseCardRequest{{ forloop.counter }}">
                                                         <div class="card-body px-3 py-2">
                                                             <hr>
                                                             <p class="mb-0">
