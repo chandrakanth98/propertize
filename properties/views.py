@@ -18,19 +18,24 @@ import cloudinary.uploader
 @login_required
 def properties(request):
 
-    if request.method == 'POST':
-        post = request.POST.copy()
-        post['landlord'] = request.user.user_id
-        form = addProperty(post, request.FILES)
-        if form.is_valid():
-            form.instance.landlord = request.user
-            form.save()
-            messages.success(request, 'Property successfully created!')
-            return redirect('property', property_id=form.instance.property_id)
+
+    if request.user.role == 1:
+        if request.method == 'POST':
+            post = request.POST.copy()
+            post['landlord'] = request.user.user_id
+            form = addProperty(post, request.FILES)
+            if form.is_valid():
+                form.instance.landlord = request.user
+                form.save()
+                messages.success(request, 'Property successfully created!')
+                return redirect('property', property_id=form.instance.property_id)
+            else:
+                print(form.errors)
         else:
-            print(form.errors)
+            form = addProperty(landlord=request.user)
     else:
-        form = addProperty(landlord=request.user)
+        messages.error(request, 'You do not have permission to create properties!')    
+        form = None
         
     context = {'form': form}
     return render(request, 'properties/properties.html', context)

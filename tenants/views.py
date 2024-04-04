@@ -10,6 +10,7 @@ from django_filters.views import FilterView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
 from django.contrib import messages
+import cloudinary.uploader
 
 User = get_user_model()
 
@@ -82,6 +83,10 @@ def profile(request, user_id):
             form1 = EditProfileForm(request.POST, instance=profile)
             tenant_form = EditTenantForm(request.POST, instance=tenant)
             if 'form1' in request.POST and form1.is_valid():
+                image = request.FILES.get('profile_image')
+                if image:
+                    upload_result = cloudinary.uploader.upload(image)
+                    form1.instance.profile_image = upload_result['url']
                 form1.save()
                 messages.success(request, 'Profile successfully updated!')
                 return redirect('user_profile', user_id=user_id)

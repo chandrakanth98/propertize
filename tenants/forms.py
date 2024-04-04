@@ -55,7 +55,7 @@ class InvitationCodeForm(forms.ModelForm):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'profile_image']
         css = {"all": ["form-control form-control-user"]}
     
     def __init__(self, *args, **kwargs):
@@ -65,10 +65,19 @@ class EditProfileForm(forms.ModelForm):
         self.helper.form_id = 'profile-form'
         self.helper.form_show_errors = True
         self.helper.layout = Layout(
-            Field('first_name', css_class='form-control'),
-            Field('last_name', css_class='form-control'),
+            Row(
+                Div(
+                    Field('first_name', css_class='form-control'),
+                    css_class='col',
+                ),
+                Div(
+                    Field('last_name', css_class='form-control'),
+                    css_class='col',
+                ),
+            ),
             Field('email', css_class='form-control'),
             Field('phone_number', css_class='form-control'),
+            Field('profile_image', css_class='form-control-file'),
             Submit('form1', 'Save', css_class='btn btn-primary col-12 mt-1'),
         )
 

@@ -10,11 +10,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Maintenance request</h1>
                             </div>
-                            <form class="user" method="POST">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button class="btn btn-primary btn-user btn-block" type="submit">Submit</button>
-                            </form>
+                                {% crispy form form.helper %}
                         </div>
                     </div>
                 </div>

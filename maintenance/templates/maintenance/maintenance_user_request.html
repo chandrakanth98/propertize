@@ -9,11 +9,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create Maintenance Request</h1>
                             </div>
-                            <form class="user" method="POST">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button class="btn btn-primary btn-user btn-block" type="submit">Submit</button>
-                            </form>
+                            {% crispy form form.helper %}
                         </div>
                     </div>
                 </div>
@@ -30,14 +26,14 @@
                                                 <!-- Collapsable Card -->
                                                 <div class="card mb-1 py-3 {% if r.status == 0 %}border-left-info{% elif r.status == 1 %}border-left-warning{% elif r.status == 2 %}border-left-success{% elif r.status == 3 %}border-left-danger{% endif %}">
                                                     <!-- Card Header - Accordion -->
-                                                    <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
+                                                    <a href="#collapseCardTransaction{{ forloop.counter }}" class="d-flex align-items-center py-0 px-3 card-link" 
                                                         data-toggle="collapse"
                                                         role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardTransaction{{ forloop.counter }}">
                                                         <h6 class="m-0 font-weight-bold col-11 pr-3"><strong>Status:</strong> {{ r.get_status_display }}<br><br>{{ r.request_date }}</h6>
                                                         <i class="fas fa-angle-down col-1 pl-3"></i>
                                                     </a>
                                                     <!-- Card Content - Collapse -->
-                                                    <div class="collapse {% if forloop.first %}show{% endif %}" id="collapseCardTransaction{{ forloop.counter }}">
+                                                    <div class="collapse" id="collapseCardTransaction{{ forloop.counter }}">
                                                         <div class="card-body px-3 py-2">
                                                             <hr>
                                                             <p class="mb-0">
@@ -57,6 +53,8 @@
                                                                     {{ r.contractor_note }}<br><br>
                                                                     <div class="h6 mb-0 text-muted text-xs">/{{ r.contractor }}</div><hr>
                                                                 {% endif %}
+                                                                <a href="{% url 'maintenance_request' request_id=r.request_id %}" target="_blank" class="btn btn-primary">Open
+                                                                    Request</a>
                                                                 
                                                                 
                                                             </p>
