@@ -26,4 +26,4 @@ class InvitationCodeTable(tables.Table):
         model = InvitationCode
         orderable = True
         attrs = {"class": "table table-hover"}
-        fields = ("used", "code", "property_name", "tenant_name", "apartment")
+        fields = ("code", "used", "property_name", "tenant_name", "apartment")

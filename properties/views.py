@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import views
 from properties.models import Property, Tenant
-from properties.forms import PropertyNoticeForm, EditProperty
+from properties.forms import PropertyNoticeForm, EditProperty, addProperty
 from properties.tables import CustomTenantTable
 from tenants.filters import TenantFilter
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 from django.contrib import messages
+import cloudinary.uploader
 
 
 # Create your views here.
@@ -16,12 +17,36 @@ from django.contrib import messages
 
 @login_required
 def properties(request):
-    return render(
-        request,
-        'properties/properties.html',
-    )
+
+    if request.method == 'POST':
+        post = request.POST.copy()
+        post['landlord'] = request.user.user_id
+        form = addProperty(post, request.FILES)
+        if form.is_valid():
+            form.instance.landlord = request.user
+            form.save()
+            messages.success(request, 'Property successfully created!')
+            return redirect('property', property_id=form.instance.property_id)
+        else:
+            print(form.errors)
+    else:
+        form = addProperty(landlord=request.user)
+        
+    context = {'form': form}
+    return render(request, 'properties/properties.html', context)
 
 
+def property_delete(request, property_id):
+
+    property = get_object_or_404(Property, pk=property_id)
+
+    if property.landlord == request.user:
+        property.delete()
+        messages.add_message(request, messages.SUCCESS, f'{property} was successfully deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own properties!')
+
+    return redirect('properties')
 
 
 class PropertyTenantTableView(SingleTableMixin, FilterView):
@@ -62,17 +87,23 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
     def post(self, request, property_id):
         form1 = PropertyNoticeForm(request.POST or None)
         form2 = EditProperty(request.POST or None, instance=Property.objects.get(pk=property_id))
+        if property.landlord == request.user:
+            if 'form1' in request.POST and form1.is_valid():
+                form1.save()
+                messages.success(request, 'Notice successfully posted!')
+                return redirect('property', property_id=property_id)
+            elif 'form2' in request.POST and form2.is_valid():
+                image = request.FILES.get('featured_image')
+                if image:
+                    upload_result = cloudinary.uploader.upload(image)
+                    form2.instance.featured_image = upload_result['url']
+                form2.save()
+                messages.success(request, 'Property successfully edited!')
+                return redirect('property', property_id=property_id)
+        else:
+            messages.error(request, 'You can only edit your own properties!')
 
-        if 'form1' in request.POST and form1.is_valid():
-            form1.save()
-            messages.success(request, 'Notice successfully posted!')
-            return redirect('property', property_id=property_id)
-        elif 'form2' in request.POST and form2.is_valid():
-            form2.save()
-            messages.success(request, 'Property successfully edited!')
-            return redirect('property', property_id=property_id)
-
-        context = self.get_context_data()
-        context['form'] = form1
-        context['edit_form'] = form2
-        return render(request, self.template_name, context)
+            context = self.get_context_data()
+            context['form'] = form1
+            context['edit_form'] = form2
+            return render(request, self.template_name, context)

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-4">
@@ -29,6 +30,11 @@
                                             anon
                                         {% endif %}
                                     </p>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
+                                        Edit Profile
+                                    </button>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
@@ -70,6 +76,12 @@
                                                 <strong>Payment Due:</strong> {{ profile.transaction.last.due_date }}<br><br>
                                                 <strong>Lease End:</strong> {{ tenant.lease_end }}<br>
                                             </p>
+                                            {% if user.role == 1 %}
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editTenantModal">
+                                                    Edit Tenant
+                                                </button>
+                                            {% endif %}
+                                            
                                         </div>
                                         <!-- Latest Transactions -->
                                         <div class="col-md-8">
@@ -175,4 +187,41 @@
 
     </div>
 </div>
+
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% crispy form1 form1.helper %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Tenant Modal -->
+<div class="modal fade" id="editTenantModal" tabindex="-1" role="dialog" aria-labelledby="editTenantModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTenantModalLabel">Edit Tenant</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% crispy tenant_form tenant_form.helper %}
+            </div>
+        </div>
+    </div>
+
 {% endblock content %}

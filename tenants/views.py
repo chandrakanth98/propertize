@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import InvitationCodeForm
+from .forms import InvitationCodeForm, EditProfileForm, EditTenantForm
 from django.contrib.auth import get_user_model
 from .tables import TenantTable, InvitationCodeTable
 from properties.models import Tenant, Property, InvitationCode
@@ -9,6 +9,7 @@ from .filters import TenantFilter, InvitationCodeFilter
 from django_filters.views import FilterView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
+from django.contrib import messages
 
 User = get_user_model()
 
@@ -69,10 +70,37 @@ def profile(request, user_id):
     except ObjectDoesNotExist:
         maintenance_requests = None
 
+    form1 = EditProfileForm(instance=profile)
+    tenant = Tenant.objects.filter(resident=user_id).first()
+    tenant_form = EditTenantForm(instance=tenant)
+
+    if request.method == 'POST':
+        if request.user != profile and profile.assigned_property.landlord != request.user:
+            messages.error(request, 'You can only edit your own profile!')
+            return redirect('user_profile', user_id=user_id)
+        else:
+            form1 = EditProfileForm(request.POST, instance=profile)
+            tenant_form = EditTenantForm(request.POST, instance=tenant)
+            if 'form1' in request.POST and form1.is_valid():
+                form1.save()
+                messages.success(request, 'Profile successfully updated!')
+                return redirect('user_profile', user_id=user_id)
+            elif 'tenant_form' in request.POST and tenant_form.is_valid():
+                if profile.assigned_property.landlord != request.user:
+                    messages.error(request, 'You do not have permission to edit tenant details!')
+                    return redirect('user_profile', user_id=user_id)
+                else:
+                    tenant_form.save()
+                    messages.success(request, 'Tenant details successfully updated!')
+                    return redirect('user_profile', user_id=user_id)
+
+
     context = {'profile': profile,
                'tenant': tenant,
                'transactions': transactions,
-               'maintenance': maintenance_requests}
+               'maintenance': maintenance_requests,
+               'form1': form1,
+               'tenant_form': tenant_form}
     
     return render(request,
                   'tenants/profile.html',
