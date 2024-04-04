@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% load account socialaccount %}
 
@@ -16,14 +16,14 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-xl-6 col-lg-6 col-md-8">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
+                            
+                            <div class="col-lg-12">
                                 <!-- LOGIN FORM -->
                                 <div class="p-5">
                                     <div class="text-center">
@@ -31,23 +31,7 @@
                                     </div>
                                     <form class="user" method="POST" action="{% url 'account_login' %}">
                                         {% csrf_token %}
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="id_login" name="login"
-                                                placeholder="Username" autocomplete="username">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control form-control-user"
-                                                id="id_password" placeholder="Password" autocomplete="current-password">
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="id_remember" name="remember">
-                                                <label class="custom-control-label" for="id_remember">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-
+                                        {{ form|crispy }}
                                         <button class="btn btn-primary btn-user btn-block" type="submit">{% trans "Sign In" %}</button>
                                     </form>
                                     <hr>

@@ -8,3 +8,10 @@
     object-fit: cover;
 }
 
+#hint_id_password1 {
+    display: none;
+}
+
+input:focus+#hint_id_password1 {
+    display: block;
+}

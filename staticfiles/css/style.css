@@ -8,3 +8,10 @@
     object-fit: cover;
 }
 
+.help-text-hidden {
+    display: none;
+}
+
+input:focus+.help-text-hidden {
+    display: block;
+}

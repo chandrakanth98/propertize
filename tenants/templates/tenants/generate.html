@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load render_table from django_tables2 %}
 {% load i18n %} {% load crispy_forms_tags %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="row justify-content-center">
             <div class="col-lg-6">
@@ -10,11 +11,12 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Generate invitation code</h1>
                             </div>
-                            <form class="user" method="POST">
+                            <!-- <form class="user" method="POST">
                                 {% csrf_token %}
                                 {{ form.as_p }}
                                 <button class="btn btn-primary btn-user btn-block" type="submit">Generate</button>
-                            </form>
+                            </form> -->
+                            {% crispy form form.helper %}
                         </div>
                     </div>
                 </div>

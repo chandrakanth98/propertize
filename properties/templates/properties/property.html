@@ -3,8 +3,17 @@
 {% load i18n %} {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-<h1 class="h3 mb-1 text-gray-800">{{ property.name }}</h1>
-<p class="mb-2">{{ property.address }}, {{ property.zip_code }} {{ property.city }}</p>
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="h3 mb-1 text-gray-800">{{ property.name }}</h1>
+        <p class="mb-2">{{ property.address }}, {{ property.zip_code }} {{ property.city }}</p>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PropertyEditModal">
+        Edit Property
+    </button>
+</div>
+
+
 {% if request.user.role == 1 %}
 <div class="row justify-content-center">
             <div class="col-lg-6">
@@ -42,7 +51,7 @@
                                             <label for="id_posted_by">Posted_by:</label>
                                             <input type="text" name="posted_by" maxlength="100" class="form-control" required="" id="id_posted_by">
                                         </div>
-                                        <button class="btn btn-primary btn-user btn-block" type="submit">Submit</button>
+                                        <button class="btn btn-primary btn-user btn-block" type="submit" name='form1'>Submit</button>
                             </form>
                         </div>
                     </div>
@@ -157,4 +166,22 @@
 </div>
 
 {% endif %}
+
+<!-- PropertyEditModal -->
+<div class="modal fade" id="PropertyEditModal" tabindex="-1" role="dialog" aria-labelledby="PropertyEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="PropertyEditModalLabel">Edit Property</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% crispy edit_form edit_form.helper %}
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
