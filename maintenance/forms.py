@@ -35,3 +35,33 @@ class MaintenanceForm(forms.ModelForm):
             Field('urgent', css_class='form-control'),
             Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
         )
+
+class EditMaintenanceForm(forms.ModelForm):
+    STATUS = ((0, 'Submitted'), (3, 'Cancel'))
+    status = forms.ChoiceField(choices=STATUS, widget=forms.Select(attrs={'class': 'form-control'}),)
+    class Meta:
+        model = MaintenanceRequest
+        fields = ['description', 'location', 'urgent', 'status']
+        css = {"all": ["form-control form-control-user"]}
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'maintenance-form'
+        self.helper.form_show_errors = True
+        self.helper.layout = Layout(
+            Field('description', css_class='form-control', rows=5),
+            Field('location', css_class='form-control'),
+            Row(
+                Div(
+                    Field('urgent', css_class='form-control'),
+                    css_class='col',
+                ),
+                Div(
+                    Field('status', css_class='form-control'),
+                    css_class='col',
+                ),
+            ),
+            Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
+        )

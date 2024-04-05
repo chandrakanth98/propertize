@@ -16,7 +16,7 @@ class TenantTable(tables.Table):
             'thead': {"class": ""}
             }
         sequence = ("is_active", "full_name", "property", "apartment", "lease_end", "change")
-        exclude = ("tenant_id", "resident", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due", "rent_amount", "outstanding_rent")
+        exclude = ("tenant_id", "resident", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due", "rent_amount", "outstanding_rent", "overdue_fee_days", "overdue")
 
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"

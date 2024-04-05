@@ -83,9 +83,12 @@ class EditProfileForm(forms.ModelForm):
 class EditTenantForm(forms.ModelForm):
     next_rent_due = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     lease_end = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    outstanding_rent = forms.FloatField(label='Outstanding')
+    overdue_fee_days = forms.IntegerField(label='Late Fee Grace Period (days)')
+    overdue_fee = forms.FloatField(label='Late Fee')
     class Meta:
         model = Tenant
-        fields = ['apartment', 'rent_amount', 'next_rent_due', 'lease_end', 'is_active', 'outstanding_rent', 'overdue_fee']
+        fields = ['overdue_fee_days', 'apartment', 'rent_amount', 'next_rent_due', 'lease_end', 'is_active', 'outstanding_rent', 'overdue_fee']
         css = {"all": ["form-control form-control-user"]}
 
     def __init__(self, *args, **kwargs):
@@ -98,13 +101,13 @@ class EditTenantForm(forms.ModelForm):
             Field('is_active', css_class='form-control'),
             Row(
                 Div(
-                    Field('rent_amount', css_class='form-control'),
+                    Field('apartment', css_class='form-control'),
                     css_class='col',
                 ),
                 Div(
-                    Field('next_rent_due', css_class='form-control', title="First Rent Due"),
+                    Field('overdue_fee_days', css_class='form-control'),
                     css_class='col',
-                ),
+                    ),
             ),
             Row(
                 Div(
@@ -115,10 +118,14 @@ class EditTenantForm(forms.ModelForm):
                     Field('overdue_fee', css_class='form-control'),
                     css_class='col',
                     ),
+                Div(
+                    Field('rent_amount', css_class='form-control'),
+                    css_class='col',
+                ),
             ),
             Row(
                 Div(
-                    Field('apartment', css_class='form-control'),
+                    Field('next_rent_due', css_class='form-control'),
                     css_class='col',
                 ),
                 Div(
@@ -131,3 +138,4 @@ class EditTenantForm(forms.ModelForm):
                 css_class='modal-footer',
             ),
         )
+        

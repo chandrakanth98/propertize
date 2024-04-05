@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 {% load i18n %} {% load crispy_forms_tags %}
 {% block content %}
-<h1 class="h3 mb-1 text-gray-800">Created by: {{ mr.submitted_by.first_name }} {{ mr.submitted_by.last_name }}</h1>
-<p class="mb-2">{{ mr.request_date }}</p>
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="h3 mb-1 text-gray-800">Created by: {{ mr.submitted_by.first_name }} {{ mr.submitted_by.last_name }}</h1>
+        <p class="mb-2">{{ mr.request_date }}</p>
+    </div>
+    {% if mr.status == 0 %}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+        Edit Request
+    </button>
+    {% endif %}
+</div>
+
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="card o-hidden border-0 shadow my-2">
@@ -72,4 +82,27 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Maintenance Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% crispy form form.helper %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}

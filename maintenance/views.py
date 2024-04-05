@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MaintenanceForm
+from .forms import MaintenanceForm, EditMaintenanceForm
 from .models import MaintenanceRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseNotFound
 User = get_user_model()
 
 # Create your views here.
@@ -12,7 +13,18 @@ def maintenance(request):
 
 def maintenance_request(request, request_id):
     maintenance_request = get_object_or_404(MaintenanceRequest, request_id=request_id)
-    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request})
+
+    if request.user != maintenance_request.submitted_by and request.user.role != 2 and request.user.role != 1:
+        return HttpResponseNotFound('test')
+    else:
+        form = EditMaintenanceForm(instance=maintenance_request)
+        if request.method == 'POST':
+            form = EditMaintenanceForm(request.POST, instance=maintenance_request)
+            if form.is_valid():
+                form.save()
+                return redirect('maintenance_request', request_id=request_id)
+
+    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request, 'form': form})
 
 def maintenance_form(request):
     user=request.user

@@ -8,6 +8,7 @@ from tenants.models import Tenant
 from finance.models import Transaction
 from django.db.models import Sum
 from django.db.models import Sum
+from django.contrib import messages
 # Create your views here.
 
 @login_required
@@ -60,7 +61,15 @@ def home(request):
                 'dashboards/contractor.html'
             )
         elif user.role == 3:
-            return redirect('user_profile', user_id=user_id)
+            tenant = Tenant.objects.get(resident=user)
+
+            if tenant.is_active:
+                return redirect('user_profile', user_id=user_id)
+            else:
+                messages.warning(request, 'Your account is not active')
+                return render(
+                    request,
+                    'dashboards/none.html')
         
         elif user.role  == 0:
             return redirect('invite')
@@ -90,6 +99,7 @@ def invitation(request):
             invitation.save()
             return redirect('home')
         except InvitationCode.DoesNotExist:
-            # Handle invalid invitation code
-            return render(request, 'dashboards/none.html', {'error': 'Invalid invitation code'})
-    return render(request, 'dashboards/none.html')
+            messages.warning(request, 'Invalid invitation code')
+            return render(request, 'dashboards/none.html', {'wrong_code': 'Invalid invitation code'})
+    else:
+        return render(request, 'dashboards/none.html')
