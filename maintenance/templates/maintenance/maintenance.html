@@ -114,7 +114,7 @@
 <hr>
 <br>
 <!-- Collapsable Requests Table -->
-<div class="row col-12">
+<div class="row">
 <div class="card shadow mb-4 col-12">
   <!-- Card Header - Accordion -->
   <a href="#collapseRequests" class="d-block card-header py-3" data-toggle="collapse" role="button"
@@ -124,6 +124,7 @@
   <!-- Card Content - Collapse -->
   <div class="collapse" id="collapseRequests">
     <div class="card-body">
+
       <form class="d-sm-inline-block form-inline mr-auto my-2 pb-1">
           <div class="input-group">
             <select name="status" id="id_status" class="form-control bg-light border-1 small mr-2">
@@ -142,9 +143,10 @@
                 <button type="reset" onclick="window.location.href=window.location.pathname;" class="btn btn-secondary">
                   <i class="fas fa-undo fa-sm"></i>
                 </button>
+              </div>
             </div>
       </form>
-      </div>
+
         {% if table.data %}
           <div class="table-responsive">{% render_table table %}</div>
         {% else %}
@@ -155,6 +157,7 @@
   </div>
 </div>
 </div>
+
 {% endblock content %}
 
 {% block extrajs %}

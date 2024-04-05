@@ -3,8 +3,6 @@ from django.db.models import Q, Value
 from django.db.models.functions import Concat
 import django_filters
 from .models import MaintenanceRequest
-from properties.models import Property
-from .tables import MaintenanceRequestTable
 
 
 class MaintenanceFilter(django_filters.FilterSet):

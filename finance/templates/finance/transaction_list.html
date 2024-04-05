@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="card shadow mb-4 col-12">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
+    </div>
+    <div class="card-body">
+
+        <form class="d-sm-inline-block form-inline mr-auto my-2 pb-1">
+          <div class="input-group">
+            <select name="status" id="id_status" class="form-control bg-light border-1 small mr-2">
+              <option value="">Status</option>
+              <option value="0">Not Paid</option>
+              <option value="1">Paid</option>
+              <option value="2">Void</option>
+            </select>
+            <select name="type" id="id_type" class="form-control bg-light border-1 small mr-2">
+              <option value="">Type</option>
+              <option value="1">Income</option>
+              <option value="2">Expense</option>
+            </select>
+            <input type="text" name="query" id="id_query" class="form-control bg-light border-1 small" placeholder="Search..."
+              aria-label="Search" aria-describedby="basic-addon2" />
+          
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
+                <button type="reset" onclick="window.location.href=window.location.pathname;" class="btn btn-secondary">
+                  <i class="fas fa-undo fa-sm"></i>
+                </button>
+            </div>
+            </div>
+      </form>
+
+        {% if table.data %}
+        <div class="table-responsive">{% render_table table %}</div>
+        {% else %}
+        <p>No transactions found</p>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock content %}
