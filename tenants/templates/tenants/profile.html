@@ -112,6 +112,10 @@
                                                                 <strong>Note:</strong> {{ transaction.note }}<br>
                                                                 
                                                             </p>
+                                                            <br>
+                                                                <a class="btn btn-primary" href="{% url 'transaction_detail' transaction_id=transaction.transaction_id %}">
+                                                                    View Transaction
+                                                                </a>
                                                         </div>
                                                     </div>
                                                 </div>

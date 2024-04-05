@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load split %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="card mb-4 col-8 justify-content-center">
+    {% if transaction.type == 1 %}
+    <div class="row">
+        <div class="card-body h3 mb-1 text-gray-800">
+            <div class="col-12 text-center">Invoice</div>
+        </div>
+    </div>
+        <div class="card-body">
+            <div class="row">
+            <p class="col m-3">
+                Transaction ID: {{ transaction.transaction_id }}<br>
+                Property: {{ transaction.property }}<br>
+                Tenant: {{ transaction.user.first_name }} {{ transaction.user.last_name }}<br>
+            </p>
+            <p class="col text-right m-3 h3">
+                {% if transaction.status == 0 %}
+                    <strong class="text-warning">{{ transaction.get_status_display }}</strong><br>
+                {% elif transaction.status == 1 %}
+                    <strong class="text-success">{{ transaction.get_status_display }}</strong><br>
+                {% elif transaction.status == 2 %}
+                    <strong class="text-danger">{{ transaction.get_status_display }}</strong><br>
+                {% endif %}
+                <span class="h5">Due Date:<br>{{ transaction.due_date }}<br></span>
+            </p>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        
+                        <tbody>
+                            {% if "Outstanding Balance" in transaction.note %}
+                            <tr>
+                                <td>Rent amount</td>
+                                <td>{{ tenant.rent_amount }}</td>
+                            </tr>
+                            {% with transaction.note|split:"<br>" as note_parts %}
+                                {% with note_parts.2|split:":" as parted %}
+                                <td>{{ parted.0 }}</td>
+                                <td>{{ parted.1 }}</td>
+                                {% endwith %}
+                            </tr>
+                            <tr>
+                                {% with note_parts.3|split:":" as parted %}
+                                <td>{{ parted.0 }}</td>
+                                <td>{{ parted.1 }}</td>
+                                {% endwith %}
+                            </tr>
+                            <tr>
+                                    <td>Total</td>
+                                    <td>{{ transaction.amount }}</td>
+                            </tr>
+                            {% endwith %}
+                            {% else %}
+                            <tr>
+                                <td>{{ transaction.note }}</td>
+                                <td>{{ transaction.amount }}</td>
+                            
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                    
+                
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-5">
+                    <p class="text-muted">Created on: {{ transaction.created_on }}</p>
+                </div>	
+                <div class="d-flex justify-content-end pt-5">
+                    <a href="#" class="btn btn-primary">Pay Now</a>
+                </div>
+            </div>
+        </div>
+        {% elif transaction.type == 2 %}
+        <div class="row">
+            <div class="card-body h3 mb-1 text-gray-800">
+                <div class="col-12 text-center">Expense</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="card-body h3 mb-1 text-gray-800">
+                <div class="col-12 text-center">Transaction</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock content %}

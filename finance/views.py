@@ -6,6 +6,7 @@ from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 from .tables import TransactionTable
 from .filters import TransactionFilter
+from tenants.models import Tenant
 
 
 
@@ -30,3 +31,8 @@ class TransactionListView(SingleTableMixin, FilterView):
         elif user.role == 3:
             ordered_transactions = Transaction.objects.filter(user=user).order_by('-due_date')
             return ordered_transactions
+        
+def transaction_detail(request, transaction_id):
+    transaction = Transaction.objects.filter(transaction_id=transaction_id).first()
+    tenant = Tenant.objects.filter(resident=transaction.user).first()
+    return render(request, 'finance/transaction_detail.html', {'transaction': transaction, 'tenant': tenant})
