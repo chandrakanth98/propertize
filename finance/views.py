@@ -7,6 +7,8 @@ from django_filters.views import FilterView
 from .tables import TransactionTable
 from .filters import TransactionFilter
 from tenants.models import Tenant
+from .forms import EditTransactionForm
+from django.contrib import messages
 
 
 
@@ -35,4 +37,24 @@ class TransactionListView(SingleTableMixin, FilterView):
 def transaction_detail(request, transaction_id):
     transaction = Transaction.objects.filter(transaction_id=transaction_id).first()
     tenant = Tenant.objects.filter(resident=transaction.user).first()
-    return render(request, 'finance/transaction_detail.html', {'transaction': transaction, 'tenant': tenant})
+    form = EditTransactionForm(instance=transaction)
+
+    context = {'transaction': transaction, 
+               'tenant': tenant, 
+               'form': form}
+
+    if request.method == 'POST':
+        form = EditTransactionForm(request.POST, instance=transaction)
+        if request.user.role == 1:
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Transaction updated successfully.')
+                return render(request, 'finance/transaction_detail.html', context)
+            else:
+                messages.error(request, 'There was an error updating the transaction.')
+                return render(request, 'finance/transaction_detail.html', context)
+        else:
+            messages.warning(request, 'You do not have permission to edit this transaction.')
+            return render(request, 'finance/transaction_detail.html', context)
+
+    return render(request, 'finance/transaction_detail.html', context)

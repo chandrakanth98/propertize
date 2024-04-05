@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load split %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="row justify-content-center">
 <div class="card mb-4 col-8 justify-content-center">
@@ -79,7 +80,32 @@
                     <p class="text-muted">Created on: {{ transaction.created_on }}</p>
                 </div>	
                 <div class="d-flex justify-content-end pt-5">
+                    {% if transaction.status == 0 %}
+                    {% if transaction.user == request.user %}
                     <a href="#" class="btn btn-primary">Pay Now</a>
+                    {% endif %}
+                    {% endif %}
+                    {% if request.user.role == 1 %}
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editTransactionModal">Edit Transaction</a>
+
+                    <!-- Edit Transaction Modal -->
+                    <div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editTransactionModalLabel">Edit Transaction</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {% crispy form form.helper %}
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
