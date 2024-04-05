@@ -1,5 +1,6 @@
 from decimal import Decimal
-from django.db.models import Q
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
 import django_filters
 from tenants.models import Tenant
 from properties.models import InvitationCode
@@ -21,9 +22,11 @@ class TenantFilter(django_filters.FilterSet):
                 Q(rent_amount=value) | Q(outstanding_rent=value)
             )
 
-        return Tenant.objects.filter(
+        return Tenant.objects.annotate(
+            full_name=Concat('resident__first_name', Value(' '), 'resident__last_name')
+            ).filter(
             Q(resident__first_name__icontains=value) |
-              Q(resident__last_name__icontains=value) | Q(apartment__icontains=value)
+              Q(resident__last_name__icontains=value) | Q(apartment__icontains=value) | Q(full_name__icontains=value)
         )
     
 class InvitationCodeFilter(django_filters.FilterSet):

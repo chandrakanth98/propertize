@@ -8,10 +8,10 @@
     object-fit: cover;
 }
 
-.help-text-hidden {
+#hint_id_password1 {
     display: none;
 }
 
-input:focus+.help-text-hidden {
+input:focus+#hint_id_password1 {
     display: block;
 }

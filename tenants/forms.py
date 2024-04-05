@@ -48,7 +48,7 @@ class InvitationCodeForm(forms.ModelForm):
                 ),
             ),
             Field('lease_end', css_class='form-control'),
-            Submit('form1', 'Save', css_class='btn btn-primary col-12 mt-1'),
+            Submit('form1', 'Create Code', css_class='btn btn-primary col-12 mt-1'),
         )
 
 class EditProfileForm(forms.ModelForm):

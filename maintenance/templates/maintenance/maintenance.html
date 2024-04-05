@@ -1,11 +1,13 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %} 
 
 <div class="row justify-content-center">
     <!-- Submitted -->
 <div class="col-lg-4 border-right border-dark">
     <h1 class="h3 mb-1 text-gray-800">Submitted</h1>
     <br>
-{% for property in user.properties.all %} 
+{% for property in properties.all %} 
     {% for request in property.maintenance_property.all %}
         {% if request.status == 0 %}
 <!-- Card -->
@@ -14,15 +16,15 @@
     <a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
   <div class="card border-left-info shadow-s h-100 py-2">
     <div class="card-body">
-      <div class="row no-gutters align-items-center">
-        <div class="col mr-2">
-          <div
-            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
-            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+      <div class="row no-gutters justify-content-between align-items-center flex-nowrap">
+        <div class="col-10 mr-2">
+        
+          <div class="text-gray-900 mb-1 text-truncate">
+            {{ request.description }}
           </div>
-          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
+          <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
         </div>
-        <div class="col-auto">
+        <div class="col-2 mr-1 ml-2">
           <i class="fas fa-hourglass-start fa-2x text-gray-300"></i>
         </div>
       </div>
@@ -40,7 +42,7 @@
 <div class="col-lg-4 border-right border-dark">
     <h1 class="h3 mb-1 text-gray-800">In-progress</h1>
     <br>
-{% for property in user.properties.all %} 
+{% for property in properties.all %} 
     {% for request in property.maintenance_property.all %}
         {% if request.status == 1 %}
 <!-- Card -->
@@ -48,15 +50,17 @@
 <a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
   <div class="card border-left-success shadow-s h-100 py-2">
     <div class="card-body">
-      <div class="row no-gutters align-items-center">
-        <div class="col mr-2">
-          <div
-            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
-            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
+      <div class="row no-gutters justify-content-between align-items-center flex-nowrap">
+        <div class="col-10 mr-2">
+        
+          <div class="text-gray-900 mb-1 text-truncate">
+            {{ request.description }}
+        
+        
           </div>
-          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
+          <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
         </div>
-        <div class="col-auto">
+        <div class="col-2 mr-1 ml-2">
           <i class="fas fa-wrench fa-2x text-gray-300"></i>
         </div>
       </div>
@@ -72,35 +76,99 @@
 <div class="col-lg-4 border-right">
     <h1 class="h3 mb-1 text-gray-800">Urgent</h1>
     <br>
-{% for property in user.properties.all %} 
+{% for property in properties.all %} 
     {% for request in property.maintenance_property.all %}
-        {% if request.status == 0 or 1 %}
+        {% if request.status == 0 or request.status == 1 %}
             {% if request.urgent == 1 %}
-<!-- Card -->
-<div class=" mb-1">
-<a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
-  <div class="card border-left-danger shadow-s h-100 py-2">
-    <div class="card-body">
-      <div class="row no-gutters align-items-center">
-        <div class="col mr-2">
-          <div
-            class=" font-weight-bold text-gray-900 text-uppercase mb-1">
-            {{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}
-          </div>
-          <div class="h6 mb-0 text-muted text-xs">{{ request.request_date }}</div>
-        </div>
-        <div class="col-auto">
-          <i class="fas fa-exclamation-triangle fa-2x text-gray-600"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-</a>
-</div>
+            <!-- Card -->
+            <div class=" mb-1">
+            <a href="{% url 'maintenance_request' request_id=request.request_id %}" class="card-link">
+              <div class="card border-left-danger shadow-s h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters justify-content-between align-items-center flex-nowrap">
+                    <div class="col-10 mr-2">
+
+                      <div
+                        class="text-gray-900 mb-1 text-truncate">
+                        {{ request.description }}
+                        
+
+                      </div>
+                      <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
+                    </div>
+                    <div class="col-2 mr-0 ml-2">
+                      <i class="fas fa-exclamation-triangle fa-2x text-gray-600"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+            </div>
             {% endif %}
         {% endif %}
     {% endfor %}
 {% endfor %} 
 </div>
 </div>
+<br>
+<hr>
+<br>
+<!-- Collapsable Requests Table -->
+<div class="row col-12">
+<div class="card shadow mb-4 col-12">
+  <!-- Card Header - Accordion -->
+  <a href="#collapseRequests" class="d-block card-header py-3" data-toggle="collapse" role="button"
+    aria-expanded="true" aria-controls="collapseRequests">
+    <h6 class="m-0 font-weight-bold text-primary">All Requests</h6>
+  </a>
+  <!-- Card Content - Collapse -->
+  <div class="collapse" id="collapseRequests">
+    <div class="card-body">
+      <form class="d-sm-inline-block form-inline mr-auto my-2 pb-1">
+          <div class="input-group">
+            <select name="status" id="id_status" class="form-control bg-light border-1 small mr-2">
+              <option value="">Status</option>
+              <option value="0">Submitted</option>
+              <option value="1">In-progress</option>
+              <option value="2">Completed</option>
+              <option value="3">Cancelled</option>
+            </select>
+            <input type="text" name="query" id="id_query" class="form-control bg-light border-1 small" placeholder="Search..."
+              aria-label="Search" aria-describedby="basic-addon2" />
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
+                <button type="reset" onclick="window.location.href=window.location.pathname;" class="btn btn-secondary">
+                  <i class="fas fa-undo fa-sm"></i>
+                </button>
+            </div>
+      </form>
+      </div>
+        {% if table.data %}
+          <div class="table-responsive">{% render_table table %}</div>
+        {% else %}
+        <hr>
+          <p>No request history available</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+</div>
 {% endblock content %}
+
+{% block extrajs %}
+<script>
+  $(document).ready(function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('query') || urlParams.has('status')) {
+        $('#collapseRequests').collapse('show');
+        setTimeout(function () {
+          $('html, body').animate({
+            scrollTop: $("#collapseRequests").offset().top
+          }, 0);
+        }, 0);
+      }
+    });
+</script>
+{% endblock extrajs %}

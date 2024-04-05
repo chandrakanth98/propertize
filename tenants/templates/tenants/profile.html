@@ -170,7 +170,7 @@
                                                                     {{ r.contractor_note }}<br><br>
                                                                     <div class="h6 mb-0 text-muted text-xs">/{{ r.contractor }}</div><hr>
                                                                 {% endif %}
-                                                                
+                                                                <a href="{% url 'maintenance_request' request_id=r.request_id %}" class="btn btn-primary" target="_self">Open Request</a>
                                                                 
                                                             </p>
                                                         </div>

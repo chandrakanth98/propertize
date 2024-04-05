@@ -4,12 +4,42 @@ from .models import MaintenanceRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseNotFound
+from .tables import MaintenanceRequestTable
+from .filters import MaintenanceFilter
+from django_tables2 import SingleTableMixin
+from django_filters.views import FilterView
 User = get_user_model()
 
 # Create your views here.
 
-def maintenance(request):
-    return render(request, 'maintenance/maintenance.html')
+
+class MaintenanceTableView(SingleTableMixin, FilterView):
+    table_class = MaintenanceRequestTable
+    filterset_class = MaintenanceFilter
+    paginate_by = 10
+    template_name = 'maintenance/maintenance.html'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 1:
+            for property in user.properties.all():
+                maintenance_requests = MaintenanceRequest.objects.filter(property=property)
+                ordered_requests = maintenance_requests.order_by('-request_date')
+                return ordered_requests
+
+        elif user.role == 2:
+            maintenance_requests = MaintenanceRequest.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        properties = user.properties.all()
+
+        context['properties'] = properties
+        return context
+    
+
+
 
 def maintenance_request(request, request_id):
     maintenance_request = get_object_or_404(MaintenanceRequest, request_id=request_id)
