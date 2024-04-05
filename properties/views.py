@@ -68,8 +68,9 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         for property in properties:
             tenants_of_property = property.tenants.all()
             tenant_objects |= Tenant.objects.filter(resident__in=tenants_of_property)
+            active_tenants = tenant_objects.filter(is_active=True)
 
-        ordered_tenants = tenant_objects.order_by('resident__first_name')
+        ordered_tenants = active_tenants.order_by('resident__last_name')
 
         return ordered_tenants
     

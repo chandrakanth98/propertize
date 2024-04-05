@@ -6,14 +6,13 @@ from django.contrib.auth import get_user_model
 
 class InvitationCodeForm(forms.ModelForm):
     tenant_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
-    apartment = forms.FloatField(widget=forms.TextInput(attrs={'placeholder': 'Apt. #'}))
+    apartment = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apt. #'}))
     rent_amount = forms.FloatField(widget=forms.TextInput(attrs={'placeholder': 'Amount'}))
     next_rent_due = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     lease_end = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model = InvitationCode
         fields = ['tenant_name', 'property', 'apartment', 'rent_amount', 'next_rent_due', 'lease_end']
-        css = {"all": ["form-control form-control-user"]}
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)

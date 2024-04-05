@@ -39,27 +39,28 @@
                             </div>
                         </div>
                         <!-- PROFILE INFO CARD-->
-                        <div class="col">
-                            <div class="card shadow-sm mb-3">
-                                <div class="card-header d-flex align-items-center">
-                                    {% if "placeholder" in profile.assigned_property.featured_image.url %}
-                                                <img class="card-img-top mr-3" src="{% static 'img/property.jpg' %}" alt="placeholder image" style="height: 100px; width: 100px; object-fit: cover;">
-                                            {% else %}
-                                                <img class="card-img-top mr-3" src=" {{ profile.assigned_property.featured_image.url }}" alt="{{ post.title }}" style="height: 100px;  width: 100px; object-fit: cover;">
-                                            {% endif %}
-                                    <strong>{{ profile.assigned_property.name }}</strong>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        
+                        <a href="{% url 'property' property_id=profile.assigned_property.property_id %}" class="card-link">
+                            <div class="col">
+                                <div class="card shadow-sm mb-3">
+                                    <div class="card-header d-flex align-items-center">
+                                        {% if "placeholder" in profile.assigned_property.featured_image.url %}
+                                            <img class="card-img-top mr-3" src="{% static 'img/property.jpg' %}" alt="placeholder image" style="height: 100px; width: 100px; object-fit: cover;">
+                                        {% else %}
+                                            <img class="card-img-top mr-3" src=" {{ profile.assigned_property.featured_image.url }}" alt="{{ post.title }}" style="height: 100px;  width: 100px; object-fit: cover;">
+                                        {% endif %}
+                                        <strong>{{ profile.assigned_property.name }}</strong>
+                                    </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <p class="card-text">
                                             <strong>Apartment:</strong> {{ tenant.apartment  }}<br>
                                             <strong>Address:</strong> {{ profile.assigned_property.address }}<br>
                                             <strong>Zip Code:</strong> {{ profile.assigned_property.zip_code }}<br>
                                             <strong>City:</strong> {{ profile.assigned_property.city }}<br><br>
-                                    </p>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
         <div class="col-lg-8">
             <!-- LEASE INFO CARD-->
@@ -78,14 +79,14 @@
                                             </p>
                                             {% if user.role == 1 %}
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editTenantModal">
-                                                    Edit Tenant
+                                                    Edit Lease
                                                 </button>
                                             {% endif %}
                                             
                                         </div>
                                         <!-- Latest Transactions -->
                                         <div class="col-md-8">
-                                            <h5 class="card-title">Recent Payment History</h5>
+                                            <h5 class="card-title">Latest Invoices</h5>
                                             <hr>
                                             {% for transaction in transactions %}
                                                 <!-- Collapsable Card -->

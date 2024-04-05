@@ -132,14 +132,28 @@ class CodeTableView(SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = InvitationCodeForm(user=self.request.user)
+        
         return context
     
     def post(self, request):
         form = InvitationCodeForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Invitation code successfully created!')
             return redirect('generate_code')
         else:
             context = self.get_context_data()
             context['form'] = form
+            messages.error(request, 'An error occurred while creating the invitation code!')
         return render(request, self.template_name, context)
+    
+def delete_invitation(request, code_id):
+    if request.user.role != 1:
+        messages.error(request, 'You do not have permission to delete invitation codes!')
+        return redirect('home')
+    else:
+        code = get_object_or_404(InvitationCode, pk=code_id)
+        code.delete()
+        messages.success(request, 'Invitation code successfully deleted!')
+    
+    return redirect('generate_code')
