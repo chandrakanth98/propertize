@@ -90,7 +90,7 @@
                                             <hr>
                                             {% for transaction in transactions %}
                                                 <!-- Collapsable Card -->
-                                                <div class="card mb-1 py-3 {% if transaction.status == 0 %}border-left-warning{% elif transaction.status == 1 %}border-left-success{% elif transaction.status == 2 %}border-left-secondary{% endif %}">
+                                                <div class="card mb-1 py-3 {% if transaction.status == 0 %}border-left-warning{% elif transaction.status == 1 %}border-left-success{% elif transaction.status == 2 %}border-left-danger{% endif %}">
                                                     <!-- Card Header - Accordion -->
                                                     <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3" 
                                                         data-toggle="collapse"

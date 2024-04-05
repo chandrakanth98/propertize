@@ -56,7 +56,7 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertEqual(tenant.next_rent_due, next_month_end)
         transaction = Transaction.objects.filter(user=tenant.resident, transaction_month=tenant.current_rent_period_start)
         self.assertTrue(transaction.exists())
-        self.assertEqual(transaction.first().amount, tenant.rent_amount + tenant.outstanding_rent + tenant.overdue_fee)
+        self.assertEqual(transaction.first().amount, tenant.rent_amount + tenant.outstanding_rent)
 
 
     def test_inactive_tenant(self):
@@ -229,8 +229,8 @@ class GenerateRentInvoicesTest(TestCase):
         generate_rent_invoices()
         new_invoice = Transaction.objects.filter(user=overdue_fee_tenant.resident, transaction_month=datetime.now().date().replace(day=1)).first()
         self.assertIsNotNone(new_invoice)
-        self.assertEqual(new_invoice.amount, overdue_fee_tenant.rent_amount + overdue_fee_tenant.overdue_fee)
-        expected_amount = overdue_fee_tenant.rent_amount + overdue_fee_tenant.outstanding_rent + overdue_fee_tenant.overdue_fee
+        self.assertEqual(new_invoice.amount, overdue_fee_tenant.rent_amount)
+        expected_amount = overdue_fee_tenant.rent_amount + overdue_fee_tenant.outstanding_rent
         self.assertEqual(new_invoice.amount, expected_amount)
 
     def test_tenant_with_zero_rent(self):
@@ -284,3 +284,71 @@ class GenerateRentInvoicesTest(TestCase):
         )
         generate_rent_invoices()
         self.assertTrue(Transaction.objects.filter(user=past_due_date_tenant.resident).exists())
+
+    def test_unpaid_not_overdue(self):
+        """
+        Test case to verify the behavior when a tenant has an unpaid transaction
+        but it is not overdue.
+        """
+        self.tenant.delete()
+        unpaid_not_overdue_tenant = Tenant.objects.create(
+            resident=self.tenant_user,
+            lease_end=datetime.now().date() + timedelta(days=365),
+            rent_amount=1000,
+            outstanding_rent=0,
+            overdue_fee=50,
+            overdue_fee_days=99,
+            next_rent_due=datetime.now().date(),
+            apartment='1M',
+            is_active=True
+        )
+        Transaction.objects.create(
+            user=unpaid_not_overdue_tenant.resident,
+            due_date=datetime.now().date() - timedelta(days=30),
+            status=0,
+            amount=1000,
+            type=1,
+            note='Unpaid transaction',
+            property=self.property,
+            overdue_fee=0,
+            transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
+        )
+        generate_rent_invoices()
+        self.assertTrue(Transaction.objects.filter(user=unpaid_not_overdue_tenant.resident, status=0).exists())
+        self.assertEqual(unpaid_not_overdue_tenant.outstanding_rent, 0)
+
+    def test_overdue_fee_days(self):
+        """
+        Test case to verify the behavior when a tenant has an overdue fee
+        and the overdue fee days are greater than the overdue days.
+        """
+        self.tenant.delete()
+        overdue_fee_days_tenant = Tenant.objects.create(
+            resident=self.tenant_user,
+            lease_end=datetime.now().date() + timedelta(days=365),
+            rent_amount=1000,
+            outstanding_rent=0,
+            overdue_fee=50,
+            overdue_fee_days=1,
+            next_rent_due=datetime.now().date(),
+            apartment='1N',
+            is_active=True
+        )
+        Transaction.objects.create(
+            user=overdue_fee_days_tenant.resident,
+            due_date=datetime.now().date() - timedelta(days=30),
+            status=0,
+            amount=1000,
+            type=1,
+            note='Unpaid transaction',
+            property=self.property,
+            overdue_fee=0,
+            transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
+        )
+        generate_rent_invoices()
+        self.assertTrue(Transaction.objects.filter(user=overdue_fee_days_tenant.resident, status=2).exists())
+        self.assertEqual(overdue_fee_days_tenant.outstanding_rent, 0)
+        new_invoice = Transaction.objects.filter(user=overdue_fee_days_tenant.resident, status=0).first()
+        self.assertIsNotNone(new_invoice)
+        self.assertEqual(new_invoice.amount, 1000 + overdue_fee_days_tenant.rent_amount + overdue_fee_days_tenant.overdue_fee)
+        self.assertTrue('Outstanding Balance' in new_invoice.note)

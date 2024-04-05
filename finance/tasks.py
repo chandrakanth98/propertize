@@ -5,6 +5,7 @@ from calendar import monthrange
 from tenants.models import Tenant
 from finance.models import Transaction
 
+
 @shared_task
 def generate_rent_invoices():
     current_date = datetime.now().date()
@@ -32,27 +33,46 @@ def generate_rent_invoices():
         unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0)
 
         if unpaid_transactions.exists():
-            unpaid_amount = sum(transaction.amount for transaction in unpaid_transactions)
-            tenant.outstanding_rent += unpaid_amount
-            tenant.save()
-            unpaid_transactions.update(status=2)
+            for transaction in unpaid_transactions:
+                overdue_days = (current_date - transaction.due_date).days
+                if overdue_days > tenant.overdue_fee_days:
+                    transaction.status = 2
+                    transaction.save()
+                    tenant.outstanding_rent += transaction.amount
+                    tenant.overdue = True
+                    tenant.save()
+                else:
+                    continue
 
+        
+        unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0)
+        unpaid_not_overdue = False
+        for transaction in unpaid_transactions:
+            overdue_days = (current_date - transaction.due_date).days
+            if overdue_days <= tenant.overdue_fee_days:
+                unpaid_not_overdue = True
+                break
+
+        if unpaid_not_overdue:
+            continue
 
         transaction_exists = Transaction.objects.filter(user=tenant.resident, transaction_month=current_month_start, status__in=[0, 1, 2]).exists()
 
         if not transaction_exists:
             tenant.rent_amount = max(0, tenant.rent_amount)
-            total_amount = tenant.rent_amount + tenant.outstanding_rent + tenant.overdue_fee
+            total_amount = tenant.rent_amount + tenant.outstanding_rent
             property = tenant.resident.assigned_property
 
             note = f"Rent invoice for {current_month_name}"
+            if tenant.overdue:
+                note += "<br>" + "(Outstanding Balance)" + "<br>" + f"Overdue amount: {tenant.outstanding_rent}" + "<br>" + f"Overdue fee: {tenant.overdue_fee}"
+                total_amount += tenant.overdue_fee
             transaction = Transaction.objects.create(
                 user = tenant.resident,
                 type=1,
                 amount=total_amount,
                 note=note,
                 property=property,
-                overdue_fee=tenant.overdue_fee,
                 transaction_month=current_month_start,
                 due_date=due_date
             )
@@ -63,6 +83,7 @@ def generate_rent_invoices():
             tenant.current_rent_period_end = current_month_end
             tenant.next_rent_due = next_month_end
             tenant.outstanding_rent = 0
+            tenant.overdue = False
             tenant.save()
 
 

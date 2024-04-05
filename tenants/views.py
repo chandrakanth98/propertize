@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
 from django.contrib import messages
 import cloudinary.uploader
+from django.utils.safestring import mark_safe
 
 User = get_user_model()
 
@@ -63,6 +64,8 @@ def profile(request, user_id):
 
     try:
         transactions = profile.transaction.all().order_by('-due_date')[:3]
+        for transaction in transactions:
+            transaction.note = mark_safe(transaction.note)
     except ObjectDoesNotExist:
         transactions = None
     
