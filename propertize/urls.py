@@ -25,6 +25,5 @@ urlpatterns = [
     path("properties/", include("properties.urls"), name="properties"),
     path("", include("dashboards.urls")),
     path("accounts/", include("allauth.urls")),
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
     path('admin/', admin.site.urls),
 ]

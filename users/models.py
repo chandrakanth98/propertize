@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from cloudinary.models import CloudinaryField
-from djstripe.models import Customer
 
 ROLE = ((0, 'None'), (1, 'Landlord'), (2, 'Contractor'), (3, 'Tenant'))
 
