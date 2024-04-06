@@ -1,6 +1,7 @@
 from django.db import models
 from properties.models import Property
 from django.contrib.auth import get_user_model
+import uuid
 
 User = get_user_model()
 # Create your models here.
@@ -25,3 +26,23 @@ class MaintenanceRequest(models.Model):
 
     def __str__(self):
                 return f"Request from: {self.submitted_by.first_name} {self.submitted_by.last_name} at {self.property.name}"
+    
+
+class Worker(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    code_name = models.CharField(max_length=120)
+    assigned_properties = models.ManyToManyField(Property, related_name="assigned_properties")
+    contractor = models.BooleanField(default=True)
+    code = models.CharField(max_length=5, unique=True, blank=True)
+    used = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Worker: {self.code}"
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.code = self.generate_unique_code()
+        super().save(*args, **kwargs)
+
+    def generate_unique_code(self):
+        return str(uuid.uuid4().hex)[:5]

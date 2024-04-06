@@ -14,6 +14,7 @@ User = get_user_model()
 class Property(models.Model):
     property_id = models.AutoField(unique=True, primary_key=True)
     landlord = models.ForeignKey(User, on_delete=models.PROTECT, related_name="properties")
+    assigned_contractor = models.ManyToManyField(User, related_name="assigned_contractor", blank=True)
     address = models.CharField(max_length=150)
     zip_code = models.IntegerField()
     city = models.CharField(max_length=150)

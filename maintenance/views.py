@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MaintenanceForm, EditMaintenanceForm
-from .models import MaintenanceRequest
+from .forms import MaintenanceForm, EditMaintenanceForm, WorkerCodeForm
+from .models import MaintenanceRequest, Worker
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseNotFound
-from .tables import MaintenanceRequestTable
-from .filters import MaintenanceFilter
+from .tables import MaintenanceRequestTable, WorkerCodeTable, ContractorTable
+from .filters import MaintenanceFilter, WorkerFilter, ContractorFilter
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
+from django.contrib import messages
 User = get_user_model()
 
 # Create your views here.
@@ -91,3 +92,58 @@ def tenant_maintenance_request(request, user_id):
                   'profile': profile,
                   'form': form}
     return render(request, 'maintenance/maintenance_user_request.html', context)
+
+
+class WorkerTableView(SingleTableMixin, FilterView):
+    table_class = WorkerCodeTable
+    template_name = 'maintenance/workers.html'
+    filterset_class = WorkerFilter
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = self.request.user
+        codes = Worker.objects.filter(assigned_properties__landlord=user).distinct()
+        ordered_codes = codes.order_by('-used')
+        return ordered_codes
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        form = WorkerCodeForm(user=user)
+        context['form'] = form
+
+        return context
+
+        
+    def post(self, request, *args, **kwargs):
+        form = WorkerCodeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Worker code created')
+            return redirect('workers')
+        else:
+            context = self.get_context_data()
+            messages.error(request, 'An error occurred')
+        return render(request, 'maintenance/workers.html', context)
+    
+
+class ContractorTableView(SingleTableMixin, FilterView):
+    table_class = ContractorTable
+    template_name = 'maintenance/contractors.html'
+    filterset_class = ContractorFilter
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        properties = user.properties.all()
+        contractors = User.objects.filter(assigned_contractor__in=properties).distinct()
+        ordered_contractors = contractors.order_by('first_name')
+        return ordered_contractors
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        form = WorkerCodeForm(user=user)
+        context['form'] = form
+
+        return context

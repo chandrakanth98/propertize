@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% load render_table from django_tables2 %} {% load
+i18n %} {% load crispy_forms_tags %} {% block content %}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">Contractors</h6>
+    </div>
+    <div class="card-body">
+
+        <form class="d-sm-inline-block form-inline mr-auto my-2">
+            <div class="input-group">
+                <input type="text" name="query" id="id_query" class="form-control bg-light border-0 small"
+                    placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" />
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+        {% if table.data %}
+        <div class="table-responsive">{% render_table table %}</div>
+        {% else %}
+        <p>No contractors found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django import forms
-from .models import MaintenanceRequest
+from django.forms import CheckboxSelectMultiple
+from .models import MaintenanceRequest, Worker
 from properties.models import Property
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Row
@@ -63,5 +64,31 @@ class EditMaintenanceForm(forms.ModelForm):
                     css_class='col',
                 ),
             ),
+            Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
+        )
+
+
+class WorkerCodeForm(forms.ModelForm):
+    assigned_properties = forms.ModelMultipleChoiceField(
+        queryset=Property.objects.all(), 
+        widget=CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
+    )
+    class Meta:
+        model = Worker
+        fields = ['code_name', 'assigned_properties']
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if user is not None:
+            self.fields['assigned_properties'].queryset = Property.objects.filter(landlord=user)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'worker-form'
+        self.helper.form_show_errors = True
+        self.helper.layout = Layout(
+            Field('code_name', css_class='form-control'),
+            Field('assigned_properties', css_class='form-control'),
             Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
         )

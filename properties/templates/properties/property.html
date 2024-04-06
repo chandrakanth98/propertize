@@ -8,9 +8,11 @@
         <h1 class="h3 mb-1 text-gray-800">{{ property.name }}</h1>
         <p class="mb-2">{{ property.address }}, {{ property.zip_code }} {{ property.city }}</p>
     </div>
+    {% if request.user.role == 1 %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PropertyEditModal">
         Edit Property
     </button>
+    {% endif %}
 </div>
 
 

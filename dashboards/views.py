@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from . import views
 from tenants.views import profile
 from properties.models import InvitationCode, Property
+from maintenance.models import Worker
 from tenants.models import Tenant
 from finance.models import Transaction
 from django.db.models import Sum
@@ -98,7 +99,21 @@ def invitation(request):
             invitation.used = True
             invitation.save()
             return redirect('home')
+        
         except InvitationCode.DoesNotExist:
+            pass
+
+        try:
+            worker = Worker.objects.get(code=invitation_code)
+            user = request.user
+            user.role = 2
+            user.save()
+            for property in worker.assigned_properties.all():
+                property.assigned_contractor.add(user)
+            worker.used = True
+            worker.save()
+            return redirect('home')
+        except Worker.DoesNotExist:
             messages.warning(request, 'Invalid invitation code')
             return render(request, 'dashboards/none.html', {'wrong_code': 'Invalid invitation code'})
     else:

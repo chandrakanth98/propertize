@@ -1,6 +1,8 @@
 import django_tables2 as tables
-from .models import MaintenanceRequest
+from .models import MaintenanceRequest, Worker
 from properties.models import Property
+from django.contrib.auth import get_user_model
+
 
 class MaintenanceRequestTable(tables.Table):
     property_name = tables.Column(verbose_name='Property', accessor='property.name')
@@ -20,3 +22,36 @@ class MaintenanceRequestTable(tables.Table):
     
     def render_full_name(self, record):
         return f"{record.submitted_by.first_name} {record.submitted_by.last_name}"
+    
+class WorkerCodeTable(tables.Table):
+    
+    def render_code_name(self, value):
+        return value if len(value) <= 10 else value[:10] + '...'
+
+
+    class Meta:
+        model = Worker
+        orderable = True
+        attrs = {
+            "class": "table table-hover",
+            'thead': {"class": ""}
+            }
+        fields = ("code", "used", "assigned_properties", "code_name")
+
+
+class ContractorTable(tables.Table):
+    first_name = tables.Column(verbose_name='First Name', accessor='first_name')
+    last_name = tables.Column(verbose_name='Last Name', accessor='last_name')
+    
+
+
+    class Meta:
+        model = Property
+        orderable = True
+        attrs = {
+            "class": "table table-hover",
+            'thead': {"class": ""}
+            }
+        fields = ("role", "first_name", "last_name", "email", "phone_number", "assigned_contractor",)
+
+
