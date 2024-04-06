@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from finance.tasks import generate_rent_invoices
 from django.http import HttpResponse
 from .models import Transaction
@@ -7,8 +7,10 @@ from django_filters.views import FilterView
 from .tables import TransactionTable
 from .filters import TransactionFilter
 from tenants.models import Tenant
-from .forms import EditTransactionForm
+from .forms import EditTransactionForm, CreateTransactionForm
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+
 
 
 
@@ -58,3 +60,45 @@ def transaction_detail(request, transaction_id):
             return render(request, 'finance/transaction_detail.html', context)
 
     return render(request, 'finance/transaction_detail.html', context)
+
+def transaction_form(request):
+    user=request.user
+    User = get_user_model()
+
+    def get_queryset():
+        properties = user.properties.filter(landlord=user)
+        tenant_objects = User.objects.none()
+
+        for property in properties:
+            tenants_of_property = property.tenants.all()
+            tenant_objects |= User.objects.filter(user_id__in=tenants_of_property)
+
+        tenants = tenant_objects.order_by('first_name')
+
+        return tenants, properties
+
+    tenants, properties = get_queryset()
+
+    if request.method == 'POST':
+        if user.role == 1:
+            form = CreateTransactionForm(request.POST, tenants=tenants, properties=properties)
+            if form.is_valid():
+                transaction = form.save(commit=False)
+                if not transaction.user:
+                    transaction.user = user
+                transaction.save()
+                transaction_id = transaction.transaction_id
+                messages.success(request, 'Transaction created successfully.')
+                return redirect('transaction_detail', transaction_id=transaction_id)
+            else:
+                messages.error(request, 'There was an error creating the transaction.')
+                print(form.errors)
+                return render(request, 'finance/transaction_form.html', {'form': form})
+
+        else:
+            messages.warning(request, 'You do not have permission to create a transaction.')
+            return redirect('transaction_list')
+
+    else:
+        form = CreateTransactionForm(user=user, tenants=tenants, properties=properties)
+        return render(request, 'finance/transaction_form.html', {'form': form})

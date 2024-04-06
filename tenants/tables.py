@@ -7,6 +7,7 @@ class TenantTable(tables.Table):
     change = tables.TemplateColumn("<a class='text-dark profile-btn' href='{% url 'user_profile' user_id=record.resident.user_id %}'><i class='fa fa-cog'></i></a>", verbose_name='')
     is_active = tables.BooleanColumn(verbose_name='Active', accessor='is_active')
     property = tables.Column(verbose_name='Property', accessor='resident.assigned_property.name')
+    user_id = tables.Column(verbose_name='User ID', accessor='resident.user_id')
 
     class Meta:
         model = Tenant
@@ -15,7 +16,7 @@ class TenantTable(tables.Table):
             "class": "table table-hover",
             'thead': {"class": ""}
             }
-        sequence = ("is_active", "full_name", "property", "apartment", "lease_end", "change")
+        sequence = ("is_active", "user_id", "full_name", "property", "apartment", "lease_end", "change")
         exclude = ("tenant_id", "resident", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due", "rent_amount", "outstanding_rent", "overdue_fee_days", "overdue")
 
     def render_full_name(self, record):
