@@ -22,6 +22,11 @@
           <div class="text-gray-900 mb-1 text-truncate">
             {{ request.description }}
           </div>
+          {% if request.contractor %}
+          <div class="h6 mb-0 text-muted text-xs"><strong>Contractor: {{ request.contractor.first_name }} {{ request.contractor.last_name }}</strong></div>
+          {% else %}
+          <div class="h6 mb-0 text-muted text-xs"><strong>No contractor assigned</strong></div>
+          {% endif %}
           <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
         </div>
         <div class="col-2 mr-1 ml-2">
@@ -58,6 +63,11 @@
         
         
           </div>
+          {% if request.contractor %}
+          <div class="h6 mb-0 text-muted text-xs"><strong>Contractor: {{ request.contractor.first_name }} {{ request.contractor.last_name }}</strong></div>
+          {% else %}
+          <div class="h6 mb-0 text-muted text-xs"><strong>No contractor assigned</strong></div>
+          {% endif %}
           <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
         </div>
         <div class="col-2 mr-1 ml-2">
@@ -94,6 +104,11 @@
                         
 
                       </div>
+                      {% if request.contractor %}
+                      <div class="h6 mb-0 text-muted text-xs"><strong>Contractor: {{ request.contractor.first_name }} {{ request.contractor.last_name }}</strong></div>
+                      {% else %}
+                      <div class="h6 mb-0 text-muted text-xs"><strong>No contractor assigned</strong></div>
+                      {% endif %}
                       <div class="h6 mb-0 text-muted text-xs"><strong>{{ request.submitted_by.first_name }} {{ request.submitted_by.last_name }}</strong>, {{ request.request_date }}</div>
                     </div>
                     <div class="col-2 mr-0 ml-2">

@@ -57,10 +57,7 @@ def home(request):
                 context
             )
         elif user.role == 2:
-            return render(
-                request,
-                'dashboards/contractor.html'
-            )
+            return redirect('maintenance')
         elif user.role == 3:
             tenant = Tenant.objects.get(resident=user)
 

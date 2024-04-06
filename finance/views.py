@@ -66,7 +66,10 @@ def transaction_form(request):
     User = get_user_model()
 
     def get_queryset():
-        properties = user.properties.filter(landlord=user)
+        if user.role == 1:
+            properties = user.properties.filter(landlord=user)
+        elif user.role == 2:
+            properties = user.assigned_contractor.all()
         tenant_objects = User.objects.none()
 
         for property in properties:
@@ -80,7 +83,7 @@ def transaction_form(request):
     tenants, properties = get_queryset()
 
     if request.method == 'POST':
-        if user.role == 1:
+        if user.role == 1 or user.role == 2:
             form = CreateTransactionForm(request.POST, tenants=tenants, properties=properties)
             if form.is_valid():
                 transaction = form.save(commit=False)

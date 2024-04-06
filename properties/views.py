@@ -20,6 +20,7 @@ def properties(request):
 
 
     if request.user.role == 1:
+        properties = Property.objects.filter(landlord=request.user)
         if request.method == 'POST':
             post = request.POST.copy()
             post['landlord'] = request.user.user_id
@@ -32,7 +33,12 @@ def properties(request):
             else:
                 print(form.errors)
         else:
-            form = addProperty(landlord=request.user)
+            form = addProperty()
+            return render(request, 'properties/properties.html', {'form': form, 'properties': properties})
+    elif request.user.role == 2:
+        form = addProperty()
+        properties = Property.objects.filter(assigned_contractor=request.user)
+        return render(request, 'properties/properties.html', {'form': form, 'properties': properties})
     else:
         messages.error(request, 'You do not have permission to create properties!')    
         form = None

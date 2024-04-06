@@ -9,6 +9,7 @@ from .filters import MaintenanceFilter, WorkerFilter, ContractorFilter
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 from django.contrib import messages
+from properties.models import Property
 User = get_user_model()
 
 # Create your views here.
@@ -29,12 +30,21 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
                 return ordered_requests
 
         elif user.role == 2:
-            maintenance_requests = MaintenanceRequest.objects.all()
+            assigned_properties = Property.objects.filter(assigned_contractor=user)
+            maintenance_requests = MaintenanceRequest.objects.filter(property__in=assigned_properties)
+            return maintenance_requests
+
+            
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        properties = user.properties.all()
+        if user.role == 1:
+            properties = user.properties.all()
+        elif user.role == 2:
+            properties = user.assigned_contractor.all()
+        else:
+            properties = Property.objects.none()
 
         context['properties'] = properties
         return context
@@ -44,18 +54,26 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
 
 def maintenance_request(request, request_id):
     maintenance_request = get_object_or_404(MaintenanceRequest, request_id=request_id)
+    user = request.user
+    contractors = maintenance_request.property.assigned_contractor.all()
+    print("Contractors:", contractors)
 
-    if request.user != maintenance_request.submitted_by and request.user.role != 2 and request.user.role != 1:
+    if request.user != maintenance_request.submitted_by and request.user != maintenance_request.property.landlord and request.user not in contractors:
         return HttpResponseNotFound('test')
     else:
-        form = EditMaintenanceForm(instance=maintenance_request)
+        form = EditMaintenanceForm(instance=maintenance_request, contractors=contractors, user=user)
         if request.method == 'POST':
-            form = EditMaintenanceForm(request.POST, instance=maintenance_request)
+            form = EditMaintenanceForm(request.POST, instance=maintenance_request, contractors=contractors)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Maintenance request updated')
+                return redirect('maintenance_request', request_id=request_id)
+            else:
+                messages.error(request, 'An error occurred')
+                print(form.errors)
                 return redirect('maintenance_request', request_id=request_id)
 
-    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request, 'form': form})
+    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request, 'form': form, 'user': user})
 
 def maintenance_form(request):
     user=request.user
@@ -68,7 +86,7 @@ def maintenance_form(request):
             return redirect('home')
     else:
         form = MaintenanceForm(user=user)
-    return render(request, 'maintenance/request.html', {'form': form})
+    return render(request, 'maintenance/request.html', {'form': form, 'user': user})
 
 def tenant_maintenance_request(request, user_id):
     profile = get_object_or_404(User, pk=user_id)

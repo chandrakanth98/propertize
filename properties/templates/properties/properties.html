@@ -5,7 +5,7 @@
 
 <div class="container mt-3">
     <div class="row">
-        {% for property in user.properties.all %}
+        {% for property in properties %}
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <a href="{% url 'property' property_id=property.property_id %}" class="card-link">
@@ -26,6 +26,7 @@
             </div>
         </div>
         {% endfor %}
+        {% if user.role == 1 %}
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <a href="#" data-toggle="modal" data-target="#addPropertyModal" class="card-link">
@@ -44,6 +45,8 @@
                 </a>
             </div>
         </div>
+        {% endif %}
+
     </div>
 </div>
 
