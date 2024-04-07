@@ -107,43 +107,50 @@ def invitation(request):
     actions based on tenant or constructor code.
     """
     if request.method == 'POST':
-        invitation_code = request.POST.get('invitation_code')
-        try:
-            invitation = InvitationCode.objects.get(code=invitation_code, used=False)
+        if request.user.role == 0:
+            invitation_code = request.POST.get('invitation_code')
             user = request.user
-            user.role = 3
-            user.assigned_property = invitation.property
-            tenant = Tenant.objects.create(
-                resident=user,
-                rent_amount=invitation.rent_amount,
-                lease_end=invitation.lease_end,
-                next_rent_due=invitation.next_rent_due,
-                apartment=invitation.apartment,
-            )
-            tenant.save()
-            user.save()
-            invitation.used = True
-            invitation.save()
-            messages.success(request, 'Invitation code used successfully, you are now a tenant')
-            return redirect('home')
-        
-        except InvitationCode.DoesNotExist:
-            messages.warning(request, 'Invalid invitation code')
-            return render(request, 'dashboards/none.html')
 
-        try:
-            worker = Worker.objects.get(code=invitation_code, used=False)
-            user = request.user
-            user.role = 2
-            user.save()
-            for property in worker.assigned_properties.all():
-                property.assigned_contractor.add(user)
-            worker.used = True
-            worker.save()
-            messages.success(request, 'Invitation code used successfully, you are now a contractor')
-            return redirect('home')
-        except Worker.DoesNotExist:
+            try:
+                invitation = InvitationCode.objects.get(code=invitation_code, used=False)
+                user.role = 3
+                user.assigned_property = invitation.property
+                tenant = Tenant.objects.create(
+                    resident=user,
+                    rent_amount=invitation.rent_amount,
+                    lease_end=invitation.lease_end,
+                    next_rent_due=invitation.next_rent_due,
+                    apartment=invitation.apartment,
+                )
+                tenant.save()
+                user.save()
+                invitation.used = True
+                invitation.save()
+                messages.success(request, 'Invitation code used successfully, you are now a tenant')
+                return redirect('home')
+            
+            except InvitationCode.DoesNotExist:
+                pass
+
+            try:
+                worker = Worker.objects.get(code=invitation_code, used=False)
+                user.role = 2
+                user.save()
+                for property in worker.assigned_properties.all():
+                    property.assigned_contractor.add(user)
+                worker.used = True
+                worker.save()
+                messages.success(request, 'Invitation code used successfully, you are now a contractor')
+                return redirect('home')
+            except Worker.DoesNotExist:
+                pass
+
             messages.warning(request, 'Invalid invitation code')
             return render(request, 'dashboards/none.html')
+        
+        else:
+            messages.warning(request, 'You do not have permission to use an invitation code')
+            return redirect('home')
+    
     else:
         return render(request, 'dashboards/none.html')
