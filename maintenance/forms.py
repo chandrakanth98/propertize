@@ -13,10 +13,14 @@ class MaintenanceForm(forms.ModelForm):
         model = MaintenanceRequest
         fields = ['description', 'property', 'location', 'urgent']
 
-    def __init__(self, *args, user=None, **kwargs):
+    def __init__(self, *args, user=None, properties=None, **kwargs):
         super().__init__(*args, **kwargs)
         if user is not None:
-            self.fields['property'].queryset = Property.objects.filter(tenants=user)
+            if user.role == 3:
+                self.fields['property'].queryset = Property.objects.filter(tenants=user)
+            else:
+                self.fields['property'].queryset = properties
+                
         
         self.helper = FormHelper()
         self.helper.form_method = 'post'

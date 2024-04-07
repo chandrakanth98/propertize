@@ -29,7 +29,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1' ]
 
@@ -65,8 +65,6 @@ INSTALLED_APPS = [
 
 
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_EXTENDED = True
-
 
 CELERY_BROKER_URL = os.environ.get('REDIS_TLS_URL')
 

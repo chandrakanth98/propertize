@@ -78,15 +78,16 @@ def maintenance_request(request, request_id):
 
 def maintenance_form(request):
     user=request.user
+    properties = user.properties.all()
     if request.method == 'POST':
-        form = MaintenanceForm(request.POST)
+        form = MaintenanceForm(request.POST, user=user, properties=properties)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.submitted_by = user
             instance.save()
             return redirect('home')
     else:
-        form = MaintenanceForm(user=user)
+        form = MaintenanceForm(user=user, properties=properties)
     return render(request, 'maintenance/request.html', {'form': form, 'user': user})
 
 def tenant_maintenance_request(request, user_id):
