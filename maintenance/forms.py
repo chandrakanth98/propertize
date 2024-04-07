@@ -46,7 +46,7 @@ class MaintenanceForm(forms.ModelForm):
 class EditMaintenanceForm(forms.ModelForm):
     STATUS = ((0, 'Submitted'), (3, 'Cancel'))
     STATUS_ALL= ((0, 'Submitted'), (1, 'In-progress'), (2, 'Completed'), (3, 'Cancel'))
-    status = forms.ChoiceField(choices=STATUS, widget=forms.Select(attrs={'class': 'form-control'}),)
+    status = forms.ChoiceField(choices=STATUS_ALL, widget=forms.Select(attrs={'class': 'form-control'}),)
     contractor_note = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please enter any notes for the tenant.'}), required=False)
     scheduled_date = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), required=False)
     contractor = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={'class': 'form-control'}))
@@ -59,19 +59,26 @@ class EditMaintenanceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if contractors is not None:
             self.fields['contractor'].queryset = contractors
+        self.current_status = self.STATUS_ALL
+        if user and (user.role == 3 ):
+            self.current_status = self.STATUS
+        self.fields['status'].widget.choices = self.current_status
+        
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'maintenance-form'
         self.helper.form_show_errors = True
 
         if user and (user.role == 1 or user in contractors):
-            self.fields['status'].choices = self.STATUS_ALL
             self.helper.layout = self.contractor_fields()
         else:
             self.helper.layout = self.user_layout()
 
+
     def user_layout(self):
+        self.fields['contractor'].widget = HiddenInput()
         return Layout(
+            Field('contractor', css_class='hidden-description'),
             Field('description', css_class='form-control', rows=5),
             Field('location', css_class='form-control'),
             Row(
@@ -118,11 +125,18 @@ class EditMaintenanceForm(forms.ModelForm):
                     css_class='col',
                 ),
             ),
+            Row(
             Div(
-                Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
-                css_class='modal-footer'
+                HTML('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>')
+            ),
+            Div(
+                Submit('form', 'Save', css_class='btn btn-primary col-12'),
+        
+            ),
+            css_class='modal-footer'
             ),
             )
+    
                 
 
 

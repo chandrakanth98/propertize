@@ -126,6 +126,12 @@ def profile(request, user_id):
                 else:
                     messages.error(request, 'You do not have permission to add contractor codes!')
                     return redirect('user_profile', user_id=user_id)
+            else:
+                messages.error(request, 'An error occurred while updating your profile!')
+                print(form1.errors)
+                print(tenant_form.errors)
+                print(add_contractor.errors)
+                return redirect('user_profile', user_id=user_id)
 
 
 

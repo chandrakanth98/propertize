@@ -104,9 +104,11 @@ def invitation(request):
             user.save()
             invitation.used = True
             invitation.save()
+            messages.success(request, 'Invitation code used successfully, you are now a tenant')
             return redirect('home')
         
         except InvitationCode.DoesNotExist:
+            messages.warning(request, 'Invalid invitation code')
             pass
 
         try:
@@ -118,6 +120,7 @@ def invitation(request):
                 property.assigned_contractor.add(user)
             worker.used = True
             worker.save()
+            messages.success(request, 'Invitation code used successfully, you are now a contractor')
             return redirect('home')
         except Worker.DoesNotExist:
             messages.warning(request, 'Invalid invitation code')

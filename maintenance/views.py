@@ -70,7 +70,7 @@ def maintenance_request(request, request_id):
                 messages.success(request, 'Maintenance request updated')
                 return redirect('maintenance_request', request_id=request_id)
             else:
-                messages.error(request, 'An error occurred')
+                messages.warning(request, 'An error occurred')
                 print(form.errors)
                 return redirect('maintenance_request', request_id=request_id)
 
@@ -85,7 +85,12 @@ def maintenance_form(request):
             instance = form.save(commit=False)
             instance.submitted_by = user
             instance.save()
-            return redirect('home')
+            messages.success(request, 'Maintenance request submitted')
+            return redirect('maintenance_request', request_id=instance.request_id)
+        else:
+            messages.error(request, 'An error occurred')
+            print(form.errors)
+            return redirect('request')
     else:
         form = MaintenanceForm(user=user, properties=properties)
     return render(request, 'maintenance/request.html', {'form': form, 'user': user})
@@ -104,7 +109,12 @@ def tenant_maintenance_request(request, user_id):
             instance = form.save(commit=False)
             instance.submitted_by = profile
             instance.save()
-            return redirect('home')
+            messages.success(request, 'Maintenance request submitted')
+            return redirect('maintenance_request', request_id=instance.request_id)
+        else:
+            messages.error(request, 'An error occurred when submitting request')
+            print(form.errors)
+            return redirect('tenant_maintenance_request', user_id=user_id)
     else:
         form = MaintenanceForm(user=profile)
 
@@ -139,7 +149,7 @@ class WorkerTableView(SingleTableMixin, FilterView):
         form = WorkerCodeForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Worker code created')
+            messages.success(request, 'Contractor code created')
             return redirect('workers')
         else:
             context = self.get_context_data()

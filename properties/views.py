@@ -31,6 +31,7 @@ def properties(request):
                 messages.success(request, 'Property successfully created!')
                 return redirect('property', property_id=form.instance.property_id)
             else:
+                messages.warning(request, 'Property could not be created!')
                 print(form.errors)
         else:
             form = addProperty()
