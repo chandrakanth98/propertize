@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from finance.tasks import generate_rent_invoices
-from django.http import HttpResponse
 from .models import Transaction
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
@@ -13,14 +12,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
 
-
-
-# Create your views here.
 @login_required
 def finance(request):
     generate_rent_invoices()
     return render(request, "finance/finance_overview.html")
-
 
 
 class TransactionListView(SingleTableMixin, FilterView):
@@ -35,10 +30,14 @@ class TransactionListView(SingleTableMixin, FilterView):
     def get_queryset(self):
         user = self.request.user
         if user.role == 1:
-            ordered_transactions = Transaction.objects.filter(property__in=user.properties.all()).order_by('-due_date')
+            ordered_transactions = Transaction.objects.filter(
+                property__in=user.properties.all()).order_by('-due_date')
+            
             return ordered_transactions
         elif user.role == 3:
-            ordered_transactions = Transaction.objects.filter(user=user).order_by('-due_date')
+            ordered_transactions = Transaction.objects.filter(
+                user=user).order_by('-due_date')
+            
             return ordered_transactions
 
 
