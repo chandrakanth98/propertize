@@ -4,10 +4,13 @@
 {% block content %}
 <div class="row justify-content-center">
 <div class="card mb-4 col-sm-12 col-md-8 col-lg-6 justify-content-center">
-    {% if transaction.type == 1 %}
     <div class="row">
         <div class="card-body h3 mb-1 text-gray-800">
+            {% if transaction.type == 2 %}
+            <div class="col-12 text-center">Expense</div>
+            {% elif transaction.type == 1 %}
             <div class="col-12 text-center">Invoice</div>
+            {% endif %}
         </div>
     </div>
         <div class="card-body">
@@ -15,7 +18,11 @@
             <p class="col m-3">
                 Transaction ID: {{ transaction.transaction_id }}<br>
                 Property: {{ transaction.property }}<br>
+                {% if transaction.type == 2 %}
+                {{ transaction.user.first_name }} {{ transaction.user.last_name }}<br>
+                {% elif transaction.type == 1 %}
                 Tenant: {{ transaction.user.first_name }} {{ transaction.user.last_name }}<br>
+                {% endif %}
             </p>
             <p class="col text-right m-3 h3">
                 {% if transaction.status == 0 %}
@@ -82,11 +89,11 @@
                 <div class="d-flex justify-content-end pt-5">
                     {% if transaction.status == 0 %}
                     {% if transaction.user == request.user %}
-                    <a href="#" class="btn btn-primary">Pay Now</a>
+                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#payTransactionModal">Pay Now</a>
                     {% endif %}
                     {% endif %}
                     {% if request.user.role == 1 %}
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editTransactionModal">Edit Transaction</a>
+                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#editTransactionModal">Edit Transaction</a>
 
                     <!-- Edit Transaction Modal -->
                     <div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
@@ -102,6 +109,29 @@
                                     {% crispy form form.helper %}
                                 </div>
                                 
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pay Transaction Modal -->
+                    <div class="modal fade" id="payTransactionModal" tabindex="-1" role="dialog"
+                        aria-labelledby="payTransactionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="payTransactionModalLabel">Pay Transaction</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h1 class="h3 mb-1 text-gray-800">Sorry!</h1>
+                                    <p>Paying through the portal is not yet implemented. Keep paying with your current method for now!</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok &#128542;</button>
+                                </div>
+                    
                             </div>
                         </div>
                     </div>
@@ -109,18 +139,6 @@
                 </div>
             </div>
         </div>
-        {% elif transaction.type == 2 %}
-        <div class="row">
-            <div class="card-body h3 mb-1 text-gray-800">
-                <div class="col-12 text-center">Expense</div>
-            </div>
-        </div>
-        {% else %}
-        <div class="row">
-            <div class="card-body h3 mb-1 text-gray-800">
-                <div class="col-12 text-center">Transaction</div>
-            </div>
-        {% endif %}
     </div>
 </div>
 

@@ -37,11 +37,13 @@
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
                                         Edit Profile
                                     </button>
+                                    {% if request.user.user_id == profile.user_id %}
+                                    <a href="{% url 'account_change_password' %}" class="btn btn-primary">Change Password</a>
+                                    {% endif %}
                                     {% if user.role == 2 %}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addContractorCodeModal">
+                                    <button type="button" class="btn btn-primary mt-1" data-toggle="modal" data-target="#addContractorCodeModal">
                                         Add contractor code
                                     </button>
-                                    
                                     {% endif %}
                                     
                                     
@@ -248,6 +250,7 @@
             </div>
             <div class="modal-body">
                 {% crispy form1 form1.helper %}
+                
             </div>
         </div>
     </div>
