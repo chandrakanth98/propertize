@@ -141,6 +141,7 @@ class GenerateRentInvoicesTest(TestCase):
         Test case to verify that no new transaction is created when an existing transaction already exists.
         """
         self.tenant.delete()  
+        current_month_name = datetime.now().date().strftime("%B")
         existing_tenant = Tenant.objects.create(
             resident=self.tenant_user,
             lease_end=datetime.now().date() + timedelta(days=365),
@@ -157,7 +158,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=1000,
             type=1,
-            note='Existing transaction',
+            note='Rent invoice for ' + current_month_name,
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1)

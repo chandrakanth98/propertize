@@ -45,7 +45,7 @@ def generate_rent_invoices():
                     continue
 
         
-        unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0)
+        unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0, note__startswith="Rent invoice for")
         unpaid_not_overdue = False
         for transaction in unpaid_transactions:
             overdue_days = (current_date - transaction.due_date).days
@@ -56,8 +56,7 @@ def generate_rent_invoices():
         if unpaid_not_overdue:
             continue
 
-        transaction_exists = Transaction.objects.filter(user=tenant.resident, transaction_month=current_month_start, status__in=[0, 1, 2]).exists()
-
+        transaction_exists = Transaction.objects.filter(user=tenant.resident, transaction_month=current_month_start, status__in=[0, 1, 2], note__startswith="Rent invoice for").exists()
         if not transaction_exists:
             tenant.rent_amount = max(0, tenant.rent_amount)
             total_amount = tenant.rent_amount + tenant.outstanding_rent
