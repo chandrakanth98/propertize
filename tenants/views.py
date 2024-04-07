@@ -17,7 +17,12 @@ from maintenance.models import Worker
 
 User = get_user_model()
 
+
+
 class TenantTableView(SingleTableMixin, FilterView):
+    """
+    View for displaying a table of tenants associated with properties owned by the user.
+    """
     table_class = TenantTable
     filterset_class = TenantFilter
     paginate_by = 15
@@ -48,7 +53,11 @@ class TenantTableView(SingleTableMixin, FilterView):
     template_name = "tenants/tenants.html"
 
 
+@login_required
 def profile(request, user_id):
+    """
+    View function for displaying a user's profile.
+    """
     profile = get_object_or_404(User, pk=user_id)
     if request.user != profile and request.user.role != 1:
         return HttpResponseNotFound('test')
@@ -147,7 +156,13 @@ def profile(request, user_id):
                   'tenants/profile.html',
                   context)
 
+
+
 class CodeTableView(SingleTableMixin, FilterView):
+    """
+    View for displaying a table to render and a form to create
+    tenant invitation codes.
+    """
     table_class = InvitationCodeTable
     filterset_class = InvitationCodeFilter
     paginate_by = 15
@@ -182,8 +197,13 @@ class CodeTableView(SingleTableMixin, FilterView):
             context['form'] = form
             messages.error(request, 'An error occurred while creating the invitation code!')
         return render(request, self.template_name, context)
-    
+
+
+@login_required
 def delete_invitation(request, code_id):
+    """
+    Deletes an invitation code.
+    """
     if request.user.role != 1:
         messages.error(request, 'You do not have permission to delete invitation codes!')
         return redirect('home')

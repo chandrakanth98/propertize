@@ -10,12 +10,18 @@ from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 from django.contrib import messages
 from properties.models import Property
+from django.contrib.auth.decorators import login_required
 User = get_user_model()
 
 # Create your views here.
 
 
+
 class MaintenanceTableView(SingleTableMixin, FilterView):
+    """
+    A view for displaying a table of maintenance requests.
+    """
+
     table_class = MaintenanceRequestTable
     filterset_class = MaintenanceFilter
     paginate_by = 10
@@ -36,7 +42,6 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
             return ordered_requests
 
             
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
@@ -51,16 +56,18 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
         return context
     
 
-
-
+@login_required
 def maintenance_request(request, request_id):
+    """
+    View function for rendering individual maintenance request.
+    """
     maintenance_request = get_object_or_404(MaintenanceRequest, request_id=request_id)
     user = request.user
     contractors = maintenance_request.property.assigned_contractor.all()
     print("Contractors:", contractors)
 
     if request.user != maintenance_request.submitted_by and request.user != maintenance_request.property.landlord and request.user not in contractors:
-        return HttpResponseNotFound('test')
+        return HttpResponseNotFound()
     else:
         form = EditMaintenanceForm(instance=maintenance_request, contractors=contractors, user=user)
         if request.method == 'POST':
@@ -76,9 +83,15 @@ def maintenance_request(request, request_id):
 
     return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request, 'form': form, 'user': user})
 
+
+@login_required
 def maintenance_form(request):
-    user=request.user
+    """
+    Renders a maintenance request form and handles form submission.
+    """
+    user = request.user
     properties = user.properties.all()
+
     if request.method == 'POST':
         form = MaintenanceForm(request.POST, user=user, properties=properties)
         if form.is_valid():
@@ -95,7 +108,12 @@ def maintenance_form(request):
         form = MaintenanceForm(user=user, properties=properties)
     return render(request, 'maintenance/request.html', {'form': form, 'user': user})
 
+
+@login_required
 def tenant_maintenance_request(request, user_id):
+    """
+    Tenant specific maintenance request view w/ form.
+    """
     profile = get_object_or_404(User, pk=user_id)
 
     try:
@@ -124,7 +142,11 @@ def tenant_maintenance_request(request, user_id):
     return render(request, 'maintenance/maintenance_user_request.html', context)
 
 
+
 class WorkerTableView(SingleTableMixin, FilterView):
+    """
+    A view that displays a table of contractor codes and form to create them.
+    """
     table_class = WorkerCodeTable
     template_name = 'maintenance/workers.html'
     filterset_class = WorkerFilter
@@ -157,7 +179,11 @@ class WorkerTableView(SingleTableMixin, FilterView):
         return render(request, 'maintenance/workers.html', context)
     
 
+
 class ContractorTableView(SingleTableMixin, FilterView):
+    """
+    A view that renders a table of contractors related to the user.
+    """
     table_class = ContractorTable
     template_name = 'maintenance/contractors.html'
     filterset_class = ContractorFilter
@@ -181,7 +207,12 @@ class ContractorTableView(SingleTableMixin, FilterView):
 
         return context
     
+
+@login_required
 def delete_invitation_contractor(request, code_id):
+    """
+    Deletes a specified contractor invitation code when called upon.
+    """
     if request.user.role != 1:
         messages.error(request, 'You do not have permission to delete invitation codes!')
         return redirect('home')

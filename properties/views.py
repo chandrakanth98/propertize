@@ -17,8 +17,10 @@ import cloudinary.uploader
 
 @login_required
 def properties(request):
-
-
+    """
+    View function for displaying and creating properties.
+    """
+    
     if request.user.role == 1:
         properties = Property.objects.filter(landlord=request.user).order_by('name')
         if request.method == 'POST':
@@ -48,8 +50,11 @@ def properties(request):
     return render(request, 'properties/properties.html', context)
 
 
+@login_required
 def property_delete(request, property_id):
-
+    """
+    Delete a property.
+    """
     property = get_object_or_404(Property, pk=property_id)
 
     if property.landlord == request.user:
@@ -62,12 +67,20 @@ def property_delete(request, property_id):
 
 
 class PropertyTenantTableView(SingleTableMixin, FilterView):
+    """
+    View for displaying a specific property and table of tenants for that property.
+    
+    """
+
     table_class = CustomTenantTable
     filterset_class = TenantFilter
     paginate_by = 5
     template_name = "properties/property.html"
 
     def get_queryset(self):
+        """
+        Returns the queryset of active tenants for the specified property.
+        """
         property_id = self.kwargs.get('property_id')
         property_instance = get_object_or_404(Property, pk=property_id)
         
@@ -79,8 +92,10 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         return ordered_tenants
     
  
-    
     def get_context_data(self, **kwargs):
+        """
+        Returns the context data for rendering the template.
+        """
         context = super().get_context_data(**kwargs)
         context['form'] = PropertyNoticeForm(user=self.request.user)
 
@@ -94,7 +109,11 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         context['property_id'] = property_id
         return context
     
+
     def post(self, request, property_id):
+        """
+        Handles the POST request for creating a property notice or editing a property.
+        """
         form1 = PropertyNoticeForm(request.POST)
         property_instance = Property.objects.get(pk=property_id)
         form2 = EditProperty(request.POST, instance=property_instance)

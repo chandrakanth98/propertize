@@ -10,18 +10,23 @@ from tenants.models import Tenant
 from .forms import EditTransactionForm, CreateTransactionForm
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 
 
 
 # Create your views here.
-
+@login_required
 def finance(request):
     generate_rent_invoices()
     return render(request, "finance/finance_overview.html")
 
 
+
 class TransactionListView(SingleTableMixin, FilterView):
+    """
+    View for displaying a list of all transactions related to user.
+    """
     table_class = TransactionTable
     filterset_class = TransactionFilter
     template_name = 'finance/transaction_list.html'
@@ -35,8 +40,13 @@ class TransactionListView(SingleTableMixin, FilterView):
         elif user.role == 3:
             ordered_transactions = Transaction.objects.filter(user=user).order_by('-due_date')
             return ordered_transactions
-        
+
+
+@login_required        
 def transaction_detail(request, transaction_id):
+    """
+    View function for displaying individual transaction.
+    """
     transaction = Transaction.objects.filter(transaction_id=transaction_id).first()
     tenant = Tenant.objects.filter(resident=transaction.user).first()
     form = EditTransactionForm(instance=transaction)
@@ -61,11 +71,21 @@ def transaction_detail(request, transaction_id):
 
     return render(request, 'finance/transaction_detail.html', context)
 
+
+@login_required
 def transaction_form(request):
+    """
+    Renders a form for creating a transaction and POSTing it.
+    """
     user=request.user
     User = get_user_model()
 
+
     def get_queryset():
+        """
+        Retrieves the queryset of tenants and properties based on the user's
+        role and related properties.
+        """
         if user.role == 1:
             properties = user.properties.filter(landlord=user)
         elif user.role == 2:
