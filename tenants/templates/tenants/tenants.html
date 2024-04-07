@@ -1,93 +1,17 @@
 {% extends "base.html" %} {% load render_table from django_tables2 %} {% load
-i18n %} {% load crispy_forms_tags %} {% block content %}
-<div class="row">
-  <!-- Rent card -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-success shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-              Total tenants
-            </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ tenants.count }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Overdue card -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-danger shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-              Tenants with overdue rent
-            </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {% if tenants.outstanding_rent != 0 in tenants.outstanding_rent %}
-                {{ tenants.outstanding_rent.count }}
-              {% else %}
-                0
-              {% endif %}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Expenses -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-              Total properties
-            </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ properties.count }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Invoices card -->
-  <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-warning shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-              Invoices
-            </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ expense.count }}</div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+i18n %} {% load crispy_forms_tags %} 
+{% block head_title %}Tenants{% endblock head_title %}
+
+{% block topbar %}
+
+{% endblock topbar %}
+{% block content %}
+<div class="d-sm-flexmb-4">
+  <h1 class="h3 mb-0 text-gray-800">Tenants</h1>
+  <p class="mb-3">All active and inactive tenants</p>
+
 </div>
+
 
 <div class="card shadow mb-4">
   <div class="card-header">

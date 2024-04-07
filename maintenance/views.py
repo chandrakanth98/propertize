@@ -161,7 +161,10 @@ class ContractorTableView(SingleTableMixin, FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        properties = user.properties.all()
+        contractors = User.objects.filter(assigned_contractor__in=properties).distinct()
         form = WorkerCodeForm(user=user)
+        context['contractors'] = contractors
         context['form'] = form
 
         return context

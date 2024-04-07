@@ -83,6 +83,6 @@ class CreateTransactionForm(forms.ModelForm):
             ),
             Field('due_date', css_class='form-control'),
             Field('note', css_class='form-control'),
-            Submit('form', 'Create Code', css_class='btn btn-primary col-12 mt-1')
+            Submit('form', 'Create', css_class='btn btn-primary col-12 mt-1')
 
             )

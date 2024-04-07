@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% block head_title %}Profile{% endblock head_title %}
+
+{% block topbar %}
+{% endblock topbar %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-4">
@@ -19,15 +23,15 @@
                                     <p class="card-text">
                                         <strong>Email:</strong> {{ profile.email }}<br>
                                         <strong>Phone:</strong> {{ profile.phone_number }}<br>
-                                        <strong>Role:</strong> 
+                                         
                                         {% if profile.role == 3 %} 
-                                            Tenant
+                                            <strong>Tenant</strong>
                                         {% elif profile.role == 2 %}
-                                            Contractor
+                                            <strong>Contractor</strong>
                                         {% elif profile.role == 1 %}
-                                            Landlord
+                                            <strong>Landlord</strong>
                                         {% else %}
-                                            anon
+                                            <strong>????</strong>
                                         {% endif %}
                                     </p>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
@@ -39,6 +43,7 @@
                             </div>
                         </div>
                         <!-- PROFILE INFO CARD-->
+                        {% if profile.role != 2 %}
                         <a href="{% url 'property' property_id=profile.assigned_property.property_id %}" class="card-link">
                             <div class="col">
                                 <div class="card shadow-sm mb-3">
@@ -61,13 +66,17 @@
                                     </div>
                                 </div>
                             </div>
+                        {% endif %}
                     </div>
         <div class="col-lg-8">
+            
             <!-- LEASE INFO CARD-->
+            {% if profile.role != 2 %}
                         <div class="col">
                             <div class="card shadow-sm mb-3 py-2">
                                 <div class="card-body">
                                     <div class="row">
+                                        {% if profile.role == 3 %}
                                         <div class="col-md-4">
                                             <h5 class="card-title">Lease Information</h5>
                                             <p class="card-text">
@@ -84,6 +93,7 @@
                                             {% endif %}
                                             
                                         </div>
+                                        {% endif %}
                                         <!-- Latest Transactions -->
                                         <div class="col-md-8">
                                             <h5 class="card-title">Latest Invoices</h5>
@@ -126,12 +136,15 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
+                            {% if profile.role != 2 %}
                             <!-- MAINTENANCE REQUESTS CARD-->
                             <div class="card shadow-sm mb-3 py-2">
                                 <div class="card-body">
                                     <div class="row">
+                                        
                                         <div class="col-md-4">
-                                            <h5 class="card-title">Contact Information</h5>
+                                            <h5 class="card-title">Property Contacts</h5>
                                             <p class="card-text">
                                                 <hr>
                                                 <strong>Landlord:</strong> {{ profile.assigned_property.landlord.first_name }} {{ profile.assigned_property.landlord.last_name }}<br>
@@ -139,6 +152,7 @@
                                                 <strong>Email:</strong> {{ profile.assigned_property.landlord.email }}<br><br>
                                             </p>
                                         </div>
+                                        
                                         <!-- Latest Requests -->
                                         <div class="col-md-8">
                                             <h5 class="card-title">Latest Maintenace Requests</h5>
@@ -187,6 +201,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
 
 

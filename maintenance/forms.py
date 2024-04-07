@@ -143,5 +143,5 @@ class WorkerCodeForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('code_name', css_class='form-control'),
             Field('assigned_properties', css_class='form-control'),
-            Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
+            Submit('form', 'Create', css_class='btn btn-primary col-12 mt-1'),
         )

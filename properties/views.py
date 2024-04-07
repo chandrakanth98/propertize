@@ -99,7 +99,8 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
     def post(self, request, property_id):
         form1 = PropertyNoticeForm(request.POST or None)
         form2 = EditProperty(request.POST or None, instance=Property.objects.get(pk=property_id))
-        if property.landlord == request.user:
+        property_instance = Property.objects.get(pk=property_id)
+        if property_instance.landlord == request.user:
             if 'form1' in request.POST and form1.is_valid():
                 form1.save()
                 messages.success(request, 'Notice successfully posted!')

@@ -1,7 +1,21 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% load crispy_forms_tags %}
+{% block head_title %}Properties{% endblock head_title %}
+
+{% block topbar %}
+    <div class="row ml-2">
+        <div class="col-6">
+            <h1 class="h3 mb-1 text-gray-800">Properties</h1>
+        </div>
+    </div>
+{% endblock topbar %}
 {% block content %}
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="h3 mb-1 text-gray-800">Properties</h1>
+    </div>
+</div>
 
 <div class="container mt-3">
     <div class="row">

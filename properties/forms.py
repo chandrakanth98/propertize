@@ -39,19 +39,24 @@ class PropertyNoticeForm(forms.ModelForm):
         )
 
 class EditProperty(forms.ModelForm):
+    assigned_contractor = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}))
     class Meta:
         model = Property
-        fields = ['name', 'address', 'zip_code', 'city', 'details', 'featured_image']
+        fields = ['name', 'address', 'zip_code', 'city', 'details', 'featured_image', 'assigned_contractor']
         css = {"all": ["form-control form-control-user"]}
     
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if self.instance:
+            self.fields['assigned_contractor'].queryset = self.instance.assigned_contractor.all()
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'edit-property-form'
         self.helper.form_show_errors = True
         self.helper.layout = Layout(
+            Field('assigned_contractor', css_class='form-control'),
             Field('name', css_class='form-control'),
             Row(
             Div(

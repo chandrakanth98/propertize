@@ -42,6 +42,7 @@ class WorkerCodeTable(tables.Table):
 class ContractorTable(tables.Table):
     first_name = tables.Column(verbose_name='First Name', accessor='first_name')
     last_name = tables.Column(verbose_name='Last Name', accessor='last_name')
+    change = tables.TemplateColumn("<a class='text-dark profile-btn' href='{% url 'user_profile' user_id=record.pk %}'><i class='fa fa-cog'></i></a>", verbose_name='')
     
 
 
@@ -52,6 +53,6 @@ class ContractorTable(tables.Table):
             "class": "table table-hover",
             'thead': {"class": ""}
             }
-        fields = ("role", "first_name", "last_name", "email", "phone_number", "assigned_contractor",)
+        fields = ("change","role", "first_name", "last_name", "email", "phone_number", "assigned_contractor",)
 
 

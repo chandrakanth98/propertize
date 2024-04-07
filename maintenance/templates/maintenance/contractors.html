@@ -1,11 +1,16 @@
 {% extends "base.html" %} {% load render_table from django_tables2 %} {% load
-i18n %} {% load crispy_forms_tags %} {% block content %}
-
+i18n %} {% load crispy_forms_tags %} 
+{% block head_title %}Contractors{% endblock head_title %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center ml-2">
+    <div>
+        <h1 class="h3 mb-1 text-gray-800">Active Contractors</h1>
+        <p class="ml-1 mb-3">Edit Property to remove assigned contractors</p>
+    </div>
+</div>
 
 <div class="card shadow mb-4">
-    <div class="card-header">
-        <h6 class="m-0 font-weight-bold text-primary">Contractors</h6>
-    </div>
+
     <div class="card-body">
 
         <form class="d-sm-inline-block form-inline mr-auto my-2">
