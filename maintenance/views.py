@@ -13,9 +13,6 @@ from properties.models import Property
 from django.contrib.auth.decorators import login_required
 User = get_user_model()
 
-# Create your views here.
-
-
 
 class MaintenanceTableView(SingleTableMixin, FilterView):
     """
@@ -27,17 +24,22 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
     paginate_by = 10
     template_name = 'maintenance/maintenance.html'
 
+
     def get_queryset(self):
         user = self.request.user
         if user.role == 1:
             for property in user.properties.all():
-                maintenance_requests = MaintenanceRequest.objects.filter(property=property)
-                ordered_requests = maintenance_requests.order_by('-request_date')
+                maintenance_requests = MaintenanceRequest.objects.filter(
+                    property=property)
+                ordered_requests = maintenance_requests.order_by(
+                    '-request_date')
                 return ordered_requests
 
         elif user.role == 2:
-            assigned_properties = Property.objects.filter(assigned_contractor=user)
-            maintenance_requests = MaintenanceRequest.objects.filter(property__in=assigned_properties)
+            assigned_properties = Property.objects.filter(
+                assigned_contractor=user)
+            maintenance_requests = MaintenanceRequest.objects.filter(
+                property__in=assigned_properties)
             ordered_requests = maintenance_requests.order_by('-request_date')
             return ordered_requests
 
@@ -66,12 +68,15 @@ def maintenance_request(request, request_id):
     contractors = maintenance_request.property.assigned_contractor.all()
     print("Contractors:", contractors)
 
-    if request.user != maintenance_request.submitted_by and request.user != maintenance_request.property.landlord and request.user not in contractors:
+    if request.user not in [
+        maintenance_request.submitted_by, maintenance_request.property.landlord, *contractors]:
         return HttpResponseNotFound()
     else:
-        form = EditMaintenanceForm(instance=maintenance_request, contractors=contractors, user=user)
+        form = EditMaintenanceForm(
+            instance=maintenance_request, contractors=contractors, user=user)
         if request.method == 'POST':
-            form = EditMaintenanceForm(request.POST, instance=maintenance_request, contractors=contractors)
+            form = EditMaintenanceForm(
+                request.POST, instance=maintenance_request, contractors=contractors)
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Maintenance request updated')
@@ -80,8 +85,10 @@ def maintenance_request(request, request_id):
                 messages.warning(request, 'An error occurred')
                 print(form.errors)
                 return redirect('maintenance_request', request_id=request_id)
+    
+    context = {'mr': maintenance_request, 'form': form, 'user': user}
 
-    return render(request, 'maintenance/maintenance_request.html', {'mr': maintenance_request, 'form': form, 'user': user})
+    return render(request, 'maintenance/maintenance_request.html', context)
 
 
 @login_required
@@ -142,7 +149,6 @@ def tenant_maintenance_request(request, user_id):
     return render(request, 'maintenance/maintenance_user_request.html', context)
 
 
-
 class WorkerTableView(SingleTableMixin, FilterView):
     """
     A view that displays a table of contractor codes and form to create them.
@@ -152,11 +158,13 @@ class WorkerTableView(SingleTableMixin, FilterView):
     filterset_class = WorkerFilter
     paginate_by = 5
 
+
     def get_queryset(self):
         user = self.request.user
         codes = Worker.objects.filter(assigned_properties__landlord=user).distinct()
         ordered_codes = codes.order_by('-created_on')
         return ordered_codes
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -179,7 +187,6 @@ class WorkerTableView(SingleTableMixin, FilterView):
         return render(request, 'maintenance/workers.html', context)
     
 
-
 class ContractorTableView(SingleTableMixin, FilterView):
     """
     A view that renders a table of contractors related to the user.
@@ -189,12 +196,14 @@ class ContractorTableView(SingleTableMixin, FilterView):
     filterset_class = ContractorFilter
     paginate_by = 10
 
+
     def get_queryset(self):
         user = self.request.user
         properties = user.properties.all()
         contractors = User.objects.filter(assigned_contractor__in=properties).distinct()
         ordered_contractors = contractors.order_by('first_name')
         return ordered_contractors
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
