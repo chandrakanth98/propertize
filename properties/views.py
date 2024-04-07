@@ -20,7 +20,7 @@ def properties(request):
 
 
     if request.user.role == 1:
-        properties = Property.objects.filter(landlord=request.user)
+        properties = Property.objects.filter(landlord=request.user).order_by('name')
         if request.method == 'POST':
             post = request.POST.copy()
             post['landlord'] = request.user.user_id
@@ -68,16 +68,13 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
 
     def get_queryset(self):
         property_id = self.kwargs.get('property_id')
-        properties = Property.objects.filter(property_id=property_id)
-        tenant_objects = Tenant.objects.none()
-
-        for property in properties:
-            tenants_of_property = property.tenants.all()
-            tenant_objects |= Tenant.objects.filter(resident__in=tenants_of_property)
-            active_tenants = tenant_objects.filter(is_active=True)
-
+        property_instance = get_object_or_404(Property, pk=property_id)
+        
+        tenants_of_property = property_instance.tenants.all()
+        active_tenants = Tenant.objects.filter(resident__in=tenants_of_property, is_active=True)
+        
         ordered_tenants = active_tenants.order_by('resident__last_name')
-
+        
         return ordered_tenants
     
  
@@ -97,14 +94,16 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         return context
     
     def post(self, request, property_id):
-        form1 = PropertyNoticeForm(request.POST or None)
-        form2 = EditProperty(request.POST or None, instance=Property.objects.get(pk=property_id))
+        form1 = PropertyNoticeForm(request.POST)
         property_instance = Property.objects.get(pk=property_id)
+        form2 = EditProperty(request.POST, instance=property_instance)
         if property_instance.landlord == request.user:
+
             if 'form1' in request.POST and form1.is_valid():
                 form1.save()
                 messages.success(request, 'Notice successfully posted!')
                 return redirect('property', property_id=property_id)
+            
             elif 'form2' in request.POST and form2.is_valid():
                 image = request.FILES.get('featured_image')
                 if image:
@@ -116,7 +115,7 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         else:
             messages.error(request, 'You can only edit your own properties!')
 
-            context = self.get_context_data()
-            context['form'] = form1
-            context['edit_form'] = form2
-            return render(request, self.template_name, context)
+        context = self.get_context_data()
+        context['form'] = form1
+        context['edit_form'] = form2
+        return render(request, self.template_name, context)

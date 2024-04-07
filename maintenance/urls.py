@@ -9,4 +9,5 @@ urlpatterns = [
     path('request/tenant/<int:user_id>', views.tenant_maintenance_request, name='tenant_maintenance_request'),
     path('worker/', views.WorkerTableView.as_view(), name='workers'),
     path('contractor/', views.ContractorTableView.as_view(), name='contractors'),
+    path('delete/<int:code_id>', views.delete_invitation_contractor, name='delete_invitation_contractor'),
 ]

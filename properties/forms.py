@@ -2,6 +2,7 @@ from django import forms
 from properties.models import PropertyNotice, Property
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Row, Div, Submit, HTML
+from django.contrib.auth import get_user_model
 
 class PropertyNoticeForm(forms.ModelForm):
     
@@ -39,17 +40,21 @@ class PropertyNoticeForm(forms.ModelForm):
         )
 
 class EditProperty(forms.ModelForm):
-    assigned_contractor = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}))
     class Meta:
         model = Property
         fields = ['name', 'address', 'zip_code', 'city', 'details', 'featured_image', 'assigned_contractor']
         css = {"all": ["form-control form-control-user"]}
+        widgets = {
+            'assigned_contractor': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        }
     
     def __init__(self, *args, user=None, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(EditProperty, self).__init__(*args, **kwargs)
 
-        if self.instance:
-            self.fields['assigned_contractor'].queryset = self.instance.assigned_contractor.all()
+        User = get_user_model()
+        self.fields['assigned_contractor'].queryset = self.instance.assigned_contractor.all() if self.instance else User.objects.none()
+
+        
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -86,6 +91,7 @@ class EditProperty(forms.ModelForm):
             css_class="modal-footer d-flex justify-content-between align-items-center row"
             ), 
         )
+    
 
 class addProperty(forms.ModelForm):
     class Meta:

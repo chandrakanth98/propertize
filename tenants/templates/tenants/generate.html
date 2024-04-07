@@ -98,16 +98,10 @@
 {% block extrajs %}
 <script>
     $(document).ready(function () {
-        // When the delete link is clicked...
         $('.delete-link').on('click', function () {
-            // Get the URL from the data-url attribute
             var url = $(this).data('url');
-            // Get the code from the data-code attribute
             var code = $(this).data('code');
-
-            // Update the action attribute of the form in the modal
             $('#deleteInvitation form').attr('action', url);
-            // Update the code in the modal
             $('#deleteInvitation .text-danger').text(code);
         });
     });

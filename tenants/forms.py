@@ -138,4 +138,21 @@ class EditTenantForm(forms.ModelForm):
                 css_class='modal-footer',
             ),
         )
+
+class AddContractorCodeForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Code'}))
+    class Meta:
+        fields = ['code']
+        css = {"all": ["form-control form-control-user"]}
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'contractor-form'
+        self.helper.form_show_errors = True
+        self.helper.layout = Layout(
+        Field('code', css_class='form-control'),
+        Submit('add_contractor', 'Submit', css_class='btn btn-primary col-12 mt-1'),
+        )
         

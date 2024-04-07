@@ -34,6 +34,9 @@ i18n %} {% load crispy_forms_tags %}
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
           </button>
+          <button type="reset" onclick="window.location.href=window.location.pathname;" class="btn btn-secondary">
+            <i class="fas fa-undo fa-sm"></i>
+          </button>
         </div>
       </div>
 
@@ -49,5 +52,17 @@ i18n %} {% load crispy_forms_tags %}
 {% endblock %}
 
 {% block extrajs %}
-
+<script>
+  $(document).ready(function () {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('query') || urlParams.has('status')) {
+      $('#collapseRequests').collapse('show');
+      setTimeout(function () {
+        $('html, body').animate({
+          scrollTop: $("#collapseRequests").offset().top
+        }, 0);
+      }, 0);
+    }
+  });
+</script>
 {% endblock extrajs %}

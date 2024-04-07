@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import InvitationCodeForm, EditProfileForm, EditTenantForm
+from .forms import InvitationCodeForm, EditProfileForm, EditTenantForm, AddContractorCodeForm
 from django.contrib.auth import get_user_model
 from .tables import TenantTable, InvitationCodeTable
 from properties.models import Tenant, Property, InvitationCode
@@ -13,6 +13,7 @@ from django.contrib import messages
 import cloudinary.uploader
 from django.utils.safestring import mark_safe
 from finance.models import Transaction
+from maintenance.models import Worker
 
 User = get_user_model()
 
@@ -72,7 +73,9 @@ def profile(request, user_id):
     form1 = EditProfileForm(instance=profile)
     tenant = Tenant.objects.filter(resident=user_id).first()
     tenant_form = EditTenantForm(instance=tenant)
+    add_contractor = AddContractorCodeForm()
 
+    
     if request.method == 'POST':
         if request.user != profile and profile.assigned_property.landlord != request.user:
             messages.error(request, 'You can only edit your own profile!')
@@ -80,6 +83,7 @@ def profile(request, user_id):
         else:
             form1 = EditProfileForm(request.POST, instance=profile)
             tenant_form = EditTenantForm(request.POST, instance=tenant)
+            add_contractor = AddContractorCodeForm(request.POST)
             if 'form1' in request.POST and form1.is_valid():
                 image = request.FILES.get('profile_image')
                 if image:
@@ -96,6 +100,33 @@ def profile(request, user_id):
                     tenant_form.save()
                     messages.success(request, 'Tenant details successfully updated!')
                     return redirect('user_profile', user_id=user_id)
+            elif 'add_contractor' in request.POST and add_contractor.is_valid():
+                if profile.role == 2:
+                    try:
+                        worker_code = add_contractor.cleaned_data['code']
+                        worker = Worker.objects.get(code=worker_code)
+                        if worker.used:
+                            messages.warning(request, 'Invitation code already used!')
+                            return redirect('user_profile', user_id=user_id)
+                        
+                        user = request.user
+                        for property in worker.assigned_properties.all():
+                            if property.assigned_contractor.filter(pk=user_id).exists():
+                                messages.warning(request, f'You are already assigned to {property.name}!')
+                            else:
+                                property.assigned_contractor.add(user)
+                                worker.used = True
+                                worker.save()
+                                messages.success(request, f'You have been successfully assigned to {property.name}!')
+                        return redirect('user_profile', user_id=user_id)
+                        
+                    except Worker.DoesNotExist:
+                        messages.warning(request, 'Invalid invitation code')
+                        return render(request, 'user_profile', user_id=user_id)
+                else:
+                    messages.error(request, 'You do not have permission to add contractor codes!')
+                    return redirect('user_profile', user_id=user_id)
+
 
 
     context = {'profile': profile,
@@ -103,7 +134,8 @@ def profile(request, user_id):
                'transactions': transactions,
                'maintenance': maintenance_requests,
                'form1': form1,
-               'tenant_form': tenant_form}
+               'tenant_form': tenant_form,
+               'add_contractor': add_contractor}
     
     return render(request,
                   'tenants/profile.html',

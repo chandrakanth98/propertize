@@ -8,6 +8,7 @@ class TenantTable(tables.Table):
     is_active = tables.BooleanColumn(verbose_name='Active', accessor='is_active')
     property = tables.Column(verbose_name='Property', accessor='resident.assigned_property.name')
     user_id = tables.Column(verbose_name='User ID', accessor='resident.user_id')
+    outstanding_rent = tables.Column(verbose_name='Outstanding')
 
     class Meta:
         model = Tenant
@@ -16,8 +17,8 @@ class TenantTable(tables.Table):
             "class": "table table-hover",
             'thead': {"class": ""}
             }
-        sequence = ("is_active", "user_id", "full_name", "property", "apartment", "lease_end", "change")
-        exclude = ("tenant_id", "resident", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due", "rent_amount", "outstanding_rent", "overdue_fee_days", "overdue")
+        sequence = ("is_active", "user_id", "full_name", "property", "apartment", "outstanding_rent", "lease_end", "change")
+        exclude = ("tenant_id", "resident", "current_rent_period_start", "current_rent_period_end", "overdue_fee", "next_rent_due", "rent_amount", "overdue_fee_days", "overdue")
 
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"

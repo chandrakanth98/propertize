@@ -36,6 +36,7 @@ class MaintenanceForm(forms.ModelForm):
             Field('description', css_class='form-control', rows=5),
             Field('urgent', css_class='form-control'),
             Submit('form', 'Save', css_class='btn btn-primary col-12 mt-1'),
+            HTML('<small class="text-muted">* Contractor will contact you if needed for more information or scheduling visit.</small>')
         )
 
 class EditMaintenanceForm(forms.ModelForm):

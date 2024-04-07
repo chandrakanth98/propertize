@@ -27,6 +27,7 @@ class TenantFilter(django_filters.FilterSet):
             ).filter(
             Q(resident__first_name__icontains=value) |
               Q(resident__last_name__icontains=value) | Q(apartment__icontains=value) | Q(full_name__icontains=value)
+              | Q(resident__assigned_property__name__icontains=value)
         )
     
 class InvitationCodeFilter(django_filters.FilterSet):

@@ -32,7 +32,8 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
         elif user.role == 2:
             assigned_properties = Property.objects.filter(assigned_contractor=user)
             maintenance_requests = MaintenanceRequest.objects.filter(property__in=assigned_properties)
-            return maintenance_requests
+            ordered_requests = maintenance_requests.order_by('-request_date')
+            return ordered_requests
 
             
 
@@ -121,7 +122,7 @@ class WorkerTableView(SingleTableMixin, FilterView):
     def get_queryset(self):
         user = self.request.user
         codes = Worker.objects.filter(assigned_properties__landlord=user).distinct()
-        ordered_codes = codes.order_by('-used')
+        ordered_codes = codes.order_by('-created_on')
         return ordered_codes
 
     def get_context_data(self, **kwargs):
@@ -168,3 +169,14 @@ class ContractorTableView(SingleTableMixin, FilterView):
         context['form'] = form
 
         return context
+    
+def delete_invitation_contractor(request, code_id):
+    if request.user.role != 1:
+        messages.error(request, 'You do not have permission to delete invitation codes!')
+        return redirect('home')
+    else:
+        code = get_object_or_404(Worker, pk=code_id)
+        code.delete()
+        messages.success(request, 'Invitation code successfully deleted!')
+    
+    return redirect('workers')

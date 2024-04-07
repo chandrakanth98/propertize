@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import views
 from tenants.views import profile
-from properties.models import InvitationCode, Property
-from maintenance.models import Worker
+from properties.models import InvitationCode, Property, PropertyNotice
+from maintenance.models import Worker, MaintenanceRequest
 from tenants.models import Tenant
 from finance.models import Transaction
 from django.db.models import Sum
@@ -24,28 +24,37 @@ def home(request):
 
             properties = Property.objects.filter(landlord=user)
             tenants = Tenant.objects.none()
-            expense_trans = Transaction.objects.filter(property__in=properties, type=2, status__in=[0, 1])
-            income_trans = Transaction.objects.filter(property__in=properties, type=1, status__in=[0, 1])
-            income_total = income_trans.aggregate(amount_sum=Sum('amount'))['amount_sum']
+            transactions = Transaction.objects.filter(property__in=properties).order_by('-created_on')[:4]
+            expense_trans = Transaction.objects.filter(property__in=properties, type=2, status=0)
             expense_total = expense_trans.aggregate(amount_sum=Sum('amount'))['amount_sum']
 
-            income = round(income_total) if income_total else 0
             expense = round(expense_total) if expense_total else 0
 
+            latest_requests = MaintenanceRequest.objects.filter(property__in=properties).order_by('-request_date')[:4]
+            latest_notices = PropertyNotice.objects.filter(property__in=properties).order_by('-posted_at')[:4]
             for property in properties:
-                tenants |= property.tenants.all()
+                tenants = tenants.union(property.tenants.all())
+                
 
             overdue_total = 0
+            rent_total = 0
             for tenant in tenants:
                 for resident in tenant.resident.all():
-                    overdue_total += resident.outstanding_rent if resident.outstanding_rent else 0
+                    if resident.is_active:
+                        overdue_total += resident.outstanding_rent if resident.outstanding_rent else 0
+                        rent_total += resident.rent_amount if resident.rent_amount else 0
 
+            
+            rent_total = round(rent_total) if rent_total else 0
             overdue = round(overdue_total) if overdue_total else 0
 
             context = {
+                'transactions': transactions,
+                'latest_notices': latest_notices,
+                'latest_requests': latest_requests,
                 'invoice': expense_trans,
                 'overdue': overdue,
-                'income': income,
+                'rent_total': rent_total,
                 'expense': expense,
                 'tenants': tenants,
                 'properties': properties,

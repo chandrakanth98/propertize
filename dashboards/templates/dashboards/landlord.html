@@ -15,9 +15,9 @@
           <div class="col mr-2">
             <div
               class="text-xs font-weight-bold text-success text-uppercase mb-1">
-              Rent income
+              Total Rent
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ income }}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ rent_total }}</div>
           </div>
           <div class="col-auto">
             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -84,10 +84,156 @@
     </div>
   </div>
 </div>
+
+
+<!-- DASHBOARD -->
+<div class="row justify-content-center mt-3">
+  <br>
+  <br>
+
+  <!-- Latest Requests -->
+  <div class="col-lg-4 border-right border-dark">
+    <h1 class="h3 mb-1 text-gray-800">Latest Requests</h1>
+    <br>
+    <br>
+    {% for r in latest_requests %}
+    <!-- Collapsable Card -->
+    <div
+      class="card mb-1 py-3 {% if r.status == 3 %}border-left-danger{% else %}border-left-secondary{% endif %}">
+      <!-- Card Header - Accordion -->
+      <a href="#collapseCardRequest{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3"
+        data-toggle="collapse" role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}"
+        aria-controls="collapseCardRequest{{ forloop.counter }}">
+        <h6 class="m-0 font-weight-bold col-11 pr-3">{{ r.request_date }}
+          <br><small class="text-muted">
+            {{ r.submitted_by.first_name }} {{ r.submitted_by.last_name }}
+          </small>
+          {% if r.contractor %}
+          <div class="h6 mb-0 text-muted text-xs"><strong>Contractor: {{ r.contractor.first_name }} {{ r.contractor.last_name }}</strong></div>
+          {% else %}
+          <div class="h6 mb-0 text-muted text-xs"><strong class="text-danger">No contractor assigned</strong></div>
+          {% endif %}
+        </h6>
+        <i class="fas fa-angle-down col-1 pl-3"></i>
+      </a>
+      <!-- Card Content - Collapse -->
+      <div class="collapse" id="collapseCardRequest{{ forloop.counter }}">
+        <div class="card-body px-3 py-2">
+          <hr>
+          <p class="mb-0">
+            {% if r.urgent == 1 %}
+            <strong class="text-danger">URGENT</strong><br>
+            {% endif %}
+            <strong>Status:</strong> {{ r.get_status_display }}<br>
+            <strong>Location:</strong> {{ r.location }}<br>
+            {% if r.scheduled_date %}
+            <strong>Scheduled:</strong> {{ r.scheduled_date }}
+            {% endif %}
+            <hr>
+            
+          <a href="{% url 'maintenance_request' request_id=r.request_id %}" class="btn btn-primary" target="_self">Open
+            Request</a>
+  
+          </p>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No maintenance requests found.</p>
+    {% endfor %}
+  </div>
+
+
+  <!-- Latest Notices -->
+  <div class="col-lg-4 border-right border-dark ">
+    <h1 class="h3 mb-1 text-gray-800">Latest Notices</h1>
+    <br>
+    <br>
+    {% for notice in latest_notices %}
+    <!-- Collapsable Card -->
+    <div class="card mb-1 py-3 border-left-secondary">
+      <!-- Card Header - Accordion -->
+      <a href="#collapseCardNotice{{ forloop.counter }}"
+        class="card-link d-flex align-items-center py-0 px-3"
+        data-toggle="collapse" role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}"
+        aria-controls="collapseCardNotice{{ forloop.counter }}">
+        <h6 class="m-0 font-weight-bold col-11 pr-3">{{ notice.title }}<br><small class="text-muted">
+          {{ notice.posted_by }} - {{ notice.posted_at }}
+        </small></h6>
+      
+        <i class="fas fa-angle-down col-1 pl-3"></i>
+      </a>
+      <!-- Card Content - Collapse -->
+      <div class="collapse " id="collapseCardNotice{{ forloop.counter }}">
+        <div class="card-body px-3 py-2">
+          <hr>
+          <p class="mb-0">{{ notice.body }}</p>
+          <p class="mb-0">
+            <small class="text-muted">
+              {{ notice.property }}
+            </small>
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+
+
+
+  <!-- Latest Transactions -->
+  <div class="col-lg-4">
+    <h1 class="h3 mb-1 text-gray-800">Latest Transactions</h1>
+    <br>
+    <br>
+{% for transaction in transactions %}
+  <!-- Collapsable Card -->
+  <div
+    class="card mb-1 py-3 border-left-secondary">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardTransaction{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3"
+      data-toggle="collapse" role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}"
+      aria-controls="collapseCardTransaction{{ forloop.counter }}">
+      <h6 class="m-0 font-weight-bold col-11 pr-3">Invoice #{{ transaction.transaction_id }}
+        <br><small class="text-muted">
+        {{ transaction.user.first_name }} {{ transaction.user.last_name }} - ${{ transaction.amount }}
+      </small>
+      <br><small class="text-muted">
+        <strong>{{ transaction.created_on }}</strong>
+      </small>
+      </h6>
+      <i class="fas fa-angle-down col-1 pl-3"></i>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseCardTransaction{{ forloop.counter }}">
+      <div class="card-body px-3 py-2">
+        <hr>
+        <p class="mb-0">
+          <strong>Status:</strong> {{ transaction.get_status_display }}<br>
+          <strong>Due date:</strong> {{ transaction.due_date }}<br>
+          <strong>Amount:</strong> {{ transaction.amount }}<br>
+          <strong>Note:</strong> {{ transaction.note }}<br>
+  
+        </p>
+        <br>
+        <a class="btn btn-primary" href="{% url 'transaction_detail' transaction_id=transaction.transaction_id %}">
+          View Invoice
+        </a>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p>No transactions found.</p>
+  {% endfor %}
+  </div>
+
+
+</div>
 {% else %}
 <h2>You are not permitted to view this page</h2>
 {% endif %}
-<h1 class="text-danger font-weight-bold">CRISPY FORMS FöR INPUT VALIDATION LOGIN M.M</h1>
 
 {% endblock content %}
 

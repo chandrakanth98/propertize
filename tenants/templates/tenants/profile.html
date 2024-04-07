@@ -37,11 +37,37 @@
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
                                         Edit Profile
                                     </button>
+                                    {% if user.role == 2 %}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addContractorCodeModal">
+                                        Add contractor code
+                                    </button>
+                                    
+                                    {% endif %}
                                     
                                     
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Add contractor code -->
+                        <div class="modal fade" id="addContractorCodeModal" tabindex="-1" role="dialog"
+                            aria-labelledby="addContractorCodeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addContractorCodeModalLabel">Add code</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                        
+                                        {% crispy add_contractor add_contractor.helper %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- PROFILE INFO CARD-->
                         {% if profile.role != 2 %}
                         <a href="{% url 'property' property_id=profile.assigned_property.property_id %}" class="card-link">
