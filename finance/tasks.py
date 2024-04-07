@@ -30,7 +30,7 @@ def generate_rent_invoices():
         due_date = current_month_end
 
         previous_month = current_month_start - timedelta(days=1)
-        unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0)
+        unpaid_transactions = Transaction.objects.filter(user=tenant.resident, due_date__year=previous_month.year, due_date__month=previous_month.month, status=0, note__startswith="Rent invoice for")
 
         if unpaid_transactions.exists():
             for transaction in unpaid_transactions:

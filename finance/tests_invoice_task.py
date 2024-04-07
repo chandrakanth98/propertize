@@ -122,7 +122,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=500,
             type=1,
-            note='Unpaid transaction',
+            note='Rent invoice for',
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
@@ -187,7 +187,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=500,
             type=1,
-            note='Unpaid transaction 1',
+            note='Rent invoice for',
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1) - timedelta(days=60)
@@ -198,7 +198,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=300,
             type=1,
-            note='Unpaid transaction 2',
+            note='Rent invoice for',
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
@@ -309,7 +309,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=1000,
             type=1,
-            note='Unpaid transaction',
+            note='Rent invoice for',
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
@@ -341,7 +341,7 @@ class GenerateRentInvoicesTest(TestCase):
             status=0,
             amount=1000,
             type=1,
-            note='Unpaid transaction',
+            note='Rent invoice for',
             property=self.property,
             overdue_fee=0,
             transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
@@ -353,3 +353,41 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertIsNotNone(new_invoice)
         self.assertEqual(new_invoice.amount, 1000 + overdue_fee_days_tenant.rent_amount + overdue_fee_days_tenant.overdue_fee)
         self.assertTrue('Outstanding Balance' in new_invoice.note)
+
+
+    def test_startswith_condition(self):
+        """
+        Test case to verify the behavior when a tenant has an unpaid transaction
+        with a note that does not start with 'Rent invoice for'.
+        """
+        self.tenant.delete()
+        startswith_tenant = Tenant.objects.create(
+            resident=self.tenant_user,
+            lease_end=datetime.now().date() + timedelta(days=365),
+            rent_amount=1000,
+            outstanding_rent=0,
+            overdue_fee=50,
+            next_rent_due=datetime.now().date(),
+            apartment='1O',
+            is_active=True
+        )
+        Transaction.objects.create(
+            user=startswith_tenant.resident,
+            due_date=datetime.now().date() - timedelta(days=30),
+            status=0,
+            amount=1000,
+            type=1,
+            note='Unpaid transaction',
+            property=self.property,
+            overdue_fee=0,
+            transaction_month=datetime.now().date().replace(day=1) - timedelta(days=30)
+        )
+        generate_rent_invoices()
+        transactions = Transaction.objects.filter(user=startswith_tenant.resident)
+        self.assertEqual(transactions.count(), 2)
+        self.assertEqual(transactions.filter(note__startswith="Rent invoice for").count(), 1)
+        self.assertEqual(transactions.filter(note__startswith="Rent invoice for", amount=1000).count(), 1)
+        self.assertEqual(transactions.filter(note='Unpaid transaction').count(), 1)
+        self.assertEqual(transactions.filter(note='Unpaid transaction', amount=1000).count(), 1)
+
+
