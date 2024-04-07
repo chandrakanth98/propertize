@@ -48,30 +48,34 @@
                                 <p>No tenants for this property</p>
                             {% endif %}
                             <hr>
-                            {% for notice in latest_notices|slice:":3" %}
-                            <!-- Collapsable Card -->
-                            <div class="card mb-1 py-3 {% if notice.important %}border-left-danger {% else %}border-left-success{% endif %}">
-                                <!-- Card Header - Accordion -->
-                                <a href="#collapseCardNotice{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3 {% if notice.important %}text-danger{% else %}{% endif %}" 
-                                    data-toggle="collapse"
-                                    role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardNotice{{ forloop.counter }}">
-                                    <h6 class="m-0 font-weight-bold col-11 pr-3">{{ notice.title }}</h6>
-                                    <i class="fas fa-angle-down col-1 pl-3"></i>
-                                </a>
-                                <!-- Card Content - Collapse -->
-                                <div class="collapse {% if forloop.first %}show{% endif %}" id="collapseCardNotice{{ forloop.counter }}">
-                                    <div class="card-body px-3 py-2">
-                                        <hr>
-                                        <p class="mb-0">{{ notice.body }}</p> <!-- Style the body -->
-                                        <p class="mb-0">
-                                            <small class="text-muted"> <!-- Style the metadata -->
-                                                {{ notice.posted_by }} - {{ notice.posted_at }}
-                                            </small>
-                                        </p>
+                            {% if latest_notices %}
+                                {% for notice in latest_notices|slice:":3" %}
+                                <!-- Collapsable Card -->
+                                <div class="card mb-1 py-3 {% if notice.important %}border-left-danger {% else %}border-left-success{% endif %}">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapseCardNotice{{ forloop.counter }}" class="card-link d-flex align-items-center py-0 px-3 {% if notice.important %}text-danger{% else %}{% endif %}" 
+                                        data-toggle="collapse"
+                                        role="button" aria-expanded="{{ forloop.first|yesno:'true,false' }}" aria-controls="collapseCardNotice{{ forloop.counter }}">
+                                        <h6 class="m-0 font-weight-bold col-11 pr-3">{{ notice.title }}</h6>
+                                        <i class="fas fa-angle-down col-1 pl-3"></i>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse {% if forloop.first %}show{% endif %}" id="collapseCardNotice{{ forloop.counter }}">
+                                        <div class="card-body px-3 py-2">
+                                            <hr>
+                                            <p class="mb-0">{{ notice.body }}</p> <!-- Style the body -->
+                                            <p class="mb-0">
+                                                <small class="text-muted"> <!-- Style the metadata -->
+                                                    {{ notice.posted_by }} - {{ notice.posted_at }}
+                                                </small>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            {% endfor %}
+                                {% endfor %}
+                            {% else %}
+                                <p>No notices for this property</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
