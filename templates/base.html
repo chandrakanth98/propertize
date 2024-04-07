@@ -84,7 +84,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTenants"
                     aria-expanded="true" aria-controls="collapseTenants">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-user"></i>
                     <span>Tenants</span>
                 </a>
                 <div id="collapseTenants" class="collapse" aria-labelledby="headingTenants" data-parent="#accordionSidebar">
@@ -108,7 +108,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
                     aria-expanded="true" aria-controls="collapseMaintenance">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-toolbox"></i>
                     <span>Requests</span>
                 </a>
                 <div id="collapseMaintenance" class="collapse" aria-labelledby="headingMaintenance" data-parent="#accordionSidebar">
@@ -124,7 +124,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContractors" aria-expanded="true"
                     aria-controls="collapseContractors">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-hard-hat"></i>
                     <span>Contractors</span>
                 </a>
                 <div id="collapseContractors" class="collapse" aria-labelledby="headingContractors" data-parent="#accordionSidebar">
@@ -146,13 +146,13 @@
             <!-- Nav Item - Transactions -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'transaction_list' %}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <i class="fas fa-money-check-alt"></i>
                     <span>Transactions</span></a>
             </li>
             <!-- Nav Item - Rent -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'transaction_form' %}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <i class="fas fa-file-invoice-dollar"></i>
                     <span>Create Invoice</span></a>
             </li>
 
@@ -167,14 +167,14 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
 
             <!-- Nav Item - Rent -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'transaction_list' %}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <i class="fas fa-money-check-alt"></i>
                     <span>Transactions</span></a>
             </li>
 
@@ -186,7 +186,7 @@
             <!-- Nav Item - Property -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'property' property_id=request.user.assigned_property.property_id %} ">
-                    <i class="fas fa-fw fa-user"></i>
+                    <i class="fas fa-fw fa-building"></i>
                     <span>Property</span></a>
             </li>
 
@@ -205,7 +205,7 @@
             <!-- Nav Item - Maintenance -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'maintenance'%}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-toolbox"></i>
                     <span>Maintenance</span></a>
             </li>
 
@@ -219,7 +219,7 @@
             <!-- Nav Item - Invoices -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'transaction_form' %}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <i class="fas fa-file-invoice-dollar"></i>
                     <span>Create Invoice</span></a>
             </li>
             
