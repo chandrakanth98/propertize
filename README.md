@@ -481,7 +481,7 @@ Prerequisites:
   - SECRET_KEY: (Your secret key)
   - DATABASE_URL: (Database url)
   - REDIS_TLS_URL: (redis server)
-  - CLOUNDINARY_URL: (cloudinary api url)
+  - CLOUDINARY_URL: (cloudinary api url)
 - Click the deploy tab
 - Scroll down to Connect to GitHub and sign in / authorize when prompted
 - In the search box, find the repositoy you want to deploy and click connect
