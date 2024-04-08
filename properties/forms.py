@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout, Field, Row, Div, Submit, HTML
 from django.contrib.auth import get_user_model
 
 class PropertyNoticeForm(forms.ModelForm):
-    
+
     class Meta:
         model = PropertyNotice
         fields = ['title', 'body', 'property', 'posted_by', 'important']
@@ -47,14 +47,12 @@ class EditProperty(forms.ModelForm):
         widgets = {
             'assigned_contractor': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
         }
-    
+
     def __init__(self, *args, user=None, **kwargs):
         super(EditProperty, self).__init__(*args, **kwargs)
 
         User = get_user_model()
         self.fields['assigned_contractor'].queryset = self.instance.assigned_contractor.all() if self.instance else User.objects.none()
-
-        
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -97,7 +95,7 @@ class addProperty(forms.ModelForm):
     class Meta:
         model = Property
         fields = ['landlord', 'name', 'address', 'zip_code', 'city', 'details', 'featured_image']
-    
+
     def __init__(self, *args, landlord=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['landlord'].initial = landlord

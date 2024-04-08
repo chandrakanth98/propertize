@@ -1,9 +1,10 @@
 from django import forms
+
+from tenants.models import Tenant
 from finance.models import Transaction
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Div, Submit, HTML
-from tenants.models import Tenant
 from django.contrib.auth import get_user_model
+from crispy_forms.layout import Layout, Field, Row, Div, Submit, HTML
 
 
 class EditTransactionForm(forms.ModelForm):
@@ -12,7 +13,7 @@ class EditTransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['status', 'due_date', 'amount', 'type']
         css = {"all": ["form-control form-control-user"]}
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -48,7 +49,7 @@ class CreateTransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['status', 'due_date', 'amount', 'type', 'property', 'user', 'note']
         css = {"all": ["form-control form-control-user"]}
-    
+
     def __init__(self, *args, user=None, tenants=None, properties=None, **kwargs):
         super().__init__(*args, **kwargs)
         if tenants is not None:

@@ -14,15 +14,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from properties.forms import PropertyNoticeForm, EditProperty, addProperty
 
 
-# Create your views here.
-
-
 @login_required
 def properties(request):
     """
     View function for displaying and creating properties.
     """
-    
     if request.user.role == 1:
         properties = Property.objects.filter(landlord=request.user).order_by('name')
         if request.method == 'POST':
@@ -47,7 +43,7 @@ def properties(request):
     else:
         messages.error(request, 'You do not have permission to create properties!')    
         form = None
-        
+
     context = {'form': form}
     return render(request, 'properties/properties.html', context)
 
@@ -73,7 +69,6 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
     View for displaying a specific property and table of tenants for that property.
     
     """
-
     table_class = CustomTenantTable
     filterset_class = TenantFilter
     paginate_by = 5
@@ -85,15 +80,14 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         """
         property_id = self.kwargs.get('property_id')
         property_instance = get_object_or_404(Property, pk=property_id)
-        
+
         tenants_of_property = property_instance.tenants.all()
         active_tenants = Tenant.objects.filter(resident__in=tenants_of_property, is_active=True)
-        
+
         ordered_tenants = active_tenants.order_by('resident__last_name')
-        
+
         return ordered_tenants
-    
- 
+
     def get_context_data(self, **kwargs):
         """
         Returns the context data for rendering the template.
@@ -110,7 +104,6 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
         context['latest_notices'] = latest_notices
         context['property_id'] = property_id
         return context
-    
 
     def post(self, request, property_id):
         """
@@ -125,7 +118,7 @@ class PropertyTenantTableView(SingleTableMixin, FilterView):
                 form1.save()
                 messages.success(request, 'Notice successfully posted!')
                 return redirect('property', property_id=property_id)
-            
+
             elif 'form2' in request.POST and form2.is_valid():
                 image = request.FILES.get('featured_image')
                 if image:

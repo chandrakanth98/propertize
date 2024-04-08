@@ -1,8 +1,9 @@
-from django.test import TestCase
-from datetime import datetime, timedelta
 from calendar import monthrange
+from datetime import datetime, timedelta
+
+from django.test import TestCase
 from tenants.models import Tenant
-from finance.models import Transaction 
+from finance.models import Transaction
 from properties.models import Property
 from django.contrib.auth import get_user_model
 from finance.tasks import generate_rent_invoices
@@ -57,7 +58,6 @@ class GenerateRentInvoicesTest(TestCase):
         transaction = Transaction.objects.filter(user=tenant.resident, transaction_month=tenant.current_rent_period_start)
         self.assertTrue(transaction.exists())
         self.assertEqual(transaction.first().amount, tenant.rent_amount + tenant.outstanding_rent)
-
 
     def test_inactive_tenant(self):
         """
@@ -135,7 +135,6 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertIsNotNone(new_invoice)
         self.assertEqual(new_invoice.amount, unpaid_tenant.rent_amount + 500)
 
-
     def test_existing_transaction(self):
         """
         Test case to verify that no new transaction is created when an existing transaction already exists.
@@ -211,7 +210,6 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertIsNotNone(new_invoice)
         self.assertEqual(new_invoice.amount, unpaid_tenant.rent_amount + 800)
 
-    
     def test_tenant_with_overdue_fee(self):
         """
         Test case to verify the generation of rent invoices for a tenant with an overdue fee.
@@ -354,7 +352,6 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertEqual(new_invoice.amount, 1000 + overdue_fee_days_tenant.rent_amount + overdue_fee_days_tenant.overdue_fee)
         self.assertTrue('Outstanding Balance' in new_invoice.note)
 
-
     def test_startswith_condition(self):
         """
         Test case to verify the behavior when a tenant has an unpaid transaction
@@ -389,5 +386,3 @@ class GenerateRentInvoicesTest(TestCase):
         self.assertEqual(transactions.filter(note__startswith="Rent invoice for", amount=1000).count(), 1)
         self.assertEqual(transactions.filter(note='Unpaid transaction').count(), 1)
         self.assertEqual(transactions.filter(note='Unpaid transaction', amount=1000).count(), 1)
-
-

@@ -1,8 +1,7 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth import get_user_model
 from .models import Property
-
+from django.urls import reverse
+from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 class TestPropertiesViews(TestCase):
 
@@ -15,12 +14,11 @@ class TestPropertiesViews(TestCase):
             first_name='Landlord',
             last_name='User',
             role=1,
-            
         )
 
         self.property1 = Property(landlord=self.user_landlord, address="Testington 1",
                                  zip_code="42069", city='Velo', name="Velo apt test")
-        
+
         self.property2 = Property(landlord=self.user_landlord, address="Testington 2",
                                  zip_code="69420", city='Velo', name="Schweppes")
         self.property1.save()

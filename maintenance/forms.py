@@ -7,6 +7,7 @@ from .models import MaintenanceRequest, Worker
 from django.forms import CheckboxSelectMultiple
 from crispy_forms.layout import Layout, Field, Submit, Div, Row, HTML
 
+
 class MaintenanceForm(forms.ModelForm):
     location = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apt, staircase, etc.'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please describe the issue in detail so the contractor can come prepared.'}))
@@ -21,8 +22,7 @@ class MaintenanceForm(forms.ModelForm):
                 self.fields['property'].queryset = Property.objects.filter(tenants=user)
             else:
                 self.fields['property'].queryset = properties
-                
-        
+
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'maintenance-form'
@@ -44,6 +44,7 @@ class MaintenanceForm(forms.ModelForm):
             HTML('<small class="text-muted">* Contractor will contact you if needed for more information or scheduling visit.</small>')
         )
 
+
 class EditMaintenanceForm(forms.ModelForm):
     STATUS = ((0, 'Submitted'), (3, 'Cancel'))
     STATUS_ALL= ((0, 'Submitted'), (1, 'In-progress'), (2, 'Completed'), (3, 'Cancel'))
@@ -55,7 +56,7 @@ class EditMaintenanceForm(forms.ModelForm):
         model = MaintenanceRequest
         fields = ['description', 'location', 'urgent', 'status', 'contractor_note', 'scheduled_date', 'contractor']
         css = {"all": ["form-control form-control-user"]}
-    
+
     def __init__(self, *args, user=None, contractors=None, **kwargs):
         super().__init__(*args, **kwargs)
         if contractors is not None:
@@ -64,7 +65,7 @@ class EditMaintenanceForm(forms.ModelForm):
         if user and (user.role == 3 ):
             self.current_status = self.STATUS
         self.fields['status'].widget.choices = self.current_status
-        
+
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_id = 'maintenance-form'
@@ -137,8 +138,6 @@ class EditMaintenanceForm(forms.ModelForm):
             css_class='modal-footer'
             ),
             )
-    
-                
 
 
 class WorkerCodeForm(forms.ModelForm):
@@ -152,7 +151,7 @@ class WorkerCodeForm(forms.ModelForm):
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         if user is not None:
             self.fields['assigned_properties'].queryset = Property.objects.filter(landlord=user)
 

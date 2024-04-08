@@ -1,8 +1,8 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from cloudinary.models import CloudinaryField
-
+from django.contrib.auth.models import AbstractUser
 ROLE = ((0, 'None'), (1, 'Landlord'), (2, 'Contractor'), (3, 'Tenant'))
+
 
 class CustomUser(AbstractUser):
     user_id = models.AutoField(primary_key=True, unique=True)
@@ -16,4 +16,3 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
             return self.username
-    

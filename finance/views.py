@@ -1,22 +1,21 @@
-from django.shortcuts import render, redirect
-from finance.tasks import generate_rent_invoices
-from .models import Transaction
 from django_tables2 import SingleTableMixin
-from django_filters.views import FilterView
+
+from .models import Transaction
+from tenants.models import Tenant
+from django.contrib import messages
 from .tables import TransactionTable
 from .filters import TransactionFilter
-from tenants.models import Tenant
-from .forms import EditTransactionForm, CreateTransactionForm
-from django.contrib import messages
+from django_filters.views import FilterView
+from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from finance.tasks import generate_rent_invoices
 from django.contrib.auth.decorators import login_required
-
+from .forms import EditTransactionForm, CreateTransactionForm
 
 @login_required
 def finance(request):
     generate_rent_invoices()
     return render(request, "finance/finance_overview.html")
-
 
 class TransactionListView(SingleTableMixin, FilterView):
     """
@@ -38,14 +37,13 @@ class TransactionListView(SingleTableMixin, FilterView):
         if user.role == 1:
             ordered_transactions = Transaction.objects.filter(
                 property__in=user.properties.all()).order_by('-due_date')
-            
+
             return ordered_transactions
         elif user.role == 3:
             ordered_transactions = Transaction.objects.filter(
                 user=user).order_by('-due_date')
-            
-            return ordered_transactions
 
+            return ordered_transactions
 
 @login_required        
 def transaction_detail(request, transaction_id):
@@ -76,7 +74,6 @@ def transaction_detail(request, transaction_id):
 
     return render(request, 'finance/transaction_detail.html', context)
 
-
 @login_required
 def transaction_form(request):
     """
@@ -84,7 +81,6 @@ def transaction_form(request):
     """
     user=request.user
     User = get_user_model()
-
 
     def get_queryset():
         """
@@ -122,11 +118,9 @@ def transaction_form(request):
                 messages.error(request, 'There was an error creating the transaction.')
                 print(form.errors)
                 return render(request, 'finance/transaction_form.html', {'form': form})
-
         else:
             messages.warning(request, 'You do not have permission to create a transaction.')
             return redirect('transaction_list')
-
     else:
         form = CreateTransactionForm(user=user, tenants=tenants, properties=properties)
         return render(request, 'finance/transaction_form.html', {'form': form})

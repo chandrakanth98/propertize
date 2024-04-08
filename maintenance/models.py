@@ -27,7 +27,7 @@ class MaintenanceRequest(models.Model):
 
     def __str__(self):
                 return f"Request from: {self.submitted_by.first_name} {self.submitted_by.last_name} at {self.property.name}"
-    
+
 
 class Worker(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -40,7 +40,7 @@ class Worker(models.Model):
 
     def __str__(self):
         return f"Worker: {self.code}"
-    
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.code = self.generate_unique_code()

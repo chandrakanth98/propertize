@@ -1,9 +1,11 @@
-from decimal import Decimal
-from django.db.models import Q, Value
-from django.db.models.functions import Concat
 import django_filters
+
+from decimal import Decimal
+
 from tenants.models import Tenant
+from django.db.models import Q, Value
 from properties.models import InvitationCode
+from django.db.models.functions import Concat
 
 
 class TenantFilter(django_filters.FilterSet):
@@ -13,7 +15,6 @@ class TenantFilter(django_filters.FilterSet):
     class Meta:
         model = Tenant
         fields = ['query']
-        
 
     def universal_search(self, queryset, name, value):
         if value.replace(".", "", 1).isdigit():
@@ -29,7 +30,8 @@ class TenantFilter(django_filters.FilterSet):
               Q(resident__last_name__icontains=value) | Q(apartment__icontains=value) | Q(full_name__icontains=value)
               | Q(resident__assigned_property__name__icontains=value)
         )
-    
+
+
 class InvitationCodeFilter(django_filters.FilterSet):
     query = django_filters.CharFilter(
         method='universal_search', label='Search',)

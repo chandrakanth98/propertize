@@ -1,11 +1,11 @@
+from django.db.models import Sum
+from tenants.models import Tenant
+from django.contrib import messages
+from finance.models import Transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from properties.models import InvitationCode, Property, PropertyNotice
 from maintenance.models import Worker, MaintenanceRequest
-from tenants.models import Tenant
-from finance.models import Transaction
-from django.db.models import Sum
-from django.contrib import messages
+from properties.models import InvitationCode, Property, PropertyNotice
 
 
 @login_required

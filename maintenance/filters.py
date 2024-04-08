@@ -15,12 +15,10 @@ class MaintenanceFilter(django_filters.FilterSet):
     status = django_filters.CharFilter(
         field_name='status', lookup_expr='icontains'
     )
-    
 
     class Meta:
         model = MaintenanceRequest
         fields = ['query']
-        
 
     def universal_search(self, queryset, name, value):
 
@@ -37,16 +35,16 @@ class MaintenanceFilter(django_filters.FilterSet):
                 Q(submitted_by__last_name__icontains=value) | Q(property__name__icontains=value) |
                 Q(location__icontains=value) | Q(status__icontains=value) | Q(full_name__icontains=value)
             )
-    
+
 
 class WorkerFilter(django_filters.FilterSet):
     query = django_filters.CharFilter(
         method='universal_search', label='Search',)
-    
 
     class Meta:
         model = Worker
         fields = ['query']
+
 
 class ContractorFilter(django_filters.FilterSet):
     query = django_filters.CharFilter(method='universal_search', label='Search',)
@@ -55,7 +53,7 @@ class ContractorFilter(django_filters.FilterSet):
         User = get_user_model()
         model = User
         fields = ['query']
-        
+
     def universal_search(self, queryset, name, value):
         return queryset.annotate(
             full_name=Concat('first_name', Value(' '), 'last_name')

@@ -1,19 +1,23 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .forms import InvitationCodeForm, EditProfileForm, EditTenantForm, AddContractorCodeForm
+import cloudinary.uploader
+
+from django_tables2 import SingleTableMixin
+
+from django.contrib import messages
+from maintenance.models import Worker
+from finance.models import Transaction
+from django_filters.views import FilterView
+from django.http import HttpResponseNotFound
+from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from .tables import TenantTable, InvitationCodeTable
-from properties.models import Tenant, Property, InvitationCode
-from django_tables2 import SingleTableMixin
-from .filters import TenantFilter, InvitationCodeFilter
-from django_filters.views import FilterView
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseNotFound
-from django.contrib import messages
-import cloudinary.uploader
-from django.utils.safestring import mark_safe
-from finance.models import Transaction
-from maintenance.models import Worker
+from .filters import TenantFilter, InvitationCodeFilter
+from django.contrib.auth.decorators import login_required
+from properties.models import Tenant, Property, InvitationCode
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .forms import InvitationCodeForm, EditProfileForm, EditTenantForm, AddContractorCodeForm
+
 
 User = get_user_model()
 
@@ -37,16 +41,11 @@ class TenantTableView(SingleTableMixin, FilterView):
             tenant_objects |= Tenant.objects.filter(resident__in=tenants_of_property)
 
         ordered_tenants = tenant_objects.order_by('resident__first_name')
-
         return ordered_tenants
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-
-        
-
-
 
         return context
 
@@ -73,7 +72,7 @@ def profile(request, user_id):
             transaction.note = mark_safe(transaction.note)
     except ObjectDoesNotExist:
         transactions = None
-    
+
     try:
         maintenance_requests = profile.submitted_by.all().order_by('-request_date')[:3]
     except ObjectDoesNotExist:
@@ -84,7 +83,6 @@ def profile(request, user_id):
     tenant_form = EditTenantForm(instance=tenant)
     add_contractor = AddContractorCodeForm()
 
-    
     if request.method == 'POST':
         if request.user != profile and profile.assigned_property.landlord != request.user:
             messages.error(request, 'You can only edit your own profile!')
@@ -117,7 +115,7 @@ def profile(request, user_id):
                         if worker.used:
                             messages.warning(request, 'Invitation code already used!')
                             return redirect('user_profile', user_id=user_id)
-                        
+
                         user = request.user
                         for property in worker.assigned_properties.all():
                             if property.assigned_contractor.filter(pk=user_id).exists():
@@ -128,7 +126,7 @@ def profile(request, user_id):
                                 worker.save()
                                 messages.success(request, f'You have been successfully assigned to {property.name}!')
                         return redirect('user_profile', user_id=user_id)
-                        
+
                     except Worker.DoesNotExist:
                         messages.warning(request, 'Invalid invitation code')
                         return render(request, 'user_profile', user_id=user_id)
@@ -142,8 +140,6 @@ def profile(request, user_id):
                 print(add_contractor.errors)
                 return redirect('user_profile', user_id=user_id)
 
-
-
     context = {'profile': profile,
                'tenant': tenant,
                'transactions': transactions,
@@ -151,11 +147,10 @@ def profile(request, user_id):
                'form1': form1,
                'tenant_form': tenant_form,
                'add_contractor': add_contractor}
-    
+
     return render(request,
                   'tenants/profile.html',
                   context)
-
 
 
 class CodeTableView(SingleTableMixin, FilterView):
@@ -179,13 +174,13 @@ class CodeTableView(SingleTableMixin, FilterView):
         ordered_codes = code_objects.order_by('-created_at')
 
         return ordered_codes
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = InvitationCodeForm(user=self.request.user)
-        
+
         return context
-    
+
     def post(self, request):
         form = InvitationCodeForm(request.POST)
         if form.is_valid():
@@ -211,5 +206,5 @@ def delete_invitation(request, code_id):
         code = get_object_or_404(InvitationCode, pk=code_id)
         code.delete()
         messages.success(request, 'Invitation code successfully deleted!')
-    
+
     return redirect('generate_code')

@@ -1,9 +1,10 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth import get_user_model
-from tenants.models import Tenant
 from datetime import datetime, timedelta
+
+from django.urls import reverse
+from django.test import TestCase
+from tenants.models import Tenant
 from properties.models import Property
+from django.contrib.auth import get_user_model
 
 # Create your tests here.
 
@@ -68,7 +69,7 @@ class TestHomeViews(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"landlord_confirm", response.content)
-    
+
     def test_render_dashboard_as_contractor(self):
         """ Test that it renders Contractor dashboard if you are a Contractor """
         self.client.login(

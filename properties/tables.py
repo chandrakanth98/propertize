@@ -13,6 +13,6 @@ class CustomTenantTable(tables.Table):
             'thead': {"class": ""}
             }
         fields = ("full_name", "apartment", "change")
-        
+
     def render_full_name(self, record):
         return f"{record.resident.first_name} {record.resident.last_name}"

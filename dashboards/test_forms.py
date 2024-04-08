@@ -1,17 +1,18 @@
-from django.test import TestCase
+from datetime import datetime, timedelta
+
 from django.urls import reverse
+from django.test import TestCase
 from tenants.models import Tenant
-from properties.models import InvitationCode
 from maintenance.models import Worker
 from properties.models import Property
+from properties.models import InvitationCode
 from django.contrib.auth import get_user_model
-from datetime import datetime, timedelta
 
 User = get_user_model()
 
 class InvitationFormTest(TestCase):
     def setUp(self):
-        
+
         self.landlord = User.objects.create_user(username='landlord', password='testpass123', role=1)
 
         self.property = Property.objects.create(landlord=self.landlord, address='420 Test St', zip_code=1337, city='Test City', name='Test Property')

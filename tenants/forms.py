@@ -1,8 +1,10 @@
 from django import forms
-from properties.models import InvitationCode, Tenant
+
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Div, Submit
 from django.contrib.auth import get_user_model
+from properties.models import InvitationCode, Tenant
+from crispy_forms.layout import Layout, Field, Row, Div, Submit
+
 
 class InvitationCodeForm(forms.ModelForm):
     tenant_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
@@ -18,8 +20,6 @@ class InvitationCodeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.fields['property'].queryset = user.properties.all()
-        
-
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -51,12 +51,13 @@ class InvitationCodeForm(forms.ModelForm):
             Submit('form1', 'Create Code', css_class='btn btn-primary col-12 mt-1'),
         )
 
+
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'profile_image']
         css = {"all": ["form-control form-control-user"]}
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -139,12 +140,13 @@ class EditTenantForm(forms.ModelForm):
             ),
         )
 
+
 class AddContractorCodeForm(forms.Form):
     code = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Code'}))
     class Meta:
         fields = ['code']
         css = {"all": ["form-control form-control-user"]}
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -155,4 +157,3 @@ class AddContractorCodeForm(forms.Form):
         Field('code', css_class='form-control'),
         Submit('add_contractor', 'Submit', css_class='btn btn-primary col-12 mt-1'),
         )
-        

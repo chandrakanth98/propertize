@@ -89,14 +89,14 @@ Simply put, Propertize helps you prioritize the right things.
         - Manages overdue invoices with tenant specific grace periods and fees.
         - Sets due dates to month-end on invoices and updates tenants "Next Rent Due" to the next month.
         ##### NOTE: Due to heroku idling all workers after 30min of inactivity the schedule i have setup in the backend wont succeed with running the task.
-        ##### To work around this for demo purposes the function to generate invoices can be manually triggered by visiting the transactions page.
+        ##### To work around this for demo purposes the function to generate invoices can be manually triggered by visiting the transactions page(The function is called in the view)
 
 ![Invoice page](/static/img/readme/invoice.png)
-    - Transactions
-        - Searchable table listing all transactions
-        - Invoice
-            - Individual Invoice pages showing all invoice information
-            - Includes functionality to edit invoices, mark them as paid, or void them.
+- Transactions
+    - Searchable table listing all transactions
+    - Invoice
+        - Individual Invoice pages showing all invoice information
+        - Includes functionality to edit invoices, mark them as paid, or void them.
     - Create invoices
         - Create invoice and assign it to a user
         - Create expense invoice
@@ -236,13 +236,13 @@ In all the places I've lived, systems for rent invoices, maintenance requests, a
 ## Following user stories was implemeneted in the project:
 
 
--As a user, I want to create a profile with role-based access, so I can interact with the platform according to my role.
--As a landlord, I want a dashboard to manage my properties, tenants, and related information effectively.
--As a tenant, I want to submit maintenance requests easily, providing details, and urgency levels.
--As a landlord, I want to prioritize and assign contractors to maintenance requests efficiently.
--As a landlord, I want to track rental income, expenses, and tenant rent payments for each property.
--As a tenant, I want to view rent payment history, due dates, and amounts owed conveniently.
--As a landlord or contractor, I want to post important messages and updates for tenants to stay informed.
+- As a user, I want to create a profile with role-based access, so I can interact with the platform according to my role.
+- As a landlord, I want a dashboard to manage my properties, tenants, and related information effectively.
+- As a tenant, I want to submit maintenance requests easily, providing details, and urgency levels.
+- As a landlord, I want to prioritize and assign contractors to maintenance requests efficiently.
+- As a landlord, I want to track rental income, expenses, and tenant rent payments for each property.
+- As a tenant, I want to view rent payment history, due dates, and amounts owed conveniently.
+- As a landlord or contractor, I want to post important messages and updates for tenants to stay informed.
 
 [Github Projects](https://github.com/users/zimmoc/projects/2/views/1)
 

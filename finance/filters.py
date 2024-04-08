@@ -1,8 +1,10 @@
+import django_filters
+
 from decimal import Decimal
+
+from .models import Transaction
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
-import django_filters
-from .models import Transaction
 
 class TransactionFilter(django_filters.FilterSet):
     query = django_filters.CharFilter(
@@ -32,3 +34,4 @@ class TransactionFilter(django_filters.FilterSet):
             Q(user__last_name__icontains=value) | Q(type__icontains=value) |
             Q(status__icontains=value) | Q(full_name__icontains=value) 
         )
+    

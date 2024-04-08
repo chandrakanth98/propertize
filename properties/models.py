@@ -1,15 +1,17 @@
+import uuid
+import datetime
+
 from django.db import models
 from tenants.models import Tenant
-from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
 from django.dispatch import receiver
 from cloudinary.models import CloudinaryField
-import datetime
-import uuid
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
 
 # Create your models here.
 
 User = get_user_model()
+
 
 class Property(models.Model):
     property_id = models.AutoField(unique=True, primary_key=True)
@@ -21,12 +23,10 @@ class Property(models.Model):
     name = models.CharField(max_length=150)
     featured_image = CloudinaryField('image', default='placeholder')
     details = models.TextField(blank=True)
-    
-
 
     def __str__(self):
             return self.name
-    
+
 
 class InvitationCode(models.Model):
     """
@@ -45,7 +45,7 @@ class InvitationCode(models.Model):
 
     def __str__(self):
         return self.tenant_name
-    
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.code = self.generate_unique_code()
@@ -53,7 +53,7 @@ class InvitationCode(models.Model):
 
     def generate_unique_code(self):
         return str(uuid.uuid4().hex)[:5]
-    
+
 
 class PropertyNotice(models.Model):
      notice_id = models.AutoField(primary_key=True, unique=True)
@@ -66,6 +66,7 @@ class PropertyNotice(models.Model):
 
      def __str__(self):
         return self.title
+
 
 class ProxyTenant(Tenant):
      """ 
