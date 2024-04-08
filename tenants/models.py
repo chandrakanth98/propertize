@@ -21,5 +21,5 @@ class Tenant(models.Model):
     current_rent_period_end = models.DateField(null=True, blank=True)
 
     def __str__(self):
-            return(f"{self.resident.last_name}, {self.resident.first_name}, {self.resident.assigned_property.name}")
+            return(f"{self.resident.last_name}, {self.resident.first_name}")
 

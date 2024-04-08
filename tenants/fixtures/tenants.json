@@ -2,61 +2,248 @@
     {
         "model": "tenants.Tenant",
         "fields": {
-            "resident": 7,
+            "resident": 41,
             "lease_end": "2025-04-01",
-            "rent_amount": 1306.57,
+            "rent_amount": 1200,
             "outstanding_rent": 0,
             "overdue_fee": 0,
-            "next_rent_due": "2024-04-01",
-            "apartment": "6",
-            "is_active": true,
-            "current_rent_period_start": "2024-04-01",
-            "current_rent_period_end": "2024-05-01"
+            "next_rent_due": "2024-04-30",
+            "apartment": "1A",
+            "is_active": true
         }
     },
     {
         "model": "tenants.Tenant",
         "fields": {
-            "resident": 8,
+            "resident": 42,
             "lease_end": "2025-04-01",
-            "rent_amount": 829.61,
+            "rent_amount": 1200,
             "outstanding_rent": 0,
             "overdue_fee": 0,
-            "next_rent_due": "2024-04-01",
-            "apartment": "15",
-            "is_active": true,
-            "current_rent_period_start": "2024-04-01",
-            "current_rent_period_end": "2024-05-01"
+            "next_rent_due": "2024-04-30",
+            "apartment": "1B",
+            "is_active": true
         }
     },
     {
         "model": "tenants.Tenant",
         "fields": {
-            "resident": 9,
+            "resident": 43,
             "lease_end": "2025-04-01",
-            "rent_amount": 1172.37,
+            "rent_amount": 1300,
             "outstanding_rent": 0,
             "overdue_fee": 0,
-            "next_rent_due": "2024-04-01",
-            "apartment": "3",
-            "is_active": true,
-            "current_rent_period_start": "2024-04-01",
-            "current_rent_period_end": "2024-05-01"
+            "next_rent_due": "2024-04-30",
+            "apartment": "1C",
+            "is_active": true
         }
     },
     {
         "model": "tenants.Tenant",
         "fields": {
-            "resident": 10,
+            "resident": 44,
             "lease_end": "2025-04-01",
-            "rent_amount": 1442.17,
+            "rent_amount": 1400,
             "outstanding_rent": 0,
             "overdue_fee": 0,
-            "next_rent_due": "2024-04-01",
-            "apartment": "19",
-            "is_active": true,
-            "current_rent_period_start": "2024-04-01",
-            "current_rent_period_end": "2024-05-01"
+            "next_rent_due": "2024-04-30",
+            "apartment": "2A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 45,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1500,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "2B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 46,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1600,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "2C",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 47,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1700,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "3A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 48,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1800,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "3B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 49,
+            "lease_end": "2025-04-01",
+            "rent_amount": 1900,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "3C",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 50,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2000,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "4A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 51,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2100,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "1A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 52,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2200,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "1B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 53,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2300,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "1C",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 54,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2400,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "2A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 55,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2500,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "2B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 56,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2600,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "3B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 57,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2700,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "4A",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 58,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2800,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "4B",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenants.Tenant",
+        "fields": {
+            "resident": 59,
+            "lease_end": "2025-04-01",
+            "rent_amount": 2900,
+            "outstanding_rent": 0,
+            "overdue_fee": 0,
+            "next_rent_due": "2024-04-30",
+            "apartment": "4C",
+            "is_active": true
         }
     }
 ]

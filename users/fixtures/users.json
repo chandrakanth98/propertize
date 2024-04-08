@@ -2,77 +2,306 @@
     {
         "model": "users.customuser",
         "fields": {
-            "username": "tenant_1_5163",
-            "first_name": "John",
-            "last_name": "Doe",
-            "role": 3,
-            "assigned_property": 1,
-            "password": "pbkdf2_sha256$600000$X51a0rZGQnwgUCAdA0g9bX$L3Eahpg3KzlbC13C/xrCOOnehTCnIG4+h+0DpW9FFdQ=",
-            "last_login": "2024-04-01T19:21:22.595Z",
-            "is_superuser": false,
-            "email": "john_doe123@example.com",
-            "is_staff": false,
-            "is_active": true,
-            "date_joined": "2024-04-07T00:00:00Z",
-            "groups": [],
-            "user_permissions": []
-        }
-    },
-    {
-        "model": "users.customuser",
-        "fields": {
-            "username": "tenant_1_8322",
+            "username": "tenant2",
             "first_name": "Emma",
             "last_name": "Johnson",
             "role": 3,
-            "assigned_property": 2,
-            "password": "pbkdf2_sha256$600000$SlX5oimKCFUqoPElQGP9Hb$SJ9kfsYJfSrDKcc3vcYqbBi8ygoF6QBa29H0Djr6zuA=",
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
             "last_login": "2024-03-27T18:28:24Z",
-            "is_superuser": false,
-            "email": "emma_johnson456@example.com",
-            "is_staff": false,
+            "email": "emma.johnson@email.com",
+            "phone_number": "1234567890",
             "is_active": true,
-            "date_joined": "2024-04-07T00:00:00Z",
-            "groups": [],
-            "user_permissions": []
+            "date_joined": "2024-04-07T00:00:00Z"
         }
     },
     {
         "model": "users.customuser",
         "fields": {
-            "username": "tenant_1_2823",
+            "username": "tenant3",
             "first_name": "Michael",
             "last_name": "Smith",
             "role": 3,
-            "assigned_property": 3,
-            "password": "pbkdf2_sha256$600000$f60JbwF9sNI3tIxJqe1MPD$qyiI+Mw3Z7HrHOYtZc+khX4s8dcLnOXIe+y1iNiyDzQ=",
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
             "last_login": "2024-03-26T23:04:33Z",
-            "is_superuser": false,
-            "email": "michael_smith789@example.com",
-            "is_staff": false,
+            "email": "michael.smith@email.com",
+            "phone_number": "1234567890",
             "is_active": true,
-            "date_joined": "2024-04-07T00:00:00Z",
-            "groups": [],
-            "user_permissions": []
+            "date_joined": "2024-04-07T00:00:00Z"
         }
     },
     {
         "model": "users.customuser",
         "fields": {
-            "username": "tenant_1_6735",
+            "username": "tenant4",
             "first_name": "Emily",
             "last_name": "Brown",
             "role": 3,
-            "assigned_property": 5,
-            "password": "pbkdf2_sha256$600000$gMnwcMJSceF2ndhuz9vDyt$LR2+HOo6GwYP5JT+//8SQ7heoK6hQHfG5QtFqAgC/pY=",
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
             "last_login": "2024-03-28T20:36:46.497Z",
-            "is_superuser": false,
-            "email": "emily_brown234@example.com",
-            "is_staff": false,
+            "email": "emily.brown234@email.com",
+            "phone_number": "1234567890",
             "is_active": true,
-            "date_joined": "2024-04-07T00:00:00Z",
-            "groups": [],
-            "user_permissions": []
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant5",
+            "first_name": "Johny",
+            "last_name": "Doer",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "johny.doer@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant6",
+            "first_name": "Alice",
+            "last_name": "Smith",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "alice.smith456@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant7",
+            "first_name": "Michael",
+            "last_name": "Johnson",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "michael.johnson789@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant8",
+            "first_name": "Sarah",
+            "last_name": "Wilson",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "sarah.wilson012@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant9",
+            "first_name": "David",
+            "last_name": "Martinez",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "david.martinez345@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant10",
+            "first_name": "Jessica",
+            "last_name": "Thompson",
+            "role": 3,
+            "assigned_property": 8,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "jessica.thompson678@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant11",
+            "first_name": "Christopher",
+            "last_name": "Lee",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "christopher.lee901@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant12",
+            "first_name": "Amanda",
+            "last_name": "Roberts",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "amanda.roberts123@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant13",
+            "first_name": "Michael",
+            "last_name": "Davis",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "michael.davis456@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant14",
+            "first_name": "Sarah",
+            "last_name": "Wilson",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "sarah.wilson789@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant15",
+            "first_name": "James",
+            "last_name": "Clark",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "james.clark234@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant16",
+            "first_name": "Jessica",
+            "last_name": "Robinson",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "jessica.robinson987@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant17",
+            "first_name": "Matthew",
+            "last_name": "Garcia",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "matthew.garcia654@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant18",
+            "first_name": "Ashley",
+            "last_name": "Martinez",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "ashley.martinez321@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant19",
+            "first_name": "Daniel",
+            "last_name": "Perez",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "daniel.perez789@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
+        }
+    },
+    {
+        "model": "users.customuser",
+        "fields": {
+            "username": "tenant20",
+            "first_name": "Amanda",
+            "last_name": "Hernandez",
+            "role": 3,
+            "assigned_property": 9,
+            "password": "pbkdf2_sha256$600000$tf7vcAeeYSBjAEu63hdGt2$zurSuJ2BreOVMi9DsVpCxSrSZOvYs51HdSTK9FMxFpA=",
+            "last_login": "2024-03-28T20:36:46.497Z",
+            "email": "amanda.hernandez234@email.com",
+            "phone_number": "1234567890",
+            "is_active": true,
+            "date_joined": "2024-04-07T00:00:00Z"
         }
     }
+
 ]

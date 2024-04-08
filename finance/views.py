@@ -26,6 +26,7 @@ class TransactionListView(SingleTableMixin, FilterView):
     filterset_class = TransactionFilter
     template_name = 'finance/transaction_list.html'
     paginate_by = 10
+    generate_rent_invoices()
 
     def get_queryset(self):
         user = self.request.user
