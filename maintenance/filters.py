@@ -1,9 +1,11 @@
-from decimal import Decimal
-from django.db.models import Q, Value
-from django.db.models.functions import Concat
 import django_filters
-from .models import MaintenanceRequest, Worker
+
+from decimal import Decimal
+
+from django.db.models import Q, Value
 from properties.models import Property
+from django.db.models.functions import Concat
+from .models import MaintenanceRequest, Worker
 from django.contrib.auth import get_user_model
 
 

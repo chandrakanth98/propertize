@@ -1,16 +1,18 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MaintenanceForm, EditMaintenanceForm, WorkerCodeForm
-from .models import MaintenanceRequest, Worker
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import get_user_model
-from django.http import HttpResponseNotFound
-from .tables import MaintenanceRequestTable, WorkerCodeTable, ContractorTable
-from .filters import MaintenanceFilter, WorkerFilter, ContractorFilter
 from django_tables2 import SingleTableMixin
-from django_filters.views import FilterView
+
 from django.contrib import messages
 from properties.models import Property
+from django_filters.views import FilterView
+from django.http import HttpResponseNotFound
+from .models import MaintenanceRequest, Worker
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from .filters import MaintenanceFilter, WorkerFilter, ContractorFilter
+from .forms import MaintenanceForm, EditMaintenanceForm, WorkerCodeForm
+from .tables import MaintenanceRequestTable, WorkerCodeTable, ContractorTable
+
 User = get_user_model()
 
 
@@ -23,7 +25,6 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
     filterset_class = MaintenanceFilter
     paginate_by = 10
     template_name = 'maintenance/maintenance.html'
-
 
     def get_queryset(self):
         user = self.request.user
@@ -43,7 +44,6 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
             ordered_requests = maintenance_requests.order_by('-request_date')
             return ordered_requests
 
-            
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
@@ -56,7 +56,7 @@ class MaintenanceTableView(SingleTableMixin, FilterView):
 
         context['properties'] = properties
         return context
-    
+
 
 @login_required
 def maintenance_request(request, request_id):
@@ -85,7 +85,7 @@ def maintenance_request(request, request_id):
                 messages.warning(request, 'An error occurred')
                 print(form.errors)
                 return redirect('maintenance_request', request_id=request_id)
-    
+
     context = {'mr': maintenance_request, 'form': form, 'user': user}
 
     return render(request, 'maintenance/maintenance_request.html', context)
@@ -144,8 +144,7 @@ def tenant_maintenance_request(request, user_id):
         form = MaintenanceForm(user=profile)
 
     context = {'maintenance': maintenance_requests,
-                  'profile': profile,
-                  'form': form}
+               'profile': profile, 'form': form}
     return render(request, 'maintenance/maintenance_user_request.html', context)
 
 
@@ -158,13 +157,11 @@ class WorkerTableView(SingleTableMixin, FilterView):
     filterset_class = WorkerFilter
     paginate_by = 5
 
-
     def get_queryset(self):
         user = self.request.user
         codes = Worker.objects.filter(assigned_properties__landlord=user).distinct()
         ordered_codes = codes.order_by('-created_on')
         return ordered_codes
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -174,7 +171,6 @@ class WorkerTableView(SingleTableMixin, FilterView):
 
         return context
 
-        
     def post(self, request, *args, **kwargs):
         form = WorkerCodeForm(request.POST)
         if form.is_valid():
@@ -185,7 +181,7 @@ class WorkerTableView(SingleTableMixin, FilterView):
             context = self.get_context_data()
             messages.error(request, 'An error occurred')
         return render(request, 'maintenance/workers.html', context)
-    
+
 
 class ContractorTableView(SingleTableMixin, FilterView):
     """
@@ -196,14 +192,12 @@ class ContractorTableView(SingleTableMixin, FilterView):
     filterset_class = ContractorFilter
     paginate_by = 10
 
-
     def get_queryset(self):
         user = self.request.user
         properties = user.properties.all()
         contractors = User.objects.filter(assigned_contractor__in=properties).distinct()
         ordered_contractors = contractors.order_by('first_name')
         return ordered_contractors
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -215,7 +209,7 @@ class ContractorTableView(SingleTableMixin, FilterView):
         context['form'] = form
 
         return context
-    
+
 
 @login_required
 def delete_invitation_contractor(request, code_id):

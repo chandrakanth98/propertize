@@ -1,15 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from . import views
-from properties.models import Property, Tenant
-from properties.forms import PropertyNoticeForm, EditProperty, addProperty
-from properties.tables import CustomTenantTable
-from tenants.filters import TenantFilter
-from django_tables2 import SingleTableMixin
-from django_filters.views import FilterView
-from django.contrib import messages
 import cloudinary.uploader
+
+from django_tables2 import SingleTableMixin
+
+from . import views
+from django.contrib import messages
+from tenants.filters import TenantFilter
+from django.contrib.auth.models import User
+from django_filters.views import FilterView
+from properties.models import Property, Tenant
+from properties.tables import CustomTenantTable
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from properties.forms import PropertyNoticeForm, EditProperty, addProperty
 
 
 # Create your views here.

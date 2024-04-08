@@ -3,11 +3,13 @@
 Propertize is a property management software designed to simplify interactions between landlords and tenants. It provides all necessary information about owned properties and their tenants in a simple and easy-to-use manner.
 
 Simply put, Propertize helps you prioritize the right things.
+#### [Live demo page](https://propertize-unique-f40dd5b3e2d4.herokuapp.com/)
 
 
 ![Responsive Mockup](/static/img/readme/all-devices-black.png)
 
-<hr>
+
+
 
 # Features
 
@@ -27,9 +29,13 @@ Simply put, Propertize helps you prioritize the right things.
     - Lates Invoices
         - Overview of latest transactions to help with catching discrepensies
 
+![Dashboard](/static/img/readme/dashboard.png)
+
 
 - ___Properties___
     - Overview of owned properties and ability to add new properties.
+
+![Properties page](/static/img/readme/properties.png)
 
 
 - ___Property___
@@ -39,6 +45,8 @@ Simply put, Propertize helps you prioritize the right things.
     - Edit property
         - Change information or property picture.
 
+![Property page](/static/img/readme/property.png)
+
 
 - ___Tenants___
     - Searchable table containing all tenants to easily find and modify tenants.
@@ -47,6 +55,7 @@ Simply put, Propertize helps you prioritize the right things.
         - Ability to edit lease data including rent, grace periods, overdue fees and more.
         - Overview of their latest invoices and maintenance requests
 
+![Tenants table](/static/img/readme/tenants.png)
 
 - ___Invitation Codes___
     - Simplifies tenant/contractor assignment by providing a one-use code.
@@ -56,6 +65,7 @@ Simply put, Propertize helps you prioritize the right things.
     - Contractor code creator
         - Create codes containing the properties the contractor will work at.
 
+![Invitation codes](/static/img/readme/tenant_code.png)
 
 - ___Maintenance___
     - Requests
@@ -69,6 +79,8 @@ Simply put, Propertize helps you prioritize the right things.
         - Searchable table listing all contractors
         - Functionality for creating contractor codes as mentioned earlier.
 
+![Maintenance page](/static/img/readme/maintenance.png)
+
 
 - ___Finances___
     - Rent invoices
@@ -76,7 +88,10 @@ Simply put, Propertize helps you prioritize the right things.
         - Ensures other invoices can exist without stopping rent invoice generation
         - Manages overdue invoices with tenant specific grace periods and fees.
         - Sets due dates to month-end on invoices and updates tenants "Next Rent Due" to the next month.
+        ##### NOTE: Due to heroku idling all workers after 30min of inactivity the schedule i have setup in the backend wont succeed with running the task.
+        ##### To work around this for demo purposes the function to generate invoices can be manually triggered by visiting the transactions page.
 
+![Invoice page](/static/img/readme/invoice.png)
     - Transactions
         - Searchable table listing all transactions
         - Invoice
@@ -86,6 +101,9 @@ Simply put, Propertize helps you prioritize the right things.
         - Create invoice and assign it to a user
         - Create expense invoice
             - Create external expense to help with bookkeeping or P/L purposes
+
+![Transaction page](/static/img/readme/transactions.png)
+
 
 ## Tenant
 
@@ -102,6 +120,8 @@ Simply put, Propertize helps you prioritize the right things.
     - Property Contact Information and Latest Maintenance Requests Card
         - Color coded request status
         - Open maintenance request by clicking it
+
+![Profile page](/static/img/readme/profile.png)
 - ___Transactions___
     - Searchable table listing all transactions
         - Individual Invoice pages showing all invoice information
@@ -113,6 +133,8 @@ Simply put, Propertize helps you prioritize the right things.
     - List view with property notices
         - Ordered with newest at the top
         - Important notices color coded red
+
+![Tenant property page](/static/img/readme/propertytenant.png)
 
 - ___Maintenance___
     - Create maintenance request
@@ -126,6 +148,10 @@ Simply put, Propertize helps you prioritize the right things.
             - Card showing contact information to tenant and assigned contractor
             - See contractor note if it exists
             - See scheduled date after the contractor has set it
+
+![Tenant requests page](/static/img/readme/requests.png)
+![Individual request](/static/img/readme/indrequest.png)
+
 
 ## Contractor
 
@@ -144,6 +170,8 @@ Simply put, Propertize helps you prioritize the right things.
             - Property information
             - Scheduled date
         - Ability to edit request and add contractor note, change status and set scheduled date
+
+![Contractor edit form](/static/img/readme/editreq.png)
     
 - ___Properties___
     - Overview of all assigned properties
@@ -161,8 +189,6 @@ Simply put, Propertize helps you prioritize the right things.
 
 
 ## Upcoming Features
-<hr>
-
  ___propertize v2___
 - Complete design overhaul
     - Currently its a simple bootstrap site that doesnt stand out in any way
@@ -182,7 +208,6 @@ Simply put, Propertize helps you prioritize the right things.
 
 ## Idea
 
-<hr>
 
 This idea began as a means for big company property owners to assign property and tasks to their workers. Having firsthand experience with such a platform, I knew the concept could be improved upon greatly. As planning progressed, it transformed into a comprehensive property management platform, with a stronger focus on improving the partnership between landlords and tenants.
 
@@ -190,7 +215,7 @@ In all the places I've lived, systems for rent invoices, maintenance requests, a
 
 
 
-# Planning<hr>
+# Planning
 
 ## Website owners goals
 
@@ -207,10 +232,8 @@ In all the places I've lived, systems for rent invoices, maintenance requests, a
 - Submit and track maintenance requests with clear status.
 - Help contractors efficiently handle maintenance requests
 
-## User Stories
-<hr>
 
-### Following user stories was implemeneted in the project:
+## Following user stories was implemeneted in the project:
 
 
 -As a user, I want to create a profile with role-based access, so I can interact with the platform according to my role.
@@ -282,7 +305,9 @@ ___App Structure___
 
 ![ERD](/static/img/readme/schema.png)
 
-## Used Technologies<hr>
+The end product is pretty much this for all the core function tables
+
+## Used Technologies
 
 ### Languages Used
 
@@ -326,12 +351,15 @@ ___App Structure___
         - was used to write the code and commit it to GitHub
     - Heroku 
         - was used to deploy the project 
+    - Heroku Redis
+        - was used as broker for celery tasks
     - Cloudinary
         - was used to serve static media files  
     - Grammarly
         - was used to fix my grammar
+    
 
-# Testing<hr>
+# Testing
 
 ### [Rent Invoice Generation](/finance/tests_invoice_task.py)
 ___Purpose___
@@ -364,7 +392,6 @@ These python tests were used in conjunction with manually testing the same scena
     - Method to avoid invoices
         - Checks invoice note content
 
-<hr>
 
 ##### [Home page rendering](/dashboards/test_views.py)
 
@@ -403,47 +430,110 @@ Getting a user role and rendering their role specific home page is vital in crea
 
 ### Validator
 
-
 #### HTML
 
-
+Tested HTML files through [w3c](https://validator.w3.org/nu/)
+- Lots of errors related to django and template tags
+- Redundant test for a django app
 
 #### CSS
 
- 
+All custom css ran through [Jigsaw](https://jigsaw.w3.org/css-validator/validator)
 
-## Validator testing
+![Jigsaw](/static/img/readme/css.png)
 
+#### JS
+
+All custom js ran through [JSHint](https://jshint.com/)
 
 
 ### Performance
 
-- __Tests performed using [Pagespeed](https://pagespeed.web.dev/)__
+- __Tests performed using [Lightouse](https://chromewebstore.google.com/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk)__
+
+![lighthouse_scores](/static/img/readme/score.png)
 
 
 
-- __Tests performed using [GTmetrix](https://gtmetrix.com/)__
 
+
+# Heroku Deployment
+The site was deployed to Heroku. The steps to deploy are as follows:
+
+Prerequisites:
+- Create 'Procfile' in your project folder(Note caps and no file tag)
+- Add our gunicorn worker: 'web: gunicorn propertize.wsgi'
+- Add our celery with beat worker: 'worker: celery -A propertize worker -B'
+- Freeze and export our installed libraries
+    - pip freeze --local > requirements.txt
 
 <hr>
 
-## Deployment
+- Navigate to heroku and create an account
+- Click the new button in the top right corner
+- Select create new app
+- Enter app name
+- Select region and click create app
+- Click the resources tab and search for Heroku Redis
+- Follow redis installation steps
+- Go to the settings tab and then click reveal config vars
+- Make sure the following config vars exist:
+  - SECRET_KEY: (Your secret key)
+  - DATABASE_URL: (Database url)
+  - REDIS_TLS_URL: (redis server)
+  - CLOUNDINARY_URL: (cloudinary api url)
+- Click the deploy tab
+- Scroll down to Connect to GitHub and sign in / authorize when prompted
+- In the search box, find the repositoy you want to deploy and click connect
+- Scroll down to Manual deploy and choose the main branch
+- Click deploy
+- Double check that both workers(Dynos) are enabled under resources*
+
+The app should now be deployed.
 
 
-<hr>
+# Run Locally
+Note that you need your own database and redis server
 
-# Credits 
+Clone the project
+
+```bash
+  git clone https://github.com/zimmoc/propertize.git
+```
+
+Go to the project directory
+
+```bash
+  cd propertize
+```
+
+Install dependencies
+- Recommended to do this in a virtual python env
+
+
+```bash
+  pip install -r requirements.txt
+```
+
+Start the server
+
+```bash
+  python3 manage.py runserver
+```
 
  
 
-### Documentation
+# Credits
 
+All installed libraries have been implented with the help of their respective documentation and examples
 
+Countless of stackoverflow posts whenever i had problems.
+
+Random forum posts from 2010, found through googling problems
 
 ### Content 
 
+
+- Bootstrap theme taken from: [SB Admin](https://github.com/startbootstrap/startbootstrap-sb-admin)
 - The icons used were taken from [Font Awesome](https://fontawesome.com/)
 - Favicon/Logo by [Font Awesome](https://fontawesome.com/)
- 
-### Media
-

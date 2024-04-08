@@ -1,10 +1,11 @@
 from django import forms
-from django.forms import CheckboxSelectMultiple
-from .models import MaintenanceRequest, Worker
+
 from properties.models import Property
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, Row, HTML
 from django.forms.widgets import HiddenInput
+from .models import MaintenanceRequest, Worker
+from django.forms import CheckboxSelectMultiple
+from crispy_forms.layout import Layout, Field, Submit, Div, Row, HTML
 
 class MaintenanceForm(forms.ModelForm):
     location = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apt, staircase, etc.'}))

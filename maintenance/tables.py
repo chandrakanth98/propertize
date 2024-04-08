@@ -1,6 +1,7 @@
 import django_tables2 as tables
-from .models import MaintenanceRequest, Worker
+
 from properties.models import Property
+from .models import MaintenanceRequest, Worker
 from django.contrib.auth import get_user_model
 
 
