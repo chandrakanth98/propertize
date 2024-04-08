@@ -70,12 +70,10 @@
                             </div>
                         </div>
 
-                        <!-- PROFILE INFO CARD-->
-                        {% if profile.role != 2 %}
-                        {% if profile.assigned_property %}
-                        
+                        <!-- PROFILE INFO CARD-->    
                             <div class="col">
                                 <div class="card shadow-sm mb-3">
+                                    {% if profile.assigned_property %}
                                     <a href="{% url 'property' property_id=profile.assigned_property.property_id %}" class="card-link">
                                     <div class="card-header d-flex align-items-center">
                                         {% if "placeholder" in profile.assigned_property.featured_image.url %}
@@ -94,12 +92,14 @@
                                             <strong>City:</strong> {{ profile.assigned_property.city }}<br><br>
                                         </p>
                                     </div>
+                                    {% else %}
+                                    <div class="card-header">
+                                        <strong>No property assigned</strong>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                            {% endif %}
-                            
-                        {% endif %}
-    </div>
+        </div>
         <div class="col-lg-8">
             
             <!-- LEASE INFO CARD-->
@@ -233,8 +233,8 @@
                                     </div>
                                 </div>
                             </div>
-                            {% endif %}
                         </div>
+                    {% endif %}
 
         </div>
     
