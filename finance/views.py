@@ -30,7 +30,7 @@ class TransactionListView(SingleTableMixin, FilterView):
     # Only here for demo purposes since heroku puts all its workers to sleep
     # after 30 minutes of inactivity.
     # Same task can be found and schedulable in admin panel
-    generate_rent_invoices()
+    #generate_rent_invoices()
 
     def get_queryset(self):
         user = self.request.user

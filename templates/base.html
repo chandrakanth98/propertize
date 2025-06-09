@@ -264,10 +264,10 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user }}</span>
-                                {% if "placeholder" in request.user.profile_image.url %}
-                                <img src="{% static 'img/undraw_profile_1.svg' %}" alt="Default profile photo" class="img-profile rounded-circle">
+                                {% if request.user.profile_image %}
+                                <img src="{{ request.user.profile_image.url }}" alt="{{ request.user.get_full_name }}" class="img-profile rounded-circle">
                                 {% else %}
-                                <img src="{{ request.user.profile_image.url }}" alt="{{ request.user.first_name }}'s profile photo" class="img-profile rounded-circle">
+                                <img src="{% static 'img/undraw_profile_1.svg' %}" alt="Default avatar" class="img-profile rounded-circle">
                                 {% endif %}
                             </a>
                             <!-- Dropdown - User Information -->

@@ -1,10 +1,8 @@
 from django.contrib import admin
-from .models import Property, InvitationCode, ProxyTenant, PropertyNotice
+from .models import InvitationCode
 
-# Register your models here.
-
-admin.site.register(Property)
-admin.site.register(InvitationCode)
-admin.site.register(ProxyTenant)
-admin.site.register(PropertyNotice)
-
+@admin.register(InvitationCode)
+class InvitationCodeAdmin(admin.ModelAdmin):
+    list_display    = ('code', 'created_at', 'used', 'property')
+    list_filter     = ('used',)
+    readonly_fields = ('code', 'created_at')

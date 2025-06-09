@@ -16,14 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from properties import views as p_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path("finance/", include("finance.urls"), name="finances"),
-    path("maintenance/", include("maintenance.urls"), name="requests"),
-    path("tenants/", include("tenants.urls"), name="tenants"),
-    path("properties/", include("properties.urls"), name="properties"),
-    path("", include("dashboards.urls")),
-    path("accounts/", include("allauth.urls")),
-    path('admin/', admin.site.urls),
+    path("finance/",      include("finance.urls"),     name="finances"),
+    path("maintenance/",  include("maintenance.urls"), name="requests"),
+    path("tenants/",      include("tenants.urls"),     name="tenants"),
+    path("properties/",   include("properties.urls"),  name="properties"),
+    path("",              include("dashboards.urls")),
+    path("accounts/",     include("allauth.urls")),
+    path("admin/",        admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
+
